@@ -8,10 +8,10 @@ from typing_extensions import Annotated, TypedDict
 
 from ..._utils import PropertyInfo
 
-__all__ = ["AssignmentCreateParams"]
+__all__ = ["AssignmentCreateTaskAssignmentParams"]
 
 
-class AssignmentCreateParams(TypedDict, total=False):
+class AssignmentCreateTaskAssignmentParams(TypedDict, total=False):
     expires_at: Annotated[Union[str, datetime], PropertyInfo(alias="expiresAt", format="iso8601")]
 
     invite_email: Annotated[str, PropertyInfo(alias="inviteEmail")]

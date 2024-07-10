@@ -1,17 +1,60 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import Optional
+from typing import List, Optional
 from datetime import datetime
 from typing_extensions import Literal
 
 from pydantic import Field as FieldInfo
 
-from .._models import BaseModel
+from ..._models import BaseModel
 
-__all__ = ["TaskRetrieveResponse", "Currency", "VerificationConfiguration"]
+__all__ = [
+    "AssignmentCreateTaskAssignmentResponse",
+    "AssignedTo",
+    "Task",
+    "TaskCurrency",
+    "TaskVerificationConfiguration",
+]
 
 
-class Currency(BaseModel):
+class AssignedTo(BaseModel):
+    authentication_methods: List[Literal["PASSWORD", "GOOGLE"]] = FieldInfo(alias="authenticationMethods")
+    """The authentication methods for this user.
+
+    Note: may not be visible subject to caller's authorization scopes.
+    """
+
+    email: str
+    """The email address for this user.
+
+    Note: may not be visible subject to caller's authorization scopes.
+    """
+
+    first_name: str = FieldInfo(alias="firstName")
+    """The first name of this user."""
+
+    kyc_status: Literal["PENDING", "IN_REVIEW", "APPROVED", "REJECTED"] = FieldInfo(alias="kycStatus")
+    """The current KYC status of this user account.
+
+    Note: may not be visible subject to caller's authorization scopes.
+    """
+
+    last_name: str = FieldInfo(alias="lastName")
+    """The last name of this user."""
+
+    status: Literal["ACTIVE", "DELETED", "LOCKED", "PENDING"]
+    """The current status of this user account"""
+
+    id: Optional[str] = None
+
+    phone: Optional[str] = None
+    """The phone number for this user.
+
+    Note: may not be visible subject to caller's authorization scopes.
+    """
+
+
+class TaskCurrency(BaseModel):
     fractional_unit_name: str = FieldInfo(alias="fractionalUnitName")
     """The name of this currency's fractional unit"""
 
@@ -44,13 +87,13 @@ class Currency(BaseModel):
     """The value of the item"""
 
 
-class VerificationConfiguration(BaseModel):
+class TaskVerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
     handler: Optional[str] = None
 
 
-class TaskRetrieveResponse(BaseModel):
+class Task(BaseModel):
     category: Literal[
         "MARKETING",
         "ENGINEERING",
@@ -102,7 +145,7 @@ class TaskRetrieveResponse(BaseModel):
 
     id: Optional[str] = None
 
-    currency: Optional[Currency] = None
+    currency: Optional[TaskCurrency] = None
     """The currency in which the payout is denominated."""
 
     deadline: Optional[datetime] = None
@@ -144,7 +187,7 @@ class TaskRetrieveResponse(BaseModel):
     ] = None
     """The current status of this task."""
 
-    verification_configuration: Optional[VerificationConfiguration] = FieldInfo(
+    verification_configuration: Optional[TaskVerificationConfiguration] = FieldInfo(
         alias="verificationConfiguration", default=None
     )
     """The configuration to be applied during task verification.
@@ -152,3 +195,28 @@ class TaskRetrieveResponse(BaseModel):
     The Payman verification enginewill use this to customize the verification of
     this task.
     """
+
+
+class AssignmentCreateTaskAssignmentResponse(BaseModel):
+    organization_id: str = FieldInfo(alias="organizationId")
+
+    status: Literal["IN_REVIEW", "PENDING", "COMPLETED", "EXPIRED", "DELETED", "REJECTED", "ACCEPTED"]
+
+    task_id: str = FieldInfo(alias="taskId")
+
+    id: Optional[str] = None
+
+    assigned_to: Optional[AssignedTo] = FieldInfo(alias="assignedTo", default=None)
+    """The user that this task is assigned to"""
+
+    assigned_to_id: Optional[str] = FieldInfo(alias="assignedToId", default=None)
+
+    completed_at: Optional[datetime] = FieldInfo(alias="completedAt", default=None)
+
+    expires_at: Optional[datetime] = FieldInfo(alias="expiresAt", default=None)
+
+    invite_code: Optional[str] = FieldInfo(alias="inviteCode", default=None)
+
+    invite_email: Optional[str] = FieldInfo(alias="inviteEmail", default=None)
+
+    task: Optional[Task] = None

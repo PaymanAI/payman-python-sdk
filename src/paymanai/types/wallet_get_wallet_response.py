@@ -7,7 +7,7 @@ from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
 
-__all__ = ["WalletRetrieveResponse", "Currency"]
+__all__ = ["WalletGetWalletResponse", "Currency"]
 
 
 class Currency(BaseModel):
@@ -43,7 +43,7 @@ class Currency(BaseModel):
     """The value of the item"""
 
 
-class WalletRetrieveResponse(BaseModel):
+class WalletGetWalletResponse(BaseModel):
     balance_in_escrow: int = FieldInfo(alias="balanceInEscrow")
     """The amount of currency that is currently held in escrow against created tasks."""
 

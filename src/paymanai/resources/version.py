@@ -33,7 +33,7 @@ class VersionResource(SyncAPIResource):
     def with_streaming_response(self) -> VersionResourceWithStreamingResponse:
         return VersionResourceWithStreamingResponse(self)
 
-    def retrieve(
+    def get_server_version(
         self,
         *,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -62,7 +62,7 @@ class AsyncVersionResource(AsyncAPIResource):
     def with_streaming_response(self) -> AsyncVersionResourceWithStreamingResponse:
         return AsyncVersionResourceWithStreamingResponse(self)
 
-    async def retrieve(
+    async def get_server_version(
         self,
         *,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -86,8 +86,8 @@ class VersionResourceWithRawResponse:
     def __init__(self, version: VersionResource) -> None:
         self._version = version
 
-        self.retrieve = to_custom_raw_response_wrapper(
-            version.retrieve,
+        self.get_server_version = to_custom_raw_response_wrapper(
+            version.get_server_version,
             BinaryAPIResponse,
         )
 
@@ -96,8 +96,8 @@ class AsyncVersionResourceWithRawResponse:
     def __init__(self, version: AsyncVersionResource) -> None:
         self._version = version
 
-        self.retrieve = async_to_custom_raw_response_wrapper(
-            version.retrieve,
+        self.get_server_version = async_to_custom_raw_response_wrapper(
+            version.get_server_version,
             AsyncBinaryAPIResponse,
         )
 
@@ -106,8 +106,8 @@ class VersionResourceWithStreamingResponse:
     def __init__(self, version: VersionResource) -> None:
         self._version = version
 
-        self.retrieve = to_custom_streamed_response_wrapper(
-            version.retrieve,
+        self.get_server_version = to_custom_streamed_response_wrapper(
+            version.get_server_version,
             StreamedBinaryAPIResponse,
         )
 
@@ -116,7 +116,7 @@ class AsyncVersionResourceWithStreamingResponse:
     def __init__(self, version: AsyncVersionResource) -> None:
         self._version = version
 
-        self.retrieve = async_to_custom_streamed_response_wrapper(
-            version.retrieve,
+        self.get_server_version = async_to_custom_streamed_response_wrapper(
+            version.get_server_version,
             AsyncStreamedBinaryAPIResponse,
         )

@@ -1,90 +1,17 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 from typing_extensions import Literal
 
 from pydantic import Field as FieldInfo
 
-from ..._models import BaseModel
+from .._models import BaseModel
 
-__all__ = [
-    "SubmissionListResponse",
-    "Result",
-    "ResultDetails",
-    "ResultDetailsFeedback",
-    "ResultSubmittedBy",
-    "ResultTask",
-    "ResultTaskCurrency",
-    "ResultTaskVerificationConfiguration",
-]
+__all__ = ["TaskGetTaskResponse", "Currency", "VerificationConfiguration"]
 
 
-class ResultDetailsFeedback(BaseModel):
-    created_by: str = FieldInfo(alias="createdBy")
-
-    created_on: datetime = FieldInfo(alias="createdOn")
-
-    feedback: str
-
-    type: Literal["SYSTEM_INTERNAL", "USER_COMMENT", "AGENT_COMMENT"]
-
-
-class ResultDetails(BaseModel):
-    description: str
-    """The user's description of the solution they are submitting"""
-
-    evidence_urls: Optional[List[str]] = FieldInfo(alias="evidenceUrls", default=None)
-    """
-    A list of URLs to any evidence or supporting documentation the user wants to
-    provide
-    """
-
-    feedback: Optional[List[ResultDetailsFeedback]] = None
-    """Feedback provided by the verification process after reviewing the submission"""
-
-    notes: Optional[str] = None
-    """Any additional notes or comments the user wants to provide"""
-
-
-class ResultSubmittedBy(BaseModel):
-    authentication_methods: List[Literal["PASSWORD", "GOOGLE"]] = FieldInfo(alias="authenticationMethods")
-    """The authentication methods for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-    email: str
-    """The email address for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-    first_name: str = FieldInfo(alias="firstName")
-    """The first name of this user."""
-
-    kyc_status: Literal["PENDING", "IN_REVIEW", "APPROVED", "REJECTED"] = FieldInfo(alias="kycStatus")
-    """The current KYC status of this user account.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-    last_name: str = FieldInfo(alias="lastName")
-    """The last name of this user."""
-
-    status: Literal["ACTIVE", "DELETED", "LOCKED", "PENDING"]
-    """The current status of this user account"""
-
-    id: Optional[str] = None
-
-    phone: Optional[str] = None
-    """The phone number for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-
-class ResultTaskCurrency(BaseModel):
+class Currency(BaseModel):
     fractional_unit_name: str = FieldInfo(alias="fractionalUnitName")
     """The name of this currency's fractional unit"""
 
@@ -117,13 +44,13 @@ class ResultTaskCurrency(BaseModel):
     """The value of the item"""
 
 
-class ResultTaskVerificationConfiguration(BaseModel):
+class VerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
     handler: Optional[str] = None
 
 
-class ResultTask(BaseModel):
+class TaskGetTaskResponse(BaseModel):
     category: Literal[
         "MARKETING",
         "ENGINEERING",
@@ -175,7 +102,7 @@ class ResultTask(BaseModel):
 
     id: Optional[str] = None
 
-    currency: Optional[ResultTaskCurrency] = None
+    currency: Optional[Currency] = None
     """The currency in which the payout is denominated."""
 
     deadline: Optional[datetime] = None
@@ -217,7 +144,7 @@ class ResultTask(BaseModel):
     ] = None
     """The current status of this task."""
 
-    verification_configuration: Optional[ResultTaskVerificationConfiguration] = FieldInfo(
+    verification_configuration: Optional[VerificationConfiguration] = FieldInfo(
         alias="verificationConfiguration", default=None
     )
     """The configuration to be applied during task verification.
@@ -225,48 +152,3 @@ class ResultTask(BaseModel):
     The Payman verification enginewill use this to customize the verification of
     this task.
     """
-
-
-class Result(BaseModel):
-    details: ResultDetails
-    """
-    The details of the submission, including any evidence or notes provided by the
-    user
-    """
-
-    submitted_by_id: str = FieldInfo(alias="submittedById")
-    """The unique identifier for the user that submitted this task"""
-
-    task_id: str = FieldInfo(alias="taskId")
-    """The unique identifier for the task that this submission is for"""
-
-    id: Optional[str] = None
-
-    status: Optional[
-        Literal[
-            "PENDING",
-            "APPROVED_REQUIRES_REVIEW",
-            "REJECTED_REQUIRES_REVIEW",
-            "APPROVED",
-            "REJECTED",
-            "VERIFICATION_FAILED",
-            "DELETED",
-        ]
-    ] = None
-    """The current status of the submission"""
-
-    submitted_by: Optional[ResultSubmittedBy] = FieldInfo(alias="submittedBy", default=None)
-    """The user that this task is assigned to"""
-
-    task: Optional[ResultTask] = None
-
-
-class SubmissionListResponse(BaseModel):
-    more: Optional[bool] = None
-    """Whether there are more results available"""
-
-    next_page: Optional[int] = FieldInfo(alias="nextPage", default=None)
-    """The page number for the next page of results"""
-
-    results: Optional[List[Result]] = None
-    """The list of results for the current page"""

@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing_extensions import Required, TypedDict
 
-__all__ = ["TaskUpdateParams"]
+__all__ = ["TaskUpdateTaskParams"]
 
 
-class TaskUpdateParams(TypedDict, total=False):
+class TaskUpdateTaskParams(TypedDict, total=False):
     description: Required[str]
     """A detailed description of the task.
 

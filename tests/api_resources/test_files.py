@@ -20,93 +20,93 @@ from paymanai._response import (
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
 
-class TestPrivate:
+class TestFiles:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
     @parametrize
     @pytest.mark.respx(base_url=base_url)
     def test_method_download(self, client: Paymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
-        private = client.files.private.download(
+        file = client.files.download(
             key="string",
         )
-        assert private.is_closed
-        assert private.json() == {"foo": "bar"}
-        assert cast(Any, private.is_closed) is True
-        assert isinstance(private, BinaryAPIResponse)
+        assert file.is_closed
+        assert file.json() == {"foo": "bar"}
+        assert cast(Any, file.is_closed) is True
+        assert isinstance(file, BinaryAPIResponse)
 
     @parametrize
     @pytest.mark.respx(base_url=base_url)
     def test_raw_response_download(self, client: Paymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
 
-        private = client.files.private.with_raw_response.download(
+        file = client.files.with_raw_response.download(
             key="string",
         )
 
-        assert private.is_closed is True
-        assert private.http_request.headers.get("X-Stainless-Lang") == "python"
-        assert private.json() == {"foo": "bar"}
-        assert isinstance(private, BinaryAPIResponse)
+        assert file.is_closed is True
+        assert file.http_request.headers.get("X-Stainless-Lang") == "python"
+        assert file.json() == {"foo": "bar"}
+        assert isinstance(file, BinaryAPIResponse)
 
     @parametrize
     @pytest.mark.respx(base_url=base_url)
     def test_streaming_response_download(self, client: Paymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
-        with client.files.private.with_streaming_response.download(
+        with client.files.with_streaming_response.download(
             key="string",
-        ) as private:
-            assert not private.is_closed
-            assert private.http_request.headers.get("X-Stainless-Lang") == "python"
+        ) as file:
+            assert not file.is_closed
+            assert file.http_request.headers.get("X-Stainless-Lang") == "python"
 
-            assert private.json() == {"foo": "bar"}
-            assert cast(Any, private.is_closed) is True
-            assert isinstance(private, StreamedBinaryAPIResponse)
+            assert file.json() == {"foo": "bar"}
+            assert cast(Any, file.is_closed) is True
+            assert isinstance(file, StreamedBinaryAPIResponse)
 
-        assert cast(Any, private.is_closed) is True
+        assert cast(Any, file.is_closed) is True
 
 
-class TestAsyncPrivate:
+class TestAsyncFiles:
     parametrize = pytest.mark.parametrize("async_client", [False, True], indirect=True, ids=["loose", "strict"])
 
     @parametrize
     @pytest.mark.respx(base_url=base_url)
     async def test_method_download(self, async_client: AsyncPaymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
-        private = await async_client.files.private.download(
+        file = await async_client.files.download(
             key="string",
         )
-        assert private.is_closed
-        assert await private.json() == {"foo": "bar"}
-        assert cast(Any, private.is_closed) is True
-        assert isinstance(private, AsyncBinaryAPIResponse)
+        assert file.is_closed
+        assert await file.json() == {"foo": "bar"}
+        assert cast(Any, file.is_closed) is True
+        assert isinstance(file, AsyncBinaryAPIResponse)
 
     @parametrize
     @pytest.mark.respx(base_url=base_url)
     async def test_raw_response_download(self, async_client: AsyncPaymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
 
-        private = await async_client.files.private.with_raw_response.download(
+        file = await async_client.files.with_raw_response.download(
             key="string",
         )
 
-        assert private.is_closed is True
-        assert private.http_request.headers.get("X-Stainless-Lang") == "python"
-        assert await private.json() == {"foo": "bar"}
-        assert isinstance(private, AsyncBinaryAPIResponse)
+        assert file.is_closed is True
+        assert file.http_request.headers.get("X-Stainless-Lang") == "python"
+        assert await file.json() == {"foo": "bar"}
+        assert isinstance(file, AsyncBinaryAPIResponse)
 
     @parametrize
     @pytest.mark.respx(base_url=base_url)
     async def test_streaming_response_download(self, async_client: AsyncPaymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
-        async with async_client.files.private.with_streaming_response.download(
+        async with async_client.files.with_streaming_response.download(
             key="string",
-        ) as private:
-            assert not private.is_closed
-            assert private.http_request.headers.get("X-Stainless-Lang") == "python"
+        ) as file:
+            assert not file.is_closed
+            assert file.http_request.headers.get("X-Stainless-Lang") == "python"
 
-            assert await private.json() == {"foo": "bar"}
-            assert cast(Any, private.is_closed) is True
-            assert isinstance(private, AsyncStreamedBinaryAPIResponse)
+            assert await file.json() == {"foo": "bar"}
+            assert cast(Any, file.is_closed) is True
+            assert isinstance(file, AsyncStreamedBinaryAPIResponse)
 
-        assert cast(Any, private.is_closed) is True
+        assert cast(Any, file.is_closed) is True

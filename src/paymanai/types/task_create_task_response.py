@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 from typing_extensions import Literal
 
@@ -8,10 +8,10 @@ from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
 
-__all__ = ["TaskListResponse", "Result", "ResultCurrency", "ResultVerificationConfiguration"]
+__all__ = ["TaskCreateTaskResponse", "Currency", "VerificationConfiguration"]
 
 
-class ResultCurrency(BaseModel):
+class Currency(BaseModel):
     fractional_unit_name: str = FieldInfo(alias="fractionalUnitName")
     """The name of this currency's fractional unit"""
 
@@ -44,13 +44,13 @@ class ResultCurrency(BaseModel):
     """The value of the item"""
 
 
-class ResultVerificationConfiguration(BaseModel):
+class VerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
     handler: Optional[str] = None
 
 
-class Result(BaseModel):
+class TaskCreateTaskResponse(BaseModel):
     category: Literal[
         "MARKETING",
         "ENGINEERING",
@@ -102,7 +102,7 @@ class Result(BaseModel):
 
     id: Optional[str] = None
 
-    currency: Optional[ResultCurrency] = None
+    currency: Optional[Currency] = None
     """The currency in which the payout is denominated."""
 
     deadline: Optional[datetime] = None
@@ -144,7 +144,7 @@ class Result(BaseModel):
     ] = None
     """The current status of this task."""
 
-    verification_configuration: Optional[ResultVerificationConfiguration] = FieldInfo(
+    verification_configuration: Optional[VerificationConfiguration] = FieldInfo(
         alias="verificationConfiguration", default=None
     )
     """The configuration to be applied during task verification.
@@ -152,14 +152,3 @@ class Result(BaseModel):
     The Payman verification enginewill use this to customize the verification of
     this task.
     """
-
-
-class TaskListResponse(BaseModel):
-    more: Optional[bool] = None
-    """Whether there are more results available"""
-
-    next_page: Optional[int] = FieldInfo(alias="nextPage", default=None)
-    """The page number for the next page of results"""
-
-    results: Optional[List[Result]] = None
-    """The list of results for the current page"""

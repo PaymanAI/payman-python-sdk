@@ -16,7 +16,7 @@ from .._response import (
 from .._base_client import (
     make_request_options,
 )
-from ..types.wallet_retrieve_response import WalletRetrieveResponse
+from ..types.wallet_get_wallet_response import WalletGetWalletResponse
 
 __all__ = ["WalletsResource", "AsyncWalletsResource"]
 
@@ -30,7 +30,7 @@ class WalletsResource(SyncAPIResource):
     def with_streaming_response(self) -> WalletsResourceWithStreamingResponse:
         return WalletsResourceWithStreamingResponse(self)
 
-    def retrieve(
+    def get_wallet(
         self,
         id: str,
         *,
@@ -40,7 +40,7 @@ class WalletsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> WalletRetrieveResponse:
+    ) -> WalletGetWalletResponse:
         """
         Get a wallet by ID
 
@@ -61,7 +61,7 @@ class WalletsResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=WalletRetrieveResponse,
+            cast_to=WalletGetWalletResponse,
         )
 
 
@@ -74,7 +74,7 @@ class AsyncWalletsResource(AsyncAPIResource):
     def with_streaming_response(self) -> AsyncWalletsResourceWithStreamingResponse:
         return AsyncWalletsResourceWithStreamingResponse(self)
 
-    async def retrieve(
+    async def get_wallet(
         self,
         id: str,
         *,
@@ -84,7 +84,7 @@ class AsyncWalletsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> WalletRetrieveResponse:
+    ) -> WalletGetWalletResponse:
         """
         Get a wallet by ID
 
@@ -105,7 +105,7 @@ class AsyncWalletsResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=WalletRetrieveResponse,
+            cast_to=WalletGetWalletResponse,
         )
 
 
@@ -113,8 +113,8 @@ class WalletsResourceWithRawResponse:
     def __init__(self, wallets: WalletsResource) -> None:
         self._wallets = wallets
 
-        self.retrieve = to_raw_response_wrapper(
-            wallets.retrieve,
+        self.get_wallet = to_raw_response_wrapper(
+            wallets.get_wallet,
         )
 
 
@@ -122,8 +122,8 @@ class AsyncWalletsResourceWithRawResponse:
     def __init__(self, wallets: AsyncWalletsResource) -> None:
         self._wallets = wallets
 
-        self.retrieve = async_to_raw_response_wrapper(
-            wallets.retrieve,
+        self.get_wallet = async_to_raw_response_wrapper(
+            wallets.get_wallet,
         )
 
 
@@ -131,8 +131,8 @@ class WalletsResourceWithStreamingResponse:
     def __init__(self, wallets: WalletsResource) -> None:
         self._wallets = wallets
 
-        self.retrieve = to_streamed_response_wrapper(
-            wallets.retrieve,
+        self.get_wallet = to_streamed_response_wrapper(
+            wallets.get_wallet,
         )
 
 
@@ -140,6 +140,6 @@ class AsyncWalletsResourceWithStreamingResponse:
     def __init__(self, wallets: AsyncWalletsResource) -> None:
         self._wallets = wallets
 
-        self.retrieve = async_to_streamed_response_wrapper(
-            wallets.retrieve,
+        self.get_wallet = async_to_streamed_response_wrapper(
+            wallets.get_wallet,
         )

@@ -8,10 +8,10 @@ from typing_extensions import Literal, Required, Annotated, TypedDict
 
 from .._utils import PropertyInfo
 
-__all__ = ["TaskCreateParams"]
+__all__ = ["TaskCreateTaskParams"]
 
 
-class TaskCreateParams(TypedDict, total=False):
+class TaskCreateTaskParams(TypedDict, total=False):
     description: Required[str]
     """A detailed description of the task.
 

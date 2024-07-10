@@ -10,10 +10,10 @@ import pytest
 from paymanai import Paymanai, AsyncPaymanai
 from tests.utils import assert_matches_type
 from paymanai.types import (
-    TaskListResponse,
-    TaskCreateResponse,
-    TaskUpdateResponse,
-    TaskRetrieveResponse,
+    TaskGetTaskResponse,
+    TaskListTasksResponse,
+    TaskCreateTaskResponse,
+    TaskUpdateTaskResponse,
 )
 from paymanai._utils import parse_datetime
 
@@ -24,17 +24,17 @@ class TestTasks:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
 
     @parametrize
-    def test_method_create(self, client: Paymanai) -> None:
-        task = client.tasks.create(
+    def test_method_create_task(self, client: Paymanai) -> None:
+        task = client.tasks.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             organization_id="string",
             title="Proofread a legal document",
         )
-        assert_matches_type(TaskCreateResponse, task, path=["response"])
+        assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
 
     @parametrize
-    def test_method_create_with_all_params(self, client: Paymanai) -> None:
-        task = client.tasks.create(
+    def test_method_create_task_with_all_params(self, client: Paymanai) -> None:
+        task = client.tasks.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             organization_id="string",
             title="Proofread a legal document",
@@ -46,11 +46,11 @@ class TestTasks:
             required_submissions=0,
             submission_policy="OPEN_SUBMISSIONS_ONE_PER_USER",
         )
-        assert_matches_type(TaskCreateResponse, task, path=["response"])
+        assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
 
     @parametrize
-    def test_raw_response_create(self, client: Paymanai) -> None:
-        response = client.tasks.with_raw_response.create(
+    def test_raw_response_create_task(self, client: Paymanai) -> None:
+        response = client.tasks.with_raw_response.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             organization_id="string",
             title="Proofread a legal document",
@@ -59,11 +59,11 @@ class TestTasks:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         task = response.parse()
-        assert_matches_type(TaskCreateResponse, task, path=["response"])
+        assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
 
     @parametrize
-    def test_streaming_response_create(self, client: Paymanai) -> None:
-        with client.tasks.with_streaming_response.create(
+    def test_streaming_response_create_task(self, client: Paymanai) -> None:
+        with client.tasks.with_streaming_response.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             organization_id="string",
             title="Proofread a legal document",
@@ -72,60 +72,93 @@ class TestTasks:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             task = response.parse()
-            assert_matches_type(TaskCreateResponse, task, path=["response"])
+            assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
     @parametrize
-    def test_method_retrieve(self, client: Paymanai) -> None:
-        task = client.tasks.retrieve(
+    def test_method_get_task(self, client: Paymanai) -> None:
+        task = client.tasks.get_task(
             "string",
         )
-        assert_matches_type(TaskRetrieveResponse, task, path=["response"])
+        assert_matches_type(TaskGetTaskResponse, task, path=["response"])
 
     @parametrize
-    def test_raw_response_retrieve(self, client: Paymanai) -> None:
-        response = client.tasks.with_raw_response.retrieve(
+    def test_raw_response_get_task(self, client: Paymanai) -> None:
+        response = client.tasks.with_raw_response.get_task(
             "string",
         )
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         task = response.parse()
-        assert_matches_type(TaskRetrieveResponse, task, path=["response"])
+        assert_matches_type(TaskGetTaskResponse, task, path=["response"])
 
     @parametrize
-    def test_streaming_response_retrieve(self, client: Paymanai) -> None:
-        with client.tasks.with_streaming_response.retrieve(
+    def test_streaming_response_get_task(self, client: Paymanai) -> None:
+        with client.tasks.with_streaming_response.get_task(
             "string",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             task = response.parse()
-            assert_matches_type(TaskRetrieveResponse, task, path=["response"])
+            assert_matches_type(TaskGetTaskResponse, task, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
     @parametrize
-    def test_path_params_retrieve(self, client: Paymanai) -> None:
+    def test_path_params_get_task(self, client: Paymanai) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
-            client.tasks.with_raw_response.retrieve(
+            client.tasks.with_raw_response.get_task(
                 "",
             )
 
     @parametrize
-    def test_method_update(self, client: Paymanai) -> None:
-        task = client.tasks.update(
+    def test_method_list_tasks(self, client: Paymanai) -> None:
+        task = client.tasks.list_tasks()
+        assert_matches_type(TaskListTasksResponse, task, path=["response"])
+
+    @parametrize
+    def test_method_list_tasks_with_all_params(self, client: Paymanai) -> None:
+        task = client.tasks.list_tasks(
+            limit=0,
+            page=0,
+        )
+        assert_matches_type(TaskListTasksResponse, task, path=["response"])
+
+    @parametrize
+    def test_raw_response_list_tasks(self, client: Paymanai) -> None:
+        response = client.tasks.with_raw_response.list_tasks()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        task = response.parse()
+        assert_matches_type(TaskListTasksResponse, task, path=["response"])
+
+    @parametrize
+    def test_streaming_response_list_tasks(self, client: Paymanai) -> None:
+        with client.tasks.with_streaming_response.list_tasks() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            task = response.parse()
+            assert_matches_type(TaskListTasksResponse, task, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_method_update_task(self, client: Paymanai) -> None:
+        task = client.tasks.update_task(
             "string",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
         )
-        assert_matches_type(TaskUpdateResponse, task, path=["response"])
+        assert_matches_type(TaskUpdateTaskResponse, task, path=["response"])
 
     @parametrize
-    def test_raw_response_update(self, client: Paymanai) -> None:
-        response = client.tasks.with_raw_response.update(
+    def test_raw_response_update_task(self, client: Paymanai) -> None:
+        response = client.tasks.with_raw_response.update_task(
             "string",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
@@ -134,11 +167,11 @@ class TestTasks:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         task = response.parse()
-        assert_matches_type(TaskUpdateResponse, task, path=["response"])
+        assert_matches_type(TaskUpdateTaskResponse, task, path=["response"])
 
     @parametrize
-    def test_streaming_response_update(self, client: Paymanai) -> None:
-        with client.tasks.with_streaming_response.update(
+    def test_streaming_response_update_task(self, client: Paymanai) -> None:
+        with client.tasks.with_streaming_response.update_task(
             "string",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
@@ -147,68 +180,35 @@ class TestTasks:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             task = response.parse()
-            assert_matches_type(TaskUpdateResponse, task, path=["response"])
+            assert_matches_type(TaskUpdateTaskResponse, task, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
     @parametrize
-    def test_path_params_update(self, client: Paymanai) -> None:
+    def test_path_params_update_task(self, client: Paymanai) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
-            client.tasks.with_raw_response.update(
+            client.tasks.with_raw_response.update_task(
                 "",
                 description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
                 title="Proofread a legal document",
             )
-
-    @parametrize
-    def test_method_list(self, client: Paymanai) -> None:
-        task = client.tasks.list()
-        assert_matches_type(TaskListResponse, task, path=["response"])
-
-    @parametrize
-    def test_method_list_with_all_params(self, client: Paymanai) -> None:
-        task = client.tasks.list(
-            limit=0,
-            page=0,
-        )
-        assert_matches_type(TaskListResponse, task, path=["response"])
-
-    @parametrize
-    def test_raw_response_list(self, client: Paymanai) -> None:
-        response = client.tasks.with_raw_response.list()
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        task = response.parse()
-        assert_matches_type(TaskListResponse, task, path=["response"])
-
-    @parametrize
-    def test_streaming_response_list(self, client: Paymanai) -> None:
-        with client.tasks.with_streaming_response.list() as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            task = response.parse()
-            assert_matches_type(TaskListResponse, task, path=["response"])
-
-        assert cast(Any, response.is_closed) is True
 
 
 class TestAsyncTasks:
     parametrize = pytest.mark.parametrize("async_client", [False, True], indirect=True, ids=["loose", "strict"])
 
     @parametrize
-    async def test_method_create(self, async_client: AsyncPaymanai) -> None:
-        task = await async_client.tasks.create(
+    async def test_method_create_task(self, async_client: AsyncPaymanai) -> None:
+        task = await async_client.tasks.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             organization_id="string",
             title="Proofread a legal document",
         )
-        assert_matches_type(TaskCreateResponse, task, path=["response"])
+        assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
 
     @parametrize
-    async def test_method_create_with_all_params(self, async_client: AsyncPaymanai) -> None:
-        task = await async_client.tasks.create(
+    async def test_method_create_task_with_all_params(self, async_client: AsyncPaymanai) -> None:
+        task = await async_client.tasks.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             organization_id="string",
             title="Proofread a legal document",
@@ -220,11 +220,11 @@ class TestAsyncTasks:
             required_submissions=0,
             submission_policy="OPEN_SUBMISSIONS_ONE_PER_USER",
         )
-        assert_matches_type(TaskCreateResponse, task, path=["response"])
+        assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
 
     @parametrize
-    async def test_raw_response_create(self, async_client: AsyncPaymanai) -> None:
-        response = await async_client.tasks.with_raw_response.create(
+    async def test_raw_response_create_task(self, async_client: AsyncPaymanai) -> None:
+        response = await async_client.tasks.with_raw_response.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             organization_id="string",
             title="Proofread a legal document",
@@ -233,11 +233,11 @@ class TestAsyncTasks:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         task = await response.parse()
-        assert_matches_type(TaskCreateResponse, task, path=["response"])
+        assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
 
     @parametrize
-    async def test_streaming_response_create(self, async_client: AsyncPaymanai) -> None:
-        async with async_client.tasks.with_streaming_response.create(
+    async def test_streaming_response_create_task(self, async_client: AsyncPaymanai) -> None:
+        async with async_client.tasks.with_streaming_response.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             organization_id="string",
             title="Proofread a legal document",
@@ -246,60 +246,93 @@ class TestAsyncTasks:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             task = await response.parse()
-            assert_matches_type(TaskCreateResponse, task, path=["response"])
+            assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
     @parametrize
-    async def test_method_retrieve(self, async_client: AsyncPaymanai) -> None:
-        task = await async_client.tasks.retrieve(
+    async def test_method_get_task(self, async_client: AsyncPaymanai) -> None:
+        task = await async_client.tasks.get_task(
             "string",
         )
-        assert_matches_type(TaskRetrieveResponse, task, path=["response"])
+        assert_matches_type(TaskGetTaskResponse, task, path=["response"])
 
     @parametrize
-    async def test_raw_response_retrieve(self, async_client: AsyncPaymanai) -> None:
-        response = await async_client.tasks.with_raw_response.retrieve(
+    async def test_raw_response_get_task(self, async_client: AsyncPaymanai) -> None:
+        response = await async_client.tasks.with_raw_response.get_task(
             "string",
         )
 
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         task = await response.parse()
-        assert_matches_type(TaskRetrieveResponse, task, path=["response"])
+        assert_matches_type(TaskGetTaskResponse, task, path=["response"])
 
     @parametrize
-    async def test_streaming_response_retrieve(self, async_client: AsyncPaymanai) -> None:
-        async with async_client.tasks.with_streaming_response.retrieve(
+    async def test_streaming_response_get_task(self, async_client: AsyncPaymanai) -> None:
+        async with async_client.tasks.with_streaming_response.get_task(
             "string",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             task = await response.parse()
-            assert_matches_type(TaskRetrieveResponse, task, path=["response"])
+            assert_matches_type(TaskGetTaskResponse, task, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
     @parametrize
-    async def test_path_params_retrieve(self, async_client: AsyncPaymanai) -> None:
+    async def test_path_params_get_task(self, async_client: AsyncPaymanai) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
-            await async_client.tasks.with_raw_response.retrieve(
+            await async_client.tasks.with_raw_response.get_task(
                 "",
             )
 
     @parametrize
-    async def test_method_update(self, async_client: AsyncPaymanai) -> None:
-        task = await async_client.tasks.update(
+    async def test_method_list_tasks(self, async_client: AsyncPaymanai) -> None:
+        task = await async_client.tasks.list_tasks()
+        assert_matches_type(TaskListTasksResponse, task, path=["response"])
+
+    @parametrize
+    async def test_method_list_tasks_with_all_params(self, async_client: AsyncPaymanai) -> None:
+        task = await async_client.tasks.list_tasks(
+            limit=0,
+            page=0,
+        )
+        assert_matches_type(TaskListTasksResponse, task, path=["response"])
+
+    @parametrize
+    async def test_raw_response_list_tasks(self, async_client: AsyncPaymanai) -> None:
+        response = await async_client.tasks.with_raw_response.list_tasks()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        task = await response.parse()
+        assert_matches_type(TaskListTasksResponse, task, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_list_tasks(self, async_client: AsyncPaymanai) -> None:
+        async with async_client.tasks.with_streaming_response.list_tasks() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            task = await response.parse()
+            assert_matches_type(TaskListTasksResponse, task, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_method_update_task(self, async_client: AsyncPaymanai) -> None:
+        task = await async_client.tasks.update_task(
             "string",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
         )
-        assert_matches_type(TaskUpdateResponse, task, path=["response"])
+        assert_matches_type(TaskUpdateTaskResponse, task, path=["response"])
 
     @parametrize
-    async def test_raw_response_update(self, async_client: AsyncPaymanai) -> None:
-        response = await async_client.tasks.with_raw_response.update(
+    async def test_raw_response_update_task(self, async_client: AsyncPaymanai) -> None:
+        response = await async_client.tasks.with_raw_response.update_task(
             "string",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
@@ -308,11 +341,11 @@ class TestAsyncTasks:
         assert response.is_closed is True
         assert response.http_request.headers.get("X-Stainless-Lang") == "python"
         task = await response.parse()
-        assert_matches_type(TaskUpdateResponse, task, path=["response"])
+        assert_matches_type(TaskUpdateTaskResponse, task, path=["response"])
 
     @parametrize
-    async def test_streaming_response_update(self, async_client: AsyncPaymanai) -> None:
-        async with async_client.tasks.with_streaming_response.update(
+    async def test_streaming_response_update_task(self, async_client: AsyncPaymanai) -> None:
+        async with async_client.tasks.with_streaming_response.update_task(
             "string",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
@@ -321,48 +354,15 @@ class TestAsyncTasks:
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
 
             task = await response.parse()
-            assert_matches_type(TaskUpdateResponse, task, path=["response"])
+            assert_matches_type(TaskUpdateTaskResponse, task, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
     @parametrize
-    async def test_path_params_update(self, async_client: AsyncPaymanai) -> None:
+    async def test_path_params_update_task(self, async_client: AsyncPaymanai) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
-            await async_client.tasks.with_raw_response.update(
+            await async_client.tasks.with_raw_response.update_task(
                 "",
                 description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
                 title="Proofread a legal document",
             )
-
-    @parametrize
-    async def test_method_list(self, async_client: AsyncPaymanai) -> None:
-        task = await async_client.tasks.list()
-        assert_matches_type(TaskListResponse, task, path=["response"])
-
-    @parametrize
-    async def test_method_list_with_all_params(self, async_client: AsyncPaymanai) -> None:
-        task = await async_client.tasks.list(
-            limit=0,
-            page=0,
-        )
-        assert_matches_type(TaskListResponse, task, path=["response"])
-
-    @parametrize
-    async def test_raw_response_list(self, async_client: AsyncPaymanai) -> None:
-        response = await async_client.tasks.with_raw_response.list()
-
-        assert response.is_closed is True
-        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-        task = await response.parse()
-        assert_matches_type(TaskListResponse, task, path=["response"])
-
-    @parametrize
-    async def test_streaming_response_list(self, async_client: AsyncPaymanai) -> None:
-        async with async_client.tasks.with_streaming_response.list() as response:
-            assert not response.is_closed
-            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
-
-            task = await response.parse()
-            assert_matches_type(TaskListResponse, task, path=["response"])
-
-        assert cast(Any, response.is_closed) is True

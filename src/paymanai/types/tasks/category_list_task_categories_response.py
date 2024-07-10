@@ -4,10 +4,10 @@ from typing import List, Optional
 
 from ..._models import BaseModel
 
-__all__ = ["CategoryListResponse", "CategoryListResponseItem"]
+__all__ = ["CategoryListTaskCategoriesResponse", "CategoryListTaskCategoriesResponseItem"]
 
 
-class CategoryListResponseItem(BaseModel):
+class CategoryListTaskCategoriesResponseItem(BaseModel):
     description: Optional[str] = None
     """A longer form description of the item"""
 
@@ -18,4 +18,4 @@ class CategoryListResponseItem(BaseModel):
     """The value of the item"""
 
 
-CategoryListResponse = List[CategoryListResponseItem]
+CategoryListTaskCategoriesResponse = List[CategoryListTaskCategoriesResponseItem]
