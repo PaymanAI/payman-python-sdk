@@ -4,14 +4,15 @@ from __future__ import annotations
 
 import httpx
 
-from ..._types import NOT_GIVEN, Body, Query, Headers, NotGiven
-from ..._utils import (
+from ..types import file_download_params
+from .._types import NOT_GIVEN, Body, Query, Headers, NotGiven
+from .._utils import (
     maybe_transform,
     async_maybe_transform,
 )
-from ..._compat import cached_property
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ..._response import (
+from .._compat import cached_property
+from .._resource import SyncAPIResource, AsyncAPIResource
+from .._response import (
     BinaryAPIResponse,
     AsyncBinaryAPIResponse,
     StreamedBinaryAPIResponse,
@@ -21,22 +22,21 @@ from ..._response import (
     async_to_custom_raw_response_wrapper,
     async_to_custom_streamed_response_wrapper,
 )
-from ...types.files import private_download_params
-from ..._base_client import (
+from .._base_client import (
     make_request_options,
 )
 
-__all__ = ["PrivateResource", "AsyncPrivateResource"]
+__all__ = ["FilesResource", "AsyncFilesResource"]
 
 
-class PrivateResource(SyncAPIResource):
+class FilesResource(SyncAPIResource):
     @cached_property
-    def with_raw_response(self) -> PrivateResourceWithRawResponse:
-        return PrivateResourceWithRawResponse(self)
+    def with_raw_response(self) -> FilesResourceWithRawResponse:
+        return FilesResourceWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> PrivateResourceWithStreamingResponse:
-        return PrivateResourceWithStreamingResponse(self)
+    def with_streaming_response(self) -> FilesResourceWithStreamingResponse:
+        return FilesResourceWithStreamingResponse(self)
 
     def download(
         self,
@@ -67,20 +67,20 @@ class PrivateResource(SyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=maybe_transform({"key": key}, private_download_params.PrivateDownloadParams),
+                query=maybe_transform({"key": key}, file_download_params.FileDownloadParams),
             ),
             cast_to=BinaryAPIResponse,
         )
 
 
-class AsyncPrivateResource(AsyncAPIResource):
+class AsyncFilesResource(AsyncAPIResource):
     @cached_property
-    def with_raw_response(self) -> AsyncPrivateResourceWithRawResponse:
-        return AsyncPrivateResourceWithRawResponse(self)
+    def with_raw_response(self) -> AsyncFilesResourceWithRawResponse:
+        return AsyncFilesResourceWithRawResponse(self)
 
     @cached_property
-    def with_streaming_response(self) -> AsyncPrivateResourceWithStreamingResponse:
-        return AsyncPrivateResourceWithStreamingResponse(self)
+    def with_streaming_response(self) -> AsyncFilesResourceWithStreamingResponse:
+        return AsyncFilesResourceWithStreamingResponse(self)
 
     async def download(
         self,
@@ -111,47 +111,47 @@ class AsyncPrivateResource(AsyncAPIResource):
                 extra_query=extra_query,
                 extra_body=extra_body,
                 timeout=timeout,
-                query=await async_maybe_transform({"key": key}, private_download_params.PrivateDownloadParams),
+                query=await async_maybe_transform({"key": key}, file_download_params.FileDownloadParams),
             ),
             cast_to=AsyncBinaryAPIResponse,
         )
 
 
-class PrivateResourceWithRawResponse:
-    def __init__(self, private: PrivateResource) -> None:
-        self._private = private
+class FilesResourceWithRawResponse:
+    def __init__(self, files: FilesResource) -> None:
+        self._files = files
 
         self.download = to_custom_raw_response_wrapper(
-            private.download,
+            files.download,
             BinaryAPIResponse,
         )
 
 
-class AsyncPrivateResourceWithRawResponse:
-    def __init__(self, private: AsyncPrivateResource) -> None:
-        self._private = private
+class AsyncFilesResourceWithRawResponse:
+    def __init__(self, files: AsyncFilesResource) -> None:
+        self._files = files
 
         self.download = async_to_custom_raw_response_wrapper(
-            private.download,
+            files.download,
             AsyncBinaryAPIResponse,
         )
 
 
-class PrivateResourceWithStreamingResponse:
-    def __init__(self, private: PrivateResource) -> None:
-        self._private = private
+class FilesResourceWithStreamingResponse:
+    def __init__(self, files: FilesResource) -> None:
+        self._files = files
 
         self.download = to_custom_streamed_response_wrapper(
-            private.download,
+            files.download,
             StreamedBinaryAPIResponse,
         )
 
 
-class AsyncPrivateResourceWithStreamingResponse:
-    def __init__(self, private: AsyncPrivateResource) -> None:
-        self._private = private
+class AsyncFilesResourceWithStreamingResponse:
+    def __init__(self, files: AsyncFilesResource) -> None:
+        self._files = files
 
         self.download = async_to_custom_streamed_response_wrapper(
-            private.download,
+            files.download,
             AsyncStreamedBinaryAPIResponse,
         )

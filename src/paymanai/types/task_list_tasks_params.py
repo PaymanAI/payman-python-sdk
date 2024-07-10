@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing_extensions import TypedDict
 
-__all__ = ["TaskListParams"]
+__all__ = ["TaskListTasksParams"]
 
 
-class TaskListParams(TypedDict, total=False):
+class TaskListTasksParams(TypedDict, total=False):
     limit: int
     """The number of items per page"""
 

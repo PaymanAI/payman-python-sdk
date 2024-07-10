@@ -1,61 +1,17 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 from typing_extensions import Literal
 
 from pydantic import Field as FieldInfo
 
-from ..._models import BaseModel
+from .._models import BaseModel
 
-__all__ = [
-    "AssignmentListResponse",
-    "Result",
-    "ResultAssignedTo",
-    "ResultTask",
-    "ResultTaskCurrency",
-    "ResultTaskVerificationConfiguration",
-]
+__all__ = ["TaskUpdateTaskResponse", "Currency", "VerificationConfiguration"]
 
 
-class ResultAssignedTo(BaseModel):
-    authentication_methods: List[Literal["PASSWORD", "GOOGLE"]] = FieldInfo(alias="authenticationMethods")
-    """The authentication methods for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-    email: str
-    """The email address for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-    first_name: str = FieldInfo(alias="firstName")
-    """The first name of this user."""
-
-    kyc_status: Literal["PENDING", "IN_REVIEW", "APPROVED", "REJECTED"] = FieldInfo(alias="kycStatus")
-    """The current KYC status of this user account.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-    last_name: str = FieldInfo(alias="lastName")
-    """The last name of this user."""
-
-    status: Literal["ACTIVE", "DELETED", "LOCKED", "PENDING"]
-    """The current status of this user account"""
-
-    id: Optional[str] = None
-
-    phone: Optional[str] = None
-    """The phone number for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-
-class ResultTaskCurrency(BaseModel):
+class Currency(BaseModel):
     fractional_unit_name: str = FieldInfo(alias="fractionalUnitName")
     """The name of this currency's fractional unit"""
 
@@ -88,13 +44,13 @@ class ResultTaskCurrency(BaseModel):
     """The value of the item"""
 
 
-class ResultTaskVerificationConfiguration(BaseModel):
+class VerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
     handler: Optional[str] = None
 
 
-class ResultTask(BaseModel):
+class TaskUpdateTaskResponse(BaseModel):
     category: Literal[
         "MARKETING",
         "ENGINEERING",
@@ -146,7 +102,7 @@ class ResultTask(BaseModel):
 
     id: Optional[str] = None
 
-    currency: Optional[ResultTaskCurrency] = None
+    currency: Optional[Currency] = None
     """The currency in which the payout is denominated."""
 
     deadline: Optional[datetime] = None
@@ -188,7 +144,7 @@ class ResultTask(BaseModel):
     ] = None
     """The current status of this task."""
 
-    verification_configuration: Optional[ResultTaskVerificationConfiguration] = FieldInfo(
+    verification_configuration: Optional[VerificationConfiguration] = FieldInfo(
         alias="verificationConfiguration", default=None
     )
     """The configuration to be applied during task verification.
@@ -196,39 +152,3 @@ class ResultTask(BaseModel):
     The Payman verification enginewill use this to customize the verification of
     this task.
     """
-
-
-class Result(BaseModel):
-    organization_id: str = FieldInfo(alias="organizationId")
-
-    status: Literal["IN_REVIEW", "PENDING", "COMPLETED", "EXPIRED", "DELETED", "REJECTED", "ACCEPTED"]
-
-    task_id: str = FieldInfo(alias="taskId")
-
-    id: Optional[str] = None
-
-    assigned_to: Optional[ResultAssignedTo] = FieldInfo(alias="assignedTo", default=None)
-    """The user that this task is assigned to"""
-
-    assigned_to_id: Optional[str] = FieldInfo(alias="assignedToId", default=None)
-
-    completed_at: Optional[datetime] = FieldInfo(alias="completedAt", default=None)
-
-    expires_at: Optional[datetime] = FieldInfo(alias="expiresAt", default=None)
-
-    invite_code: Optional[str] = FieldInfo(alias="inviteCode", default=None)
-
-    invite_email: Optional[str] = FieldInfo(alias="inviteEmail", default=None)
-
-    task: Optional[ResultTask] = None
-
-
-class AssignmentListResponse(BaseModel):
-    more: Optional[bool] = None
-    """Whether there are more results available"""
-
-    next_page: Optional[int] = FieldInfo(alias="nextPage", default=None)
-    """The page number for the next page of results"""
-
-    results: Optional[List[Result]] = None
-    """The list of results for the current page"""

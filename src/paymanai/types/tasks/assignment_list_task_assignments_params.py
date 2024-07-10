@@ -5,10 +5,10 @@ from __future__ import annotations
 from typing import List
 from typing_extensions import Literal, TypedDict
 
-__all__ = ["AssignmentListParams"]
+__all__ = ["AssignmentListTaskAssignmentsParams"]
 
 
-class AssignmentListParams(TypedDict, total=False):
+class AssignmentListTaskAssignmentsParams(TypedDict, total=False):
     limit: int
 
     page: int

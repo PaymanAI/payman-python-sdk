@@ -8,7 +8,7 @@ from typing_extensions import Literal
 
 import httpx
 
-from ...types import task_list_params, task_create_params, task_update_params
+from ...types import task_list_tasks_params, task_create_task_params, task_update_task_params
 from ..._types import NOT_GIVEN, Body, Query, Headers, NotGiven
 from ..._utils import (
     maybe_transform,
@@ -49,10 +49,10 @@ from .submissions import (
 from ..._base_client import (
     make_request_options,
 )
-from ...types.task_list_response import TaskListResponse
-from ...types.task_create_response import TaskCreateResponse
-from ...types.task_update_response import TaskUpdateResponse
-from ...types.task_retrieve_response import TaskRetrieveResponse
+from ...types.task_get_task_response import TaskGetTaskResponse
+from ...types.task_list_tasks_response import TaskListTasksResponse
+from ...types.task_create_task_response import TaskCreateTaskResponse
+from ...types.task_update_task_response import TaskUpdateTaskResponse
 
 __all__ = ["TasksResource", "AsyncTasksResource"]
 
@@ -78,7 +78,7 @@ class TasksResource(SyncAPIResource):
     def with_streaming_response(self) -> TasksResourceWithStreamingResponse:
         return TasksResourceWithStreamingResponse(self)
 
-    def create(
+    def create_task(
         self,
         *,
         description: str,
@@ -115,7 +115,7 @@ class TasksResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> TaskCreateResponse:
+    ) -> TaskCreateTaskResponse:
         """Creates a new task
 
         Args:
@@ -181,15 +181,15 @@ class TasksResource(SyncAPIResource):
                     "required_submissions": required_submissions,
                     "submission_policy": submission_policy,
                 },
-                task_create_params.TaskCreateParams,
+                task_create_task_params.TaskCreateTaskParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=TaskCreateResponse,
+            cast_to=TaskCreateTaskResponse,
         )
 
-    def retrieve(
+    def get_task(
         self,
         id: str,
         *,
@@ -199,7 +199,7 @@ class TasksResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> TaskRetrieveResponse:
+    ) -> TaskGetTaskResponse:
         """
         Get a task by ID
 
@@ -220,58 +220,10 @@ class TasksResource(SyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=TaskRetrieveResponse,
+            cast_to=TaskGetTaskResponse,
         )
 
-    def update(
-        self,
-        id: str,
-        *,
-        description: str,
-        title: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> TaskUpdateResponse:
-        """
-        Updates an existing task.
-
-        Args:
-          description: A detailed description of the task. This should include enough information for
-              the user to complete the task to the expected standard.
-
-          title: A descriptive title for this task
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not id:
-            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
-        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
-        return self._put(
-            f"/tasks/{id}",
-            body=maybe_transform(
-                {
-                    "description": description,
-                    "title": title,
-                },
-                task_update_params.TaskUpdateParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=TaskUpdateResponse,
-        )
-
-    def list(
+    def list_tasks(
         self,
         *,
         limit: int | NotGiven = NOT_GIVEN,
@@ -282,7 +234,7 @@ class TasksResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> TaskListResponse:
+    ) -> TaskListTasksResponse:
         """
         Get all tasks for the current organization
 
@@ -312,10 +264,58 @@ class TasksResource(SyncAPIResource):
                         "limit": limit,
                         "page": page,
                     },
-                    task_list_params.TaskListParams,
+                    task_list_tasks_params.TaskListTasksParams,
                 ),
             ),
-            cast_to=TaskListResponse,
+            cast_to=TaskListTasksResponse,
+        )
+
+    def update_task(
+        self,
+        id: str,
+        *,
+        description: str,
+        title: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> TaskUpdateTaskResponse:
+        """
+        Updates an existing task.
+
+        Args:
+          description: A detailed description of the task. This should include enough information for
+              the user to complete the task to the expected standard.
+
+          title: A descriptive title for this task
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not id:
+            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return self._put(
+            f"/tasks/{id}",
+            body=maybe_transform(
+                {
+                    "description": description,
+                    "title": title,
+                },
+                task_update_task_params.TaskUpdateTaskParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=TaskUpdateTaskResponse,
         )
 
 
@@ -340,7 +340,7 @@ class AsyncTasksResource(AsyncAPIResource):
     def with_streaming_response(self) -> AsyncTasksResourceWithStreamingResponse:
         return AsyncTasksResourceWithStreamingResponse(self)
 
-    async def create(
+    async def create_task(
         self,
         *,
         description: str,
@@ -377,7 +377,7 @@ class AsyncTasksResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> TaskCreateResponse:
+    ) -> TaskCreateTaskResponse:
         """Creates a new task
 
         Args:
@@ -443,15 +443,15 @@ class AsyncTasksResource(AsyncAPIResource):
                     "required_submissions": required_submissions,
                     "submission_policy": submission_policy,
                 },
-                task_create_params.TaskCreateParams,
+                task_create_task_params.TaskCreateTaskParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=TaskCreateResponse,
+            cast_to=TaskCreateTaskResponse,
         )
 
-    async def retrieve(
+    async def get_task(
         self,
         id: str,
         *,
@@ -461,7 +461,7 @@ class AsyncTasksResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> TaskRetrieveResponse:
+    ) -> TaskGetTaskResponse:
         """
         Get a task by ID
 
@@ -482,58 +482,10 @@ class AsyncTasksResource(AsyncAPIResource):
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=TaskRetrieveResponse,
+            cast_to=TaskGetTaskResponse,
         )
 
-    async def update(
-        self,
-        id: str,
-        *,
-        description: str,
-        title: str,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> TaskUpdateResponse:
-        """
-        Updates an existing task.
-
-        Args:
-          description: A detailed description of the task. This should include enough information for
-              the user to complete the task to the expected standard.
-
-          title: A descriptive title for this task
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        if not id:
-            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
-        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
-        return await self._put(
-            f"/tasks/{id}",
-            body=await async_maybe_transform(
-                {
-                    "description": description,
-                    "title": title,
-                },
-                task_update_params.TaskUpdateParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=TaskUpdateResponse,
-        )
-
-    async def list(
+    async def list_tasks(
         self,
         *,
         limit: int | NotGiven = NOT_GIVEN,
@@ -544,7 +496,7 @@ class AsyncTasksResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> TaskListResponse:
+    ) -> TaskListTasksResponse:
         """
         Get all tasks for the current organization
 
@@ -574,10 +526,58 @@ class AsyncTasksResource(AsyncAPIResource):
                         "limit": limit,
                         "page": page,
                     },
-                    task_list_params.TaskListParams,
+                    task_list_tasks_params.TaskListTasksParams,
                 ),
             ),
-            cast_to=TaskListResponse,
+            cast_to=TaskListTasksResponse,
+        )
+
+    async def update_task(
+        self,
+        id: str,
+        *,
+        description: str,
+        title: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> TaskUpdateTaskResponse:
+        """
+        Updates an existing task.
+
+        Args:
+          description: A detailed description of the task. This should include enough information for
+              the user to complete the task to the expected standard.
+
+          title: A descriptive title for this task
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not id:
+            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return await self._put(
+            f"/tasks/{id}",
+            body=await async_maybe_transform(
+                {
+                    "description": description,
+                    "title": title,
+                },
+                task_update_task_params.TaskUpdateTaskParams,
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=TaskUpdateTaskResponse,
         )
 
 
@@ -585,17 +585,17 @@ class TasksResourceWithRawResponse:
     def __init__(self, tasks: TasksResource) -> None:
         self._tasks = tasks
 
-        self.create = to_raw_response_wrapper(
-            tasks.create,
+        self.create_task = to_raw_response_wrapper(
+            tasks.create_task,
         )
-        self.retrieve = to_raw_response_wrapper(
-            tasks.retrieve,
+        self.get_task = to_raw_response_wrapper(
+            tasks.get_task,
         )
-        self.update = to_raw_response_wrapper(
-            tasks.update,
+        self.list_tasks = to_raw_response_wrapper(
+            tasks.list_tasks,
         )
-        self.list = to_raw_response_wrapper(
-            tasks.list,
+        self.update_task = to_raw_response_wrapper(
+            tasks.update_task,
         )
 
     @cached_property
@@ -615,17 +615,17 @@ class AsyncTasksResourceWithRawResponse:
     def __init__(self, tasks: AsyncTasksResource) -> None:
         self._tasks = tasks
 
-        self.create = async_to_raw_response_wrapper(
-            tasks.create,
+        self.create_task = async_to_raw_response_wrapper(
+            tasks.create_task,
         )
-        self.retrieve = async_to_raw_response_wrapper(
-            tasks.retrieve,
+        self.get_task = async_to_raw_response_wrapper(
+            tasks.get_task,
         )
-        self.update = async_to_raw_response_wrapper(
-            tasks.update,
+        self.list_tasks = async_to_raw_response_wrapper(
+            tasks.list_tasks,
         )
-        self.list = async_to_raw_response_wrapper(
-            tasks.list,
+        self.update_task = async_to_raw_response_wrapper(
+            tasks.update_task,
         )
 
     @cached_property
@@ -645,17 +645,17 @@ class TasksResourceWithStreamingResponse:
     def __init__(self, tasks: TasksResource) -> None:
         self._tasks = tasks
 
-        self.create = to_streamed_response_wrapper(
-            tasks.create,
+        self.create_task = to_streamed_response_wrapper(
+            tasks.create_task,
         )
-        self.retrieve = to_streamed_response_wrapper(
-            tasks.retrieve,
+        self.get_task = to_streamed_response_wrapper(
+            tasks.get_task,
         )
-        self.update = to_streamed_response_wrapper(
-            tasks.update,
+        self.list_tasks = to_streamed_response_wrapper(
+            tasks.list_tasks,
         )
-        self.list = to_streamed_response_wrapper(
-            tasks.list,
+        self.update_task = to_streamed_response_wrapper(
+            tasks.update_task,
         )
 
     @cached_property
@@ -675,17 +675,17 @@ class AsyncTasksResourceWithStreamingResponse:
     def __init__(self, tasks: AsyncTasksResource) -> None:
         self._tasks = tasks
 
-        self.create = async_to_streamed_response_wrapper(
-            tasks.create,
+        self.create_task = async_to_streamed_response_wrapper(
+            tasks.create_task,
         )
-        self.retrieve = async_to_streamed_response_wrapper(
-            tasks.retrieve,
+        self.get_task = async_to_streamed_response_wrapper(
+            tasks.get_task,
         )
-        self.update = async_to_streamed_response_wrapper(
-            tasks.update,
+        self.list_tasks = async_to_streamed_response_wrapper(
+            tasks.list_tasks,
         )
-        self.list = async_to_streamed_response_wrapper(
-            tasks.list,
+        self.update_task = async_to_streamed_response_wrapper(
+            tasks.update_task,
         )
 
     @cached_property

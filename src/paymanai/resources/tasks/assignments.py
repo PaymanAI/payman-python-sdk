@@ -21,12 +21,12 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...types.tasks import assignment_list_params, assignment_create_params
+from ...types.tasks import assignment_list_task_assignments_params, assignment_create_task_assignment_params
 from ..._base_client import (
     make_request_options,
 )
-from ...types.tasks.assignment_list_response import AssignmentListResponse
-from ...types.tasks.assignment_create_response import AssignmentCreateResponse
+from ...types.tasks.assignment_list_task_assignments_response import AssignmentListTaskAssignmentsResponse
+from ...types.tasks.assignment_create_task_assignment_response import AssignmentCreateTaskAssignmentResponse
 
 __all__ = ["AssignmentsResource", "AsyncAssignmentsResource"]
 
@@ -40,7 +40,7 @@ class AssignmentsResource(SyncAPIResource):
     def with_streaming_response(self) -> AssignmentsResourceWithStreamingResponse:
         return AssignmentsResourceWithStreamingResponse(self)
 
-    def create(
+    def create_task_assignment(
         self,
         id: str,
         *,
@@ -52,7 +52,7 @@ class AssignmentsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> AssignmentCreateResponse:
+    ) -> AssignmentCreateTaskAssignmentResponse:
         """Assign a task to a user by email.
 
         The user will receive an email prompting them
@@ -78,15 +78,15 @@ class AssignmentsResource(SyncAPIResource):
                     "expires_at": expires_at,
                     "invite_email": invite_email,
                 },
-                assignment_create_params.AssignmentCreateParams,
+                assignment_create_task_assignment_params.AssignmentCreateTaskAssignmentParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AssignmentCreateResponse,
+            cast_to=AssignmentCreateTaskAssignmentResponse,
         )
 
-    def list(
+    def list_task_assignments(
         self,
         id: str,
         *,
@@ -100,7 +100,7 @@ class AssignmentsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> AssignmentListResponse:
+    ) -> AssignmentListTaskAssignmentsResponse:
         """
         Get all assignments for a task
 
@@ -129,10 +129,10 @@ class AssignmentsResource(SyncAPIResource):
                         "page": page,
                         "statuses": statuses,
                     },
-                    assignment_list_params.AssignmentListParams,
+                    assignment_list_task_assignments_params.AssignmentListTaskAssignmentsParams,
                 ),
             ),
-            cast_to=AssignmentListResponse,
+            cast_to=AssignmentListTaskAssignmentsResponse,
         )
 
 
@@ -145,7 +145,7 @@ class AsyncAssignmentsResource(AsyncAPIResource):
     def with_streaming_response(self) -> AsyncAssignmentsResourceWithStreamingResponse:
         return AsyncAssignmentsResourceWithStreamingResponse(self)
 
-    async def create(
+    async def create_task_assignment(
         self,
         id: str,
         *,
@@ -157,7 +157,7 @@ class AsyncAssignmentsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> AssignmentCreateResponse:
+    ) -> AssignmentCreateTaskAssignmentResponse:
         """Assign a task to a user by email.
 
         The user will receive an email prompting them
@@ -183,15 +183,15 @@ class AsyncAssignmentsResource(AsyncAPIResource):
                     "expires_at": expires_at,
                     "invite_email": invite_email,
                 },
-                assignment_create_params.AssignmentCreateParams,
+                assignment_create_task_assignment_params.AssignmentCreateTaskAssignmentParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=AssignmentCreateResponse,
+            cast_to=AssignmentCreateTaskAssignmentResponse,
         )
 
-    async def list(
+    async def list_task_assignments(
         self,
         id: str,
         *,
@@ -205,7 +205,7 @@ class AsyncAssignmentsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> AssignmentListResponse:
+    ) -> AssignmentListTaskAssignmentsResponse:
         """
         Get all assignments for a task
 
@@ -234,10 +234,10 @@ class AsyncAssignmentsResource(AsyncAPIResource):
                         "page": page,
                         "statuses": statuses,
                     },
-                    assignment_list_params.AssignmentListParams,
+                    assignment_list_task_assignments_params.AssignmentListTaskAssignmentsParams,
                 ),
             ),
-            cast_to=AssignmentListResponse,
+            cast_to=AssignmentListTaskAssignmentsResponse,
         )
 
 
@@ -245,11 +245,11 @@ class AssignmentsResourceWithRawResponse:
     def __init__(self, assignments: AssignmentsResource) -> None:
         self._assignments = assignments
 
-        self.create = to_raw_response_wrapper(
-            assignments.create,
+        self.create_task_assignment = to_raw_response_wrapper(
+            assignments.create_task_assignment,
         )
-        self.list = to_raw_response_wrapper(
-            assignments.list,
+        self.list_task_assignments = to_raw_response_wrapper(
+            assignments.list_task_assignments,
         )
 
 
@@ -257,11 +257,11 @@ class AsyncAssignmentsResourceWithRawResponse:
     def __init__(self, assignments: AsyncAssignmentsResource) -> None:
         self._assignments = assignments
 
-        self.create = async_to_raw_response_wrapper(
-            assignments.create,
+        self.create_task_assignment = async_to_raw_response_wrapper(
+            assignments.create_task_assignment,
         )
-        self.list = async_to_raw_response_wrapper(
-            assignments.list,
+        self.list_task_assignments = async_to_raw_response_wrapper(
+            assignments.list_task_assignments,
         )
 
 
@@ -269,11 +269,11 @@ class AssignmentsResourceWithStreamingResponse:
     def __init__(self, assignments: AssignmentsResource) -> None:
         self._assignments = assignments
 
-        self.create = to_streamed_response_wrapper(
-            assignments.create,
+        self.create_task_assignment = to_streamed_response_wrapper(
+            assignments.create_task_assignment,
         )
-        self.list = to_streamed_response_wrapper(
-            assignments.list,
+        self.list_task_assignments = to_streamed_response_wrapper(
+            assignments.list_task_assignments,
         )
 
 
@@ -281,9 +281,9 @@ class AsyncAssignmentsResourceWithStreamingResponse:
     def __init__(self, assignments: AsyncAssignmentsResource) -> None:
         self._assignments = assignments
 
-        self.create = async_to_streamed_response_wrapper(
-            assignments.create,
+        self.create_task_assignment = async_to_streamed_response_wrapper(
+            assignments.create_task_assignment,
         )
-        self.list = async_to_streamed_response_wrapper(
-            assignments.list,
+        self.list_task_assignments = async_to_streamed_response_wrapper(
+            assignments.list_task_assignments,
         )

@@ -20,11 +20,11 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...types.tasks import submission_list_params
+from ...types.tasks import submission_list_task_submissions_params
 from ..._base_client import (
     make_request_options,
 )
-from ...types.tasks.submission_list_response import SubmissionListResponse
+from ...types.tasks.submission_list_task_submissions_response import SubmissionListTaskSubmissionsResponse
 
 __all__ = ["SubmissionsResource", "AsyncSubmissionsResource"]
 
@@ -38,7 +38,7 @@ class SubmissionsResource(SyncAPIResource):
     def with_streaming_response(self) -> SubmissionsResourceWithStreamingResponse:
         return SubmissionsResourceWithStreamingResponse(self)
 
-    def list(
+    def list_task_submissions(
         self,
         id: str,
         *,
@@ -62,7 +62,7 @@ class SubmissionsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> SubmissionListResponse:
+    ) -> SubmissionListTaskSubmissionsResponse:
         """
         Get all submissions for a task
 
@@ -91,10 +91,10 @@ class SubmissionsResource(SyncAPIResource):
                         "page": page,
                         "statuses": statuses,
                     },
-                    submission_list_params.SubmissionListParams,
+                    submission_list_task_submissions_params.SubmissionListTaskSubmissionsParams,
                 ),
             ),
-            cast_to=SubmissionListResponse,
+            cast_to=SubmissionListTaskSubmissionsResponse,
         )
 
 
@@ -107,7 +107,7 @@ class AsyncSubmissionsResource(AsyncAPIResource):
     def with_streaming_response(self) -> AsyncSubmissionsResourceWithStreamingResponse:
         return AsyncSubmissionsResourceWithStreamingResponse(self)
 
-    async def list(
+    async def list_task_submissions(
         self,
         id: str,
         *,
@@ -131,7 +131,7 @@ class AsyncSubmissionsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> SubmissionListResponse:
+    ) -> SubmissionListTaskSubmissionsResponse:
         """
         Get all submissions for a task
 
@@ -160,10 +160,10 @@ class AsyncSubmissionsResource(AsyncAPIResource):
                         "page": page,
                         "statuses": statuses,
                     },
-                    submission_list_params.SubmissionListParams,
+                    submission_list_task_submissions_params.SubmissionListTaskSubmissionsParams,
                 ),
             ),
-            cast_to=SubmissionListResponse,
+            cast_to=SubmissionListTaskSubmissionsResponse,
         )
 
 
@@ -171,8 +171,8 @@ class SubmissionsResourceWithRawResponse:
     def __init__(self, submissions: SubmissionsResource) -> None:
         self._submissions = submissions
 
-        self.list = to_raw_response_wrapper(
-            submissions.list,
+        self.list_task_submissions = to_raw_response_wrapper(
+            submissions.list_task_submissions,
         )
 
 
@@ -180,8 +180,8 @@ class AsyncSubmissionsResourceWithRawResponse:
     def __init__(self, submissions: AsyncSubmissionsResource) -> None:
         self._submissions = submissions
 
-        self.list = async_to_raw_response_wrapper(
-            submissions.list,
+        self.list_task_submissions = async_to_raw_response_wrapper(
+            submissions.list_task_submissions,
         )
 
 
@@ -189,8 +189,8 @@ class SubmissionsResourceWithStreamingResponse:
     def __init__(self, submissions: SubmissionsResource) -> None:
         self._submissions = submissions
 
-        self.list = to_streamed_response_wrapper(
-            submissions.list,
+        self.list_task_submissions = to_streamed_response_wrapper(
+            submissions.list_task_submissions,
         )
 
 
@@ -198,6 +198,6 @@ class AsyncSubmissionsResourceWithStreamingResponse:
     def __init__(self, submissions: AsyncSubmissionsResource) -> None:
         self._submissions = submissions
 
-        self.list = async_to_streamed_response_wrapper(
-            submissions.list,
+        self.list_task_submissions = async_to_streamed_response_wrapper(
+            submissions.list_task_submissions,
         )

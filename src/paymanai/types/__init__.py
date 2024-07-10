@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from .task_list_params import TaskListParams as TaskListParams
-from .task_create_params import TaskCreateParams as TaskCreateParams
-from .task_list_response import TaskListResponse as TaskListResponse
-from .task_update_params import TaskUpdateParams as TaskUpdateParams
-from .task_create_response import TaskCreateResponse as TaskCreateResponse
-from .task_update_response import TaskUpdateResponse as TaskUpdateResponse
-from .task_retrieve_response import TaskRetrieveResponse as TaskRetrieveResponse
-from .wallet_retrieve_response import WalletRetrieveResponse as WalletRetrieveResponse
+from .file_download_params import FileDownloadParams as FileDownloadParams
+from .task_get_task_response import TaskGetTaskResponse as TaskGetTaskResponse
+from .task_list_tasks_params import TaskListTasksParams as TaskListTasksParams
+from .task_create_task_params import TaskCreateTaskParams as TaskCreateTaskParams
+from .task_update_task_params import TaskUpdateTaskParams as TaskUpdateTaskParams
+from .task_list_tasks_response import TaskListTasksResponse as TaskListTasksResponse
+from .task_create_task_response import TaskCreateTaskResponse as TaskCreateTaskResponse
+from .task_update_task_response import TaskUpdateTaskResponse as TaskUpdateTaskResponse
+from .wallet_get_wallet_response import WalletGetWalletResponse as WalletGetWalletResponse
