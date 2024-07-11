@@ -46,7 +46,6 @@ __all__ = [
 ]
 
 ENVIRONMENTS: Dict[str, str] = {
-    "development": "https://agent.payman.dev/api",
     "sandbox": "https://sandbox-agent.payman.ai/api",
     "production": "https://agent.payman.ai/api",
 }
@@ -62,12 +61,12 @@ class Paymanai(SyncAPIClient):
 
     # client options
 
-    _environment: Literal["development", "sandbox", "production"] | NotGiven
+    _environment: Literal["sandbox", "production"] | NotGiven
 
     def __init__(
         self,
         *,
-        environment: Literal["development", "sandbox", "production"] | NotGiven = NOT_GIVEN,
+        environment: Literal["sandbox", "production"] | NotGiven = NOT_GIVEN,
         base_url: str | httpx.URL | None | NotGiven = NOT_GIVEN,
         timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
         max_retries: int = DEFAULT_MAX_RETRIES,
@@ -107,7 +106,7 @@ class Paymanai(SyncAPIClient):
         elif base_url_env is not None:
             base_url = base_url_env
         else:
-            self._environment = environment = "development"
+            self._environment = environment = "sandbox"
 
             try:
                 base_url = ENVIRONMENTS[environment]
@@ -149,7 +148,7 @@ class Paymanai(SyncAPIClient):
     def copy(
         self,
         *,
-        environment: Literal["development", "sandbox", "production"] | None = None,
+        environment: Literal["sandbox", "production"] | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
         http_client: httpx.Client | None = None,
@@ -241,12 +240,12 @@ class AsyncPaymanai(AsyncAPIClient):
 
     # client options
 
-    _environment: Literal["development", "sandbox", "production"] | NotGiven
+    _environment: Literal["sandbox", "production"] | NotGiven
 
     def __init__(
         self,
         *,
-        environment: Literal["development", "sandbox", "production"] | NotGiven = NOT_GIVEN,
+        environment: Literal["sandbox", "production"] | NotGiven = NOT_GIVEN,
         base_url: str | httpx.URL | None | NotGiven = NOT_GIVEN,
         timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
         max_retries: int = DEFAULT_MAX_RETRIES,
@@ -286,7 +285,7 @@ class AsyncPaymanai(AsyncAPIClient):
         elif base_url_env is not None:
             base_url = base_url_env
         else:
-            self._environment = environment = "development"
+            self._environment = environment = "sandbox"
 
             try:
                 base_url = ENVIRONMENTS[environment]
@@ -328,7 +327,7 @@ class AsyncPaymanai(AsyncAPIClient):
     def copy(
         self,
         *,
-        environment: Literal["development", "sandbox", "production"] | None = None,
+        environment: Literal["sandbox", "production"] | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
         http_client: httpx.AsyncClient | None = None,
