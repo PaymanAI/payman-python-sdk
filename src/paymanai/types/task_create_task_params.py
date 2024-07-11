@@ -19,8 +19,12 @@ class TaskCreateTaskParams(TypedDict, total=False):
     expected standard.
     """
 
-    organization_id: Required[Annotated[str, PropertyInfo(alias="organizationId")]]
-    """The unique identifier for the organization that owns this task"""
+    payout: Required[int]
+    """The amount being offered for each approved submission on this task.
+
+    Note the amount is denominated in base units of the currency, so a payout of 100
+    in USD would mean the payout would be $1.00.
+    """
 
     title: Required[str]
     """A descriptive title for this task"""
@@ -54,13 +58,6 @@ class TaskCreateTaskParams(TypedDict, total=False):
     """List of email addresses to invite to complete the task.
 
     If this is set, only users with these emails will be able to complete the task.
-    """
-
-    payout: int
-    """The amount being offered for each approved submission on this task.
-
-    Note the amount is denominated in base units of the currency, so a payout of 100
-    in USD would mean the payout would be $1.00. Defaults to 0.
     """
 
     payout_wallet_id: Annotated[str, PropertyInfo(alias="payoutWalletId")]

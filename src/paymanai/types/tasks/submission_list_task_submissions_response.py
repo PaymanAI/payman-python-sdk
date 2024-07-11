@@ -37,11 +37,17 @@ class ResultDetails(BaseModel):
     evidence_urls: Optional[List[str]] = FieldInfo(alias="evidenceUrls", default=None)
     """
     A list of URLs to any evidence or supporting documentation the user wants to
-    provide
+    provide to support their submission. Note these may be hosted on the Payman AI
+    platform or elsewhere. If hosted on the Payman AI platform, the URL should be of
+    the form /files/private/download?key=... where the key is the unique identifier
+    for the file and require to send your authentication headers to retrieve (or use
+    a Payman AI SDK).
     """
 
     feedback: Optional[List[ResultDetailsFeedback]] = None
-    """Feedback provided by the verification process after reviewing the submission"""
+    """
+    Feedback provided during the verification process after reviewing the submission
+    """
 
     notes: Optional[str] = None
     """Any additional notes or comments the user wants to provide"""
@@ -236,9 +242,6 @@ class Result(BaseModel):
 
     submitted_by_id: str = FieldInfo(alias="submittedById")
     """The unique identifier for the user that submitted this task"""
-
-    task_id: str = FieldInfo(alias="taskId")
-    """The unique identifier for the task that this submission is for"""
 
     id: Optional[str] = None
 

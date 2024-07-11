@@ -27,7 +27,7 @@ class TestTasks:
     def test_method_create_task(self, client: Paymanai) -> None:
         task = client.tasks.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
-            organization_id="string",
+            payout=0,
             title="Proofread a legal document",
         )
         assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
@@ -36,12 +36,11 @@ class TestTasks:
     def test_method_create_task_with_all_params(self, client: Paymanai) -> None:
         task = client.tasks.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
-            organization_id="string",
+            payout=0,
             title="Proofread a legal document",
             category="MARKETING",
             deadline=parse_datetime("2019-12-27T18:11:19.117Z"),
             invite_emails=["string", "string", "string"],
-            payout=0,
             payout_wallet_id="string",
             required_submissions=0,
             submission_policy="OPEN_SUBMISSIONS_ONE_PER_USER",
@@ -52,7 +51,7 @@ class TestTasks:
     def test_raw_response_create_task(self, client: Paymanai) -> None:
         response = client.tasks.with_raw_response.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
-            organization_id="string",
+            payout=0,
             title="Proofread a legal document",
         )
 
@@ -65,7 +64,7 @@ class TestTasks:
     def test_streaming_response_create_task(self, client: Paymanai) -> None:
         with client.tasks.with_streaming_response.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
-            organization_id="string",
+            payout=0,
             title="Proofread a legal document",
         ) as response:
             assert not response.is_closed
@@ -201,7 +200,7 @@ class TestAsyncTasks:
     async def test_method_create_task(self, async_client: AsyncPaymanai) -> None:
         task = await async_client.tasks.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
-            organization_id="string",
+            payout=0,
             title="Proofread a legal document",
         )
         assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
@@ -210,12 +209,11 @@ class TestAsyncTasks:
     async def test_method_create_task_with_all_params(self, async_client: AsyncPaymanai) -> None:
         task = await async_client.tasks.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
-            organization_id="string",
+            payout=0,
             title="Proofread a legal document",
             category="MARKETING",
             deadline=parse_datetime("2019-12-27T18:11:19.117Z"),
             invite_emails=["string", "string", "string"],
-            payout=0,
             payout_wallet_id="string",
             required_submissions=0,
             submission_policy="OPEN_SUBMISSIONS_ONE_PER_USER",
@@ -226,7 +224,7 @@ class TestAsyncTasks:
     async def test_raw_response_create_task(self, async_client: AsyncPaymanai) -> None:
         response = await async_client.tasks.with_raw_response.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
-            organization_id="string",
+            payout=0,
             title="Proofread a legal document",
         )
 
@@ -239,7 +237,7 @@ class TestAsyncTasks:
     async def test_streaming_response_create_task(self, async_client: AsyncPaymanai) -> None:
         async with async_client.tasks.with_streaming_response.create_task(
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
-            organization_id="string",
+            payout=0,
             title="Proofread a legal document",
         ) as response:
             assert not response.is_closed
