@@ -30,8 +30,8 @@ The full API of this library can be found in [api.md](api.md).
 from paymanai import Paymanai
 
 client = Paymanai(
-    # or 'development' | 'production'; defaults to "development".
-    environment="sandbox",
+    # defaults to "sandbox".
+    environment="production",
 )
 
 task_get_task_response = client.tasks.get_task(
@@ -49,8 +49,8 @@ import asyncio
 from paymanai import AsyncPaymanai
 
 client = AsyncPaymanai(
-    # or 'development' | 'production'; defaults to "development".
-    environment="sandbox",
+    # defaults to "sandbox".
+    environment="production",
 )
 
 
