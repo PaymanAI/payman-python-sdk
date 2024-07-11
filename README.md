@@ -27,9 +27,12 @@ pip install git+ssh://git@github.com/stainless-sdks/paymanai-python.git
 The full API of this library can be found in [api.md](api.md).
 
 ```python
+import os
 from paymanai import Paymanai
 
 client = Paymanai(
+    # This is the default and can be omitted
+    x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
     # defaults to "sandbox".
     environment="production",
 )
@@ -40,15 +43,23 @@ task_get_task_response = client.tasks.get_task(
 print(task_get_task_response.id)
 ```
 
+While you can provide a `x_payman_agent_id` keyword argument,
+we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
+to add `PAYMAN_AGENT_ID="My X Payman Agent ID"` to your `.env` file
+so that your X Payman Agent ID is not stored in source control.
+
 ## Async usage
 
 Simply import `AsyncPaymanai` instead of `Paymanai` and use `await` with each API call:
 
 ```python
+import os
 import asyncio
 from paymanai import AsyncPaymanai
 
 client = AsyncPaymanai(
+    # This is the default and can be omitted
+    x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
     # defaults to "sandbox".
     environment="production",
 )
