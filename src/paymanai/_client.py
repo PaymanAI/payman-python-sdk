@@ -25,7 +25,7 @@ from ._utils import (
 )
 from ._version import __version__
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
-from ._exceptions import APIStatusError
+from ._exceptions import PaymanaiError, APIStatusError
 from ._base_client import (
     DEFAULT_MAX_RETRIES,
     SyncAPIClient,
@@ -60,12 +60,16 @@ class Paymanai(SyncAPIClient):
     with_streaming_response: PaymanaiWithStreamedResponse
 
     # client options
+    x_payman_agent_id: str
+    x_payman_api_secret: str
 
     _environment: Literal["sandbox", "production"] | NotGiven
 
     def __init__(
         self,
         *,
+        x_payman_agent_id: str | None = None,
+        x_payman_api_secret: str | None = None,
         environment: Literal["sandbox", "production"] | NotGiven = NOT_GIVEN,
         base_url: str | httpx.URL | None | NotGiven = NOT_GIVEN,
         timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
@@ -86,7 +90,28 @@ class Paymanai(SyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new synchronous paymanai client instance."""
+        """Construct a new synchronous paymanai client instance.
+
+        This automatically infers the following arguments from their corresponding environment variables if they are not provided:
+        - `x_payman_agent_id` from `PAYMAN_AGENT_ID`
+        - `x_payman_api_secret` from `PAYMAN_API_SECRET`
+        """
+        if x_payman_agent_id is None:
+            x_payman_agent_id = os.environ.get("PAYMAN_AGENT_ID")
+        if x_payman_agent_id is None:
+            raise PaymanaiError(
+                "The x_payman_agent_id client option must be set either by passing x_payman_agent_id to the client or by setting the PAYMAN_AGENT_ID environment variable"
+            )
+        self.x_payman_agent_id = x_payman_agent_id
+
+        if x_payman_api_secret is None:
+            x_payman_api_secret = os.environ.get("PAYMAN_API_SECRET")
+        if x_payman_api_secret is None:
+            raise PaymanaiError(
+                "The x_payman_api_secret client option must be set either by passing x_payman_api_secret to the client or by setting the PAYMAN_API_SECRET environment variable"
+            )
+        self.x_payman_api_secret = x_payman_api_secret
+
         self._environment = environment
 
         base_url_env = os.environ.get("PAYMANAI_BASE_URL")
@@ -138,6 +163,25 @@ class Paymanai(SyncAPIClient):
 
     @property
     @override
+    def auth_headers(self) -> dict[str, str]:
+        if self._x_payman_agent_id:
+            return self._x_payman_agent_id
+        if self._x_payman_api_secret:
+            return self._x_payman_api_secret
+        return {}
+
+    @property
+    def _x_payman_agent_id(self) -> dict[str, str]:
+        x_payman_agent_id = self.x_payman_agent_id
+        return {"x-payman-agent-id": x_payman_agent_id}
+
+    @property
+    def _x_payman_api_secret(self) -> dict[str, str]:
+        x_payman_api_secret = self.x_payman_api_secret
+        return {"x-payman-api-secret": x_payman_api_secret}
+
+    @property
+    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
@@ -148,6 +192,8 @@ class Paymanai(SyncAPIClient):
     def copy(
         self,
         *,
+        x_payman_agent_id: str | None = None,
+        x_payman_api_secret: str | None = None,
         environment: Literal["sandbox", "production"] | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
@@ -182,6 +228,8 @@ class Paymanai(SyncAPIClient):
 
         http_client = http_client or self._client
         return self.__class__(
+            x_payman_agent_id=x_payman_agent_id or self.x_payman_agent_id,
+            x_payman_api_secret=x_payman_api_secret or self.x_payman_api_secret,
             base_url=base_url or self.base_url,
             environment=environment or self._environment,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
@@ -239,12 +287,16 @@ class AsyncPaymanai(AsyncAPIClient):
     with_streaming_response: AsyncPaymanaiWithStreamedResponse
 
     # client options
+    x_payman_agent_id: str
+    x_payman_api_secret: str
 
     _environment: Literal["sandbox", "production"] | NotGiven
 
     def __init__(
         self,
         *,
+        x_payman_agent_id: str | None = None,
+        x_payman_api_secret: str | None = None,
         environment: Literal["sandbox", "production"] | NotGiven = NOT_GIVEN,
         base_url: str | httpx.URL | None | NotGiven = NOT_GIVEN,
         timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
@@ -265,7 +317,28 @@ class AsyncPaymanai(AsyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new async paymanai client instance."""
+        """Construct a new async paymanai client instance.
+
+        This automatically infers the following arguments from their corresponding environment variables if they are not provided:
+        - `x_payman_agent_id` from `PAYMAN_AGENT_ID`
+        - `x_payman_api_secret` from `PAYMAN_API_SECRET`
+        """
+        if x_payman_agent_id is None:
+            x_payman_agent_id = os.environ.get("PAYMAN_AGENT_ID")
+        if x_payman_agent_id is None:
+            raise PaymanaiError(
+                "The x_payman_agent_id client option must be set either by passing x_payman_agent_id to the client or by setting the PAYMAN_AGENT_ID environment variable"
+            )
+        self.x_payman_agent_id = x_payman_agent_id
+
+        if x_payman_api_secret is None:
+            x_payman_api_secret = os.environ.get("PAYMAN_API_SECRET")
+        if x_payman_api_secret is None:
+            raise PaymanaiError(
+                "The x_payman_api_secret client option must be set either by passing x_payman_api_secret to the client or by setting the PAYMAN_API_SECRET environment variable"
+            )
+        self.x_payman_api_secret = x_payman_api_secret
+
         self._environment = environment
 
         base_url_env = os.environ.get("PAYMANAI_BASE_URL")
@@ -317,6 +390,25 @@ class AsyncPaymanai(AsyncAPIClient):
 
     @property
     @override
+    def auth_headers(self) -> dict[str, str]:
+        if self._x_payman_agent_id:
+            return self._x_payman_agent_id
+        if self._x_payman_api_secret:
+            return self._x_payman_api_secret
+        return {}
+
+    @property
+    def _x_payman_agent_id(self) -> dict[str, str]:
+        x_payman_agent_id = self.x_payman_agent_id
+        return {"x-payman-agent-id": x_payman_agent_id}
+
+    @property
+    def _x_payman_api_secret(self) -> dict[str, str]:
+        x_payman_api_secret = self.x_payman_api_secret
+        return {"x-payman-api-secret": x_payman_api_secret}
+
+    @property
+    @override
     def default_headers(self) -> dict[str, str | Omit]:
         return {
             **super().default_headers,
@@ -327,6 +419,8 @@ class AsyncPaymanai(AsyncAPIClient):
     def copy(
         self,
         *,
+        x_payman_agent_id: str | None = None,
+        x_payman_api_secret: str | None = None,
         environment: Literal["sandbox", "production"] | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
@@ -361,6 +455,8 @@ class AsyncPaymanai(AsyncAPIClient):
 
         http_client = http_client or self._client
         return self.__class__(
+            x_payman_agent_id=x_payman_agent_id or self.x_payman_agent_id,
+            x_payman_api_secret=x_payman_api_secret or self.x_payman_api_secret,
             base_url=base_url or self.base_url,
             environment=environment or self._environment,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
