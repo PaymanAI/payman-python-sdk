@@ -82,7 +82,7 @@ class TasksResource(SyncAPIResource):
         self,
         *,
         description: str,
-        organization_id: str,
+        payout: int,
         title: str,
         category: Literal[
             "MARKETING",
@@ -99,7 +99,6 @@ class TasksResource(SyncAPIResource):
         | NotGiven = NOT_GIVEN,
         deadline: Union[str, datetime] | NotGiven = NOT_GIVEN,
         invite_emails: List[str] | NotGiven = NOT_GIVEN,
-        payout: int | NotGiven = NOT_GIVEN,
         payout_wallet_id: str | NotGiven = NOT_GIVEN,
         required_submissions: int | NotGiven = NOT_GIVEN,
         submission_policy: Literal[
@@ -124,7 +123,9 @@ class TasksResource(SyncAPIResource):
         This should include enough information for
               the user to complete the task to the expected standard.
 
-          organization_id: The unique identifier for the organization that owns this task
+          payout: The amount being offered for each approved submission on this task. Note the
+              amount is denominated in base units of the currency, so a payout of 100 in USD
+              would mean the payout would be $1.00.
 
           title: A descriptive title for this task
 
@@ -138,10 +139,6 @@ class TasksResource(SyncAPIResource):
 
           invite_emails: List of email addresses to invite to complete the task. If this is set, only
               users with these emails will be able to complete the task.
-
-          payout: The amount being offered for each approved submission on this task. Note the
-              amount is denominated in base units of the currency, so a payout of 100 in USD
-              would mean the payout would be $1.00. Defaults to 0.
 
           payout_wallet_id: The ID of the wallet to be used to pay out rewards for this task. This wallet
               must be owned by the organization that owns this task, the agent creating the
@@ -171,12 +168,11 @@ class TasksResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "description": description,
-                    "organization_id": organization_id,
+                    "payout": payout,
                     "title": title,
                     "category": category,
                     "deadline": deadline,
                     "invite_emails": invite_emails,
-                    "payout": payout,
                     "payout_wallet_id": payout_wallet_id,
                     "required_submissions": required_submissions,
                     "submission_policy": submission_policy,
@@ -344,7 +340,7 @@ class AsyncTasksResource(AsyncAPIResource):
         self,
         *,
         description: str,
-        organization_id: str,
+        payout: int,
         title: str,
         category: Literal[
             "MARKETING",
@@ -361,7 +357,6 @@ class AsyncTasksResource(AsyncAPIResource):
         | NotGiven = NOT_GIVEN,
         deadline: Union[str, datetime] | NotGiven = NOT_GIVEN,
         invite_emails: List[str] | NotGiven = NOT_GIVEN,
-        payout: int | NotGiven = NOT_GIVEN,
         payout_wallet_id: str | NotGiven = NOT_GIVEN,
         required_submissions: int | NotGiven = NOT_GIVEN,
         submission_policy: Literal[
@@ -386,7 +381,9 @@ class AsyncTasksResource(AsyncAPIResource):
         This should include enough information for
               the user to complete the task to the expected standard.
 
-          organization_id: The unique identifier for the organization that owns this task
+          payout: The amount being offered for each approved submission on this task. Note the
+              amount is denominated in base units of the currency, so a payout of 100 in USD
+              would mean the payout would be $1.00.
 
           title: A descriptive title for this task
 
@@ -400,10 +397,6 @@ class AsyncTasksResource(AsyncAPIResource):
 
           invite_emails: List of email addresses to invite to complete the task. If this is set, only
               users with these emails will be able to complete the task.
-
-          payout: The amount being offered for each approved submission on this task. Note the
-              amount is denominated in base units of the currency, so a payout of 100 in USD
-              would mean the payout would be $1.00. Defaults to 0.
 
           payout_wallet_id: The ID of the wallet to be used to pay out rewards for this task. This wallet
               must be owned by the organization that owns this task, the agent creating the
@@ -433,12 +426,11 @@ class AsyncTasksResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "description": description,
-                    "organization_id": organization_id,
+                    "payout": payout,
                     "title": title,
                     "category": category,
                     "deadline": deadline,
                     "invite_emails": invite_emails,
-                    "payout": payout,
                     "payout_wallet_id": payout_wallet_id,
                     "required_submissions": required_submissions,
                     "submission_policy": submission_policy,
