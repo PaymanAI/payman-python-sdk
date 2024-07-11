@@ -29,7 +29,10 @@ The full API of this library can be found in [api.md](api.md).
 ```python
 from paymanai import Paymanai
 
-client = Paymanai()
+client = Paymanai(
+    # or 'development' | 'production'; defaults to "development".
+    environment="sandbox",
+)
 
 task_get_task_response = client.tasks.get_task(
     "string",
@@ -45,7 +48,10 @@ Simply import `AsyncPaymanai` instead of `Paymanai` and use `await` with each AP
 import asyncio
 from paymanai import AsyncPaymanai
 
-client = AsyncPaymanai()
+client = AsyncPaymanai(
+    # or 'development' | 'production'; defaults to "development".
+    environment="sandbox",
+)
 
 
 async def main() -> None:

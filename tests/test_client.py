@@ -515,6 +515,14 @@ class TestPaymanai:
             client = Paymanai(_strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
+        # explicit environment arg requires explicitness
+        with update_env(PAYMANAI_BASE_URL="http://localhost:5000/from/env"):
+            with pytest.raises(ValueError, match=r"you must pass base_url=None"):
+                Paymanai(_strict_response_validation=True, environment="development")
+
+            client = Paymanai(base_url=None, _strict_response_validation=True, environment="development")
+            assert str(client.base_url).startswith("https://agent.payman.dev/api")
+
     @pytest.mark.parametrize(
         "client",
         [
@@ -1155,6 +1163,14 @@ class TestAsyncPaymanai:
         with update_env(PAYMANAI_BASE_URL="http://localhost:5000/from/env"):
             client = AsyncPaymanai(_strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
+
+        # explicit environment arg requires explicitness
+        with update_env(PAYMANAI_BASE_URL="http://localhost:5000/from/env"):
+            with pytest.raises(ValueError, match=r"you must pass base_url=None"):
+                AsyncPaymanai(_strict_response_validation=True, environment="development")
+
+            client = AsyncPaymanai(base_url=None, _strict_response_validation=True, environment="development")
+            assert str(client.base_url).startswith("https://agent.payman.dev/api")
 
     @pytest.mark.parametrize(
         "client",
