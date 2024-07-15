@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import List, Optional
+from typing import Dict, List, Optional
 from datetime import datetime
 from typing_extensions import Literal
 
@@ -154,6 +154,14 @@ class ResultTask(BaseModel):
 
     If this is set, the task will be closed after this time regardless of the number
     of submissions received and approved.
+    """
+
+    invite_links: Optional[Dict[str, str]] = FieldInfo(alias="inviteLinks", default=None)
+    """A map of email address to link containing a link for each inviteEmail.
+
+    This map is only populated immediately in response to the creation of the task
+    and will contain the link that was emailedto each invited address. Also note
+    that these links will only become valid once the task is published.
     """
 
     payout_wallet_id: Optional[str] = FieldInfo(alias="payoutWalletId", default=None)

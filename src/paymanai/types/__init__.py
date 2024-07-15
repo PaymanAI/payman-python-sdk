@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from .file_download_params import FileDownloadParams as FileDownloadParams
 from .task_get_task_response import TaskGetTaskResponse as TaskGetTaskResponse
 from .task_list_tasks_params import TaskListTasksParams as TaskListTasksParams
 from .task_create_task_params import TaskCreateTaskParams as TaskCreateTaskParams
