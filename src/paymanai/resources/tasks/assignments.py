@@ -22,9 +22,7 @@ from ..._response import (
     async_to_streamed_response_wrapper,
 )
 from ...types.tasks import assignment_list_task_assignments_params, assignment_create_task_assignment_params
-from ..._base_client import (
-    make_request_options,
-)
+from ..._base_client import make_request_options
 from ...types.tasks.assignment_list_task_assignments_response import AssignmentListTaskAssignmentsResponse
 from ...types.tasks.assignment_create_task_assignment_response import AssignmentCreateTaskAssignmentResponse
 

@@ -28,7 +28,7 @@ class TestFiles:
     def test_method_download(self, client: Paymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
         file = client.files.download(
-            key="string",
+            key="key",
         )
         assert file.is_closed
         assert file.json() == {"foo": "bar"}
@@ -41,7 +41,7 @@ class TestFiles:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
 
         file = client.files.with_raw_response.download(
-            key="string",
+            key="key",
         )
 
         assert file.is_closed is True
@@ -54,7 +54,7 @@ class TestFiles:
     def test_streaming_response_download(self, client: Paymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
         with client.files.with_streaming_response.download(
-            key="string",
+            key="key",
         ) as file:
             assert not file.is_closed
             assert file.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -74,7 +74,7 @@ class TestAsyncFiles:
     async def test_method_download(self, async_client: AsyncPaymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
         file = await async_client.files.download(
-            key="string",
+            key="key",
         )
         assert file.is_closed
         assert await file.json() == {"foo": "bar"}
@@ -87,7 +87,7 @@ class TestAsyncFiles:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
 
         file = await async_client.files.with_raw_response.download(
-            key="string",
+            key="key",
         )
 
         assert file.is_closed is True
@@ -100,7 +100,7 @@ class TestAsyncFiles:
     async def test_streaming_response_download(self, async_client: AsyncPaymanai, respx_mock: MockRouter) -> None:
         respx_mock.get("/files/private/download").mock(return_value=httpx.Response(200, json={"foo": "bar"}))
         async with async_client.files.with_streaming_response.download(
-            key="string",
+            key="key",
         ) as file:
             assert not file.is_closed
             assert file.http_request.headers.get("X-Stainless-Lang") == "python"

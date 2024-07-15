@@ -21,9 +21,7 @@ from ..._response import (
     async_to_streamed_response_wrapper,
 )
 from ...types.tasks import submission_list_task_submissions_params
-from ..._base_client import (
-    make_request_options,
-)
+from ..._base_client import make_request_options
 from ...types.tasks.submission_list_task_submissions_response import SubmissionListTaskSubmissionsResponse
 
 __all__ = ["SubmissionsResource", "AsyncSubmissionsResource"]
