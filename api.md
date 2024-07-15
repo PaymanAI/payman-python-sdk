@@ -75,9 +75,3 @@ Methods:
 Methods:
 
 - <code title="get /version">client.version.<a href="./src/paymanai/resources/version.py">get_server_version</a>() -> BinaryAPIResponse</code>
-
-# Files
-
-Methods:
-
-- <code title="get /files/private/download">client.files.<a href="./src/paymanai/resources/files.py">download</a>(\*\*<a href="src/paymanai/types/file_download_params.py">params</a>) -> BinaryAPIResponse</code>
