@@ -41,7 +41,7 @@ class TestTasks:
             category="MARKETING",
             deadline=parse_datetime("2019-12-27T18:11:19.117Z"),
             invite_emails=["string", "string", "string"],
-            payout_wallet_id="string",
+            payout_wallet_id="payoutWalletId",
             required_submissions=0,
             submission_policy="OPEN_SUBMISSIONS_ONE_PER_USER",
         )
@@ -78,14 +78,14 @@ class TestTasks:
     @parametrize
     def test_method_get_task(self, client: Paymanai) -> None:
         task = client.tasks.get_task(
-            "string",
+            "id",
         )
         assert_matches_type(TaskGetTaskResponse, task, path=["response"])
 
     @parametrize
     def test_raw_response_get_task(self, client: Paymanai) -> None:
         response = client.tasks.with_raw_response.get_task(
-            "string",
+            "id",
         )
 
         assert response.is_closed is True
@@ -96,7 +96,7 @@ class TestTasks:
     @parametrize
     def test_streaming_response_get_task(self, client: Paymanai) -> None:
         with client.tasks.with_streaming_response.get_task(
-            "string",
+            "id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -149,7 +149,7 @@ class TestTasks:
     @parametrize
     def test_method_update_task(self, client: Paymanai) -> None:
         task = client.tasks.update_task(
-            "string",
+            id="id",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
         )
@@ -158,7 +158,7 @@ class TestTasks:
     @parametrize
     def test_raw_response_update_task(self, client: Paymanai) -> None:
         response = client.tasks.with_raw_response.update_task(
-            "string",
+            id="id",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
         )
@@ -171,7 +171,7 @@ class TestTasks:
     @parametrize
     def test_streaming_response_update_task(self, client: Paymanai) -> None:
         with client.tasks.with_streaming_response.update_task(
-            "string",
+            id="id",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
         ) as response:
@@ -187,7 +187,7 @@ class TestTasks:
     def test_path_params_update_task(self, client: Paymanai) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
             client.tasks.with_raw_response.update_task(
-                "",
+                id="",
                 description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
                 title="Proofread a legal document",
             )
@@ -214,7 +214,7 @@ class TestAsyncTasks:
             category="MARKETING",
             deadline=parse_datetime("2019-12-27T18:11:19.117Z"),
             invite_emails=["string", "string", "string"],
-            payout_wallet_id="string",
+            payout_wallet_id="payoutWalletId",
             required_submissions=0,
             submission_policy="OPEN_SUBMISSIONS_ONE_PER_USER",
         )
@@ -251,14 +251,14 @@ class TestAsyncTasks:
     @parametrize
     async def test_method_get_task(self, async_client: AsyncPaymanai) -> None:
         task = await async_client.tasks.get_task(
-            "string",
+            "id",
         )
         assert_matches_type(TaskGetTaskResponse, task, path=["response"])
 
     @parametrize
     async def test_raw_response_get_task(self, async_client: AsyncPaymanai) -> None:
         response = await async_client.tasks.with_raw_response.get_task(
-            "string",
+            "id",
         )
 
         assert response.is_closed is True
@@ -269,7 +269,7 @@ class TestAsyncTasks:
     @parametrize
     async def test_streaming_response_get_task(self, async_client: AsyncPaymanai) -> None:
         async with async_client.tasks.with_streaming_response.get_task(
-            "string",
+            "id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -322,7 +322,7 @@ class TestAsyncTasks:
     @parametrize
     async def test_method_update_task(self, async_client: AsyncPaymanai) -> None:
         task = await async_client.tasks.update_task(
-            "string",
+            id="id",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
         )
@@ -331,7 +331,7 @@ class TestAsyncTasks:
     @parametrize
     async def test_raw_response_update_task(self, async_client: AsyncPaymanai) -> None:
         response = await async_client.tasks.with_raw_response.update_task(
-            "string",
+            id="id",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
         )
@@ -344,7 +344,7 @@ class TestAsyncTasks:
     @parametrize
     async def test_streaming_response_update_task(self, async_client: AsyncPaymanai) -> None:
         async with async_client.tasks.with_streaming_response.update_task(
-            "string",
+            id="id",
             description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
             title="Proofread a legal document",
         ) as response:
@@ -360,7 +360,7 @@ class TestAsyncTasks:
     async def test_path_params_update_task(self, async_client: AsyncPaymanai) -> None:
         with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
             await async_client.tasks.with_raw_response.update_task(
-                "",
+                id="",
                 description="Proofread a 10-page legal document for spelling and grammar errors.  Please include a summary of changes or a confirmation that no errors were found.",
                 title="Proofread a legal document",
             )

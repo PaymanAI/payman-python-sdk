@@ -20,14 +20,14 @@ class TestWallets:
     @parametrize
     def test_method_get_wallet(self, client: Paymanai) -> None:
         wallet = client.wallets.get_wallet(
-            "string",
+            "id",
         )
         assert_matches_type(WalletGetWalletResponse, wallet, path=["response"])
 
     @parametrize
     def test_raw_response_get_wallet(self, client: Paymanai) -> None:
         response = client.wallets.with_raw_response.get_wallet(
-            "string",
+            "id",
         )
 
         assert response.is_closed is True
@@ -38,7 +38,7 @@ class TestWallets:
     @parametrize
     def test_streaming_response_get_wallet(self, client: Paymanai) -> None:
         with client.wallets.with_streaming_response.get_wallet(
-            "string",
+            "id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -62,14 +62,14 @@ class TestAsyncWallets:
     @parametrize
     async def test_method_get_wallet(self, async_client: AsyncPaymanai) -> None:
         wallet = await async_client.wallets.get_wallet(
-            "string",
+            "id",
         )
         assert_matches_type(WalletGetWalletResponse, wallet, path=["response"])
 
     @parametrize
     async def test_raw_response_get_wallet(self, async_client: AsyncPaymanai) -> None:
         response = await async_client.wallets.with_raw_response.get_wallet(
-            "string",
+            "id",
         )
 
         assert response.is_closed is True
@@ -80,7 +80,7 @@ class TestAsyncWallets:
     @parametrize
     async def test_streaming_response_get_wallet(self, async_client: AsyncPaymanai) -> None:
         async with async_client.wallets.with_streaming_response.get_wallet(
-            "string",
+            "id",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"

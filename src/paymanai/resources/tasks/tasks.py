@@ -46,9 +46,7 @@ from .submissions import (
     SubmissionsResourceWithStreamingResponse,
     AsyncSubmissionsResourceWithStreamingResponse,
 )
-from ..._base_client import (
-    make_request_options,
-)
+from ..._base_client import make_request_options
 from ...types.task_get_task_response import TaskGetTaskResponse
 from ...types.task_list_tasks_response import TaskListTasksResponse
 from ...types.task_create_task_response import TaskCreateTaskResponse

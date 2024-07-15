@@ -38,7 +38,7 @@ client = Paymanai(
 )
 
 task_get_task_response = client.tasks.get_task(
-    "string",
+    "id",
 )
 print(task_get_task_response.id)
 ```
@@ -67,7 +67,7 @@ client = AsyncPaymanai(
 
 async def main() -> None:
     task_get_task_response = await client.tasks.get_task(
-        "string",
+        "id",
     )
     print(task_get_task_response.id)
 
@@ -103,7 +103,7 @@ client = Paymanai()
 
 try:
     client.tasks.get_task(
-        "string",
+        "id",
     )
 except paymanai.APIConnectionError as e:
     print("The server could not be reached")
@@ -148,7 +148,7 @@ client = Paymanai(
 
 # Or, configure per-request:
 client.with_options(max_retries=5).tasks.get_task(
-    "string",
+    "id",
 )
 ```
 
@@ -173,7 +173,7 @@ client = Paymanai(
 
 # Override per-request:
 client.with_options(timeout=5.0).tasks.get_task(
-    "string",
+    "id",
 )
 ```
 
@@ -214,7 +214,7 @@ from paymanai import Paymanai
 
 client = Paymanai()
 response = client.tasks.with_raw_response.get_task(
-    "string",
+    "id",
 )
 print(response.headers.get('X-My-Header'))
 
@@ -234,7 +234,7 @@ To stream the response body, use `.with_streaming_response` instead, which requi
 
 ```python
 with client.tasks.with_streaming_response.get_task(
-    "string",
+    "id",
 ) as response:
     print(response.headers.get("X-My-Header"))
 
