@@ -184,7 +184,7 @@ class Paymanai(SyncAPIClient):
         return {
             **super().default_headers,
             "X-Stainless-Async": "false",
-            "Content-Type": "application/vnd.payman.v1+json",
+            "Accept": "application/vnd.payman.v1+json",
             **self._custom_headers,
         }
 
@@ -410,7 +410,7 @@ class AsyncPaymanai(AsyncAPIClient):
         return {
             **super().default_headers,
             "X-Stainless-Async": f"async:{get_async_library()}",
-            "Content-Type": "application/vnd.payman.v1+json",
+            "Accept": "application/vnd.payman.v1+json",
             **self._custom_headers,
         }
 

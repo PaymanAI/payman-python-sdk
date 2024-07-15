@@ -183,7 +183,7 @@ Note that requests that time out are [retried twice by default](#retries).
 
 ## Default Headers
 
-We automatically send the `Content-Type` header set to `application/vnd.payman.v1+json`.
+We automatically send the `Accept` header set to `application/vnd.payman.v1+json`.
 
 If you need to, you can override it by setting default headers per-request or on the client object.
 
@@ -191,7 +191,7 @@ If you need to, you can override it by setting default headers per-request or on
 from paymanai import Paymanai
 
 client = Paymanai(
-    default_headers={"Content-Type": "My-Custom-Value"},
+    default_headers={"Accept": "My-Custom-Value"},
 )
 ```
 
