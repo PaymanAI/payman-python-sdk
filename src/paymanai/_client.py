@@ -46,7 +46,7 @@ __all__ = [
 ]
 
 ENVIRONMENTS: Dict[str, str] = {
-    "sandbox": "https://sandbox-agent.payman.ai/api",
+    "sandbox": "https://agent-sandbox.payman.ai/api",
     "production": "https://agent.payman.ai/api",
 }
 

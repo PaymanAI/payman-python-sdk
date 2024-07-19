@@ -631,7 +631,7 @@ class TestPaymanai:
                 _strict_response_validation=True,
                 environment="sandbox",
             )
-            assert str(client.base_url).startswith("https://sandbox-agent.payman.ai/api")
+            assert str(client.base_url).startswith("https://agent-sandbox.payman.ai/api")
 
     @pytest.mark.parametrize(
         "client",
@@ -1434,7 +1434,7 @@ class TestAsyncPaymanai:
                 _strict_response_validation=True,
                 environment="sandbox",
             )
-            assert str(client.base_url).startswith("https://sandbox-agent.payman.ai/api")
+            assert str(client.base_url).startswith("https://agent-sandbox.payman.ai/api")
 
     @pytest.mark.parametrize(
         "client",
