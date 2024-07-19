@@ -2,14 +2,20 @@
 
 from __future__ import annotations
 
-import os
+from paymanai import Paymanai, AsyncPaymanai
+
+from paymanai.types.tasks import CategoryListTaskCategoriesResponse
+
 from typing import Any, cast
 
+import os
 import pytest
-
+import httpx
+from typing_extensions import get_args
+from typing import Optional
+from respx import MockRouter
 from paymanai import Paymanai, AsyncPaymanai
 from tests.utils import assert_matches_type
-from paymanai.types.tasks import CategoryListTaskCategoriesResponse
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 

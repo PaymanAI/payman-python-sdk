@@ -33,6 +33,8 @@ from paymanai import Paymanai
 client = Paymanai(
     # This is the default and can be omitted
     x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
+    # This is the default and can be omitted
+    x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
     # defaults to "sandbox".
     environment="production",
 )
@@ -60,17 +62,17 @@ from paymanai import AsyncPaymanai
 client = AsyncPaymanai(
     # This is the default and can be omitted
     x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
+    # This is the default and can be omitted
+    x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
     # defaults to "sandbox".
     environment="production",
 )
 
-
 async def main() -> None:
-    task_get_task_response = await client.tasks.get_task(
-        "id",
-    )
-    print(task_get_task_response.id)
-
+  task_get_task_response = await client.tasks.get_task(
+      "id",
+  )
+  print(task_get_task_response.id)
 
 asyncio.run(main())
 ```
@@ -107,7 +109,7 @@ try:
     )
 except paymanai.APIConnectionError as e:
     print("The server could not be reached")
-    print(e.__cause__)  # an underlying Exception, likely raised within httpx.
+    print(e.__cause__) # an underlying Exception, likely raised within httpx.
 except paymanai.RateLimitError as e:
     print("A 429 status code was received; we should back off a bit.")
 except paymanai.APIStatusError as e:
@@ -147,7 +149,7 @@ client = Paymanai(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).tasks.get_task(
+client.with_options(max_retries = 5).tasks.get_task(
     "id",
 )
 ```
@@ -172,7 +174,7 @@ client = Paymanai(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).tasks.get_task(
+client.with_options(timeout = 5.0).tasks.get_task(
     "id",
 )
 ```
@@ -191,7 +193,9 @@ If you need to, you can override it by setting default headers per-request or on
 from paymanai import Paymanai
 
 client = Paymanai(
-    default_headers={"Accept": "My-Custom-Value"},
+    default_headers={
+        "Accept": "My-Custom-Value"
+    },
 )
 ```
 
@@ -249,11 +253,11 @@ To stream the response body, use `.with_streaming_response` instead, which requi
 ```python
 with client.tasks.with_streaming_response.get_task(
     "id",
-) as response:
-    print(response.headers.get("X-My-Header"))
+) as response :
+    print(response.headers.get('X-My-Header'))
 
     for line in response.iter_lines():
-        print(line)
+      print(line)
 ```
 
 The context manager is required so that the response will reliably be closed.
@@ -307,10 +311,7 @@ from paymanai import Paymanai, DefaultHttpxClient
 client = Paymanai(
     # Or use the `PAYMANAI_BASE_URL` env var
     base_url="http://my.test.server.example.com:8083",
-    http_client=DefaultHttpxClient(
-        proxies="http://my.test.proxy.example.com",
-        transport=httpx.HTTPTransport(local_address="0.0.0.0"),
-    ),
+    http_client=DefaultHttpxClient(proxies="http://my.test.proxy.example.com", transport=httpx.HTTPTransport(local_address="0.0.0.0")),
 )
 ```
 

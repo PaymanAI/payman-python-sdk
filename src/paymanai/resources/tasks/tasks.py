@@ -2,34 +2,51 @@
 
 from __future__ import annotations
 
-from typing import List, Union
-from datetime import datetime
-from typing_extensions import Literal
-
 import httpx
 
-from ...types import task_list_tasks_params, task_create_task_params, task_update_task_params
-from ..._types import NOT_GIVEN, Body, Query, Headers, NotGiven
-from ..._utils import (
-    maybe_transform,
-    async_maybe_transform,
-)
+from .assignments import AssignmentsResource, AsyncAssignmentsResource
+
 from ..._compat import cached_property
-from .categories import (
-    CategoriesResource,
-    AsyncCategoriesResource,
-    CategoriesResourceWithRawResponse,
-    AsyncCategoriesResourceWithRawResponse,
-    CategoriesResourceWithStreamingResponse,
-    AsyncCategoriesResourceWithStreamingResponse,
-)
-from ..._resource import SyncAPIResource, AsyncAPIResource
+
+from .submissions import SubmissionsResource, AsyncSubmissionsResource
+
+from .categories import CategoriesResource, AsyncCategoriesResource
+
+from ...types.task_create_task_response import TaskCreateTaskResponse
+
+from ..._utils import maybe_transform, async_maybe_transform
+
+from ..._base_client import make_request_options
+
+from typing_extensions import Literal
+
+from typing import Union, List
+
+from datetime import datetime
+
+from ...types.task_get_task_response import TaskGetTaskResponse
+
+from ...types.task_list_tasks_response import TaskListTasksResponse
+
+from ...types.task_update_task_response import TaskUpdateTaskResponse
+
 from ..._response import (
     to_raw_response_wrapper,
-    to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
+    to_streamed_response_wrapper,
     async_to_streamed_response_wrapper,
 )
+
+import warnings
+from typing import TYPE_CHECKING, Optional, Union, List, Dict, Any, Mapping, cast, overload
+from typing_extensions import Literal
+from ..._utils import extract_files, maybe_transform, required_args, deepcopy_minimal, strip_not_given
+from ..._types import NotGiven, Timeout, Headers, NoneType, Query, Body, NOT_GIVEN, FileTypes, BinaryResponseContent
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ...types import shared_params
+from ...types import task_create_task_params
+from ...types import task_list_tasks_params
+from ...types import task_update_task_params
 from .assignments import (
     AssignmentsResource,
     AsyncAssignmentsResource,
@@ -46,11 +63,14 @@ from .submissions import (
     SubmissionsResourceWithStreamingResponse,
     AsyncSubmissionsResourceWithStreamingResponse,
 )
-from ..._base_client import make_request_options
-from ...types.task_get_task_response import TaskGetTaskResponse
-from ...types.task_list_tasks_response import TaskListTasksResponse
-from ...types.task_create_task_response import TaskCreateTaskResponse
-from ...types.task_update_task_response import TaskUpdateTaskResponse
+from .categories import (
+    CategoriesResource,
+    AsyncCategoriesResource,
+    CategoriesResourceWithRawResponse,
+    AsyncCategoriesResourceWithRawResponse,
+    CategoriesResourceWithStreamingResponse,
+    AsyncCategoriesResourceWithStreamingResponse,
+)
 
 __all__ = ["TasksResource", "AsyncTasksResource"]
 
