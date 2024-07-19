@@ -10,7 +10,7 @@ It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ## Documentation
 
-The REST API documentation can be found [on docs.paymanai.com](https://docs.paymanai.com). The full API of this library can be found in [api.md](api.md).
+The REST API documentation can be found on [docs.paymanai.com](https://docs.paymanai.com). The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
@@ -312,6 +312,12 @@ client = Paymanai(
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
     ),
 )
+```
+
+You can also customize the client on a per-request basis by using `with_options()`:
+
+```python
+client.with_options(http_client=DefaultHttpxClient(...))
 ```
 
 ### Managing HTTP resources
