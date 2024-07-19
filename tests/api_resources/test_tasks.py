@@ -2,19 +2,24 @@
 
 from __future__ import annotations
 
-import os
+from paymanai import Paymanai, AsyncPaymanai
+
+from paymanai.types import TaskCreateTaskResponse, TaskGetTaskResponse, TaskListTasksResponse, TaskUpdateTaskResponse
+
 from typing import Any, cast
 
+import os
 import pytest
-
+import httpx
+from typing_extensions import get_args
+from typing import Optional
+from respx import MockRouter
 from paymanai import Paymanai, AsyncPaymanai
 from tests.utils import assert_matches_type
-from paymanai.types import (
-    TaskGetTaskResponse,
-    TaskListTasksResponse,
-    TaskCreateTaskResponse,
-    TaskUpdateTaskResponse,
-)
+from paymanai.types import task_create_task_params
+from paymanai.types import task_list_tasks_params
+from paymanai.types import task_update_task_params
+from paymanai._utils import parse_datetime
 from paymanai._utils import parse_datetime
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")

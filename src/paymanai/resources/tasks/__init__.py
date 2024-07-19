@@ -1,36 +1,32 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .tasks import (
-    TasksResource,
-    AsyncTasksResource,
-    TasksResourceWithRawResponse,
-    AsyncTasksResourceWithRawResponse,
-    TasksResourceWithStreamingResponse,
-    AsyncTasksResourceWithStreamingResponse,
-)
-from .categories import (
-    CategoriesResource,
-    AsyncCategoriesResource,
-    CategoriesResourceWithRawResponse,
-    AsyncCategoriesResourceWithRawResponse,
-    CategoriesResourceWithStreamingResponse,
-    AsyncCategoriesResourceWithStreamingResponse,
-)
+from .assignments import AssignmentsResource, AsyncAssignmentsResource
 from .assignments import (
-    AssignmentsResource,
-    AsyncAssignmentsResource,
     AssignmentsResourceWithRawResponse,
     AsyncAssignmentsResourceWithRawResponse,
     AssignmentsResourceWithStreamingResponse,
     AsyncAssignmentsResourceWithStreamingResponse,
 )
+from .submissions import SubmissionsResource, AsyncSubmissionsResource
 from .submissions import (
-    SubmissionsResource,
-    AsyncSubmissionsResource,
     SubmissionsResourceWithRawResponse,
     AsyncSubmissionsResourceWithRawResponse,
     SubmissionsResourceWithStreamingResponse,
     AsyncSubmissionsResourceWithStreamingResponse,
+)
+from .categories import CategoriesResource, AsyncCategoriesResource
+from .categories import (
+    CategoriesResourceWithRawResponse,
+    AsyncCategoriesResourceWithRawResponse,
+    CategoriesResourceWithStreamingResponse,
+    AsyncCategoriesResourceWithStreamingResponse,
+)
+from .tasks import TasksResource, AsyncTasksResource
+from .tasks import (
+    TasksResourceWithRawResponse,
+    AsyncTasksResourceWithRawResponse,
+    TasksResourceWithStreamingResponse,
+    AsyncTasksResourceWithStreamingResponse,
 )
 
 __all__ = [

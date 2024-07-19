@@ -1,28 +1,25 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
+from .tasks import TasksResource, AsyncTasksResource
 from .tasks import (
-    TasksResource,
-    AsyncTasksResource,
     TasksResourceWithRawResponse,
     AsyncTasksResourceWithRawResponse,
     TasksResourceWithStreamingResponse,
     AsyncTasksResourceWithStreamingResponse,
 )
-from .version import (
-    VersionResource,
-    AsyncVersionResource,
-    VersionResourceWithRawResponse,
-    AsyncVersionResourceWithRawResponse,
-    VersionResourceWithStreamingResponse,
-    AsyncVersionResourceWithStreamingResponse,
-)
+from .wallets import WalletsResource, AsyncWalletsResource
 from .wallets import (
-    WalletsResource,
-    AsyncWalletsResource,
     WalletsResourceWithRawResponse,
     AsyncWalletsResourceWithRawResponse,
     WalletsResourceWithStreamingResponse,
     AsyncWalletsResourceWithStreamingResponse,
+)
+from .version import VersionResource, AsyncVersionResource
+from .version import (
+    VersionResourceWithRawResponse,
+    AsyncVersionResourceWithRawResponse,
+    VersionResourceWithStreamingResponse,
+    AsyncVersionResourceWithStreamingResponse,
 )
 
 __all__ = [

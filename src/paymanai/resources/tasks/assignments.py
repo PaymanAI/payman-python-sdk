@@ -2,29 +2,40 @@
 
 from __future__ import annotations
 
-from typing import List, Union
-from datetime import datetime
-from typing_extensions import Literal
-
 import httpx
 
-from ..._types import NOT_GIVEN, Body, Query, Headers, NotGiven
-from ..._utils import (
-    maybe_transform,
-    async_maybe_transform,
-)
 from ..._compat import cached_property
-from ..._resource import SyncAPIResource, AsyncAPIResource
+
+from ...types.tasks.assignment_create_task_assignment_response import AssignmentCreateTaskAssignmentResponse
+
+from ..._utils import maybe_transform, async_maybe_transform
+
+from ..._base_client import make_request_options
+
+from typing import Union, List
+
+from datetime import datetime
+
+from ...types.tasks.assignment_list_task_assignments_response import AssignmentListTaskAssignmentsResponse
+
+from typing_extensions import Literal
+
 from ..._response import (
     to_raw_response_wrapper,
-    to_streamed_response_wrapper,
     async_to_raw_response_wrapper,
+    to_streamed_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...types.tasks import assignment_list_task_assignments_params, assignment_create_task_assignment_params
-from ..._base_client import make_request_options
-from ...types.tasks.assignment_list_task_assignments_response import AssignmentListTaskAssignmentsResponse
-from ...types.tasks.assignment_create_task_assignment_response import AssignmentCreateTaskAssignmentResponse
+
+import warnings
+from typing import TYPE_CHECKING, Optional, Union, List, Dict, Any, Mapping, cast, overload
+from typing_extensions import Literal
+from ..._utils import extract_files, maybe_transform, required_args, deepcopy_minimal, strip_not_given
+from ..._types import NotGiven, Timeout, Headers, NoneType, Query, Body, NOT_GIVEN, FileTypes, BinaryResponseContent
+from ..._resource import SyncAPIResource, AsyncAPIResource
+from ...types import shared_params
+from ...types.tasks import assignment_create_task_assignment_params
+from ...types.tasks import assignment_list_task_assignments_params
 
 __all__ = ["AssignmentsResource", "AsyncAssignmentsResource"]
 
