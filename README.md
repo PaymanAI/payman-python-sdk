@@ -32,9 +32,9 @@ from paymanai import Paymanai
 
 client = Paymanai(
     # This is the default and can be omitted
-    x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
-    # This is the default and can be omitted
     x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
+    # This is the default and can be omitted
+    x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
     # defaults to "sandbox".
     environment="production",
 )
@@ -61,9 +61,9 @@ from paymanai import AsyncPaymanai
 
 client = AsyncPaymanai(
     # This is the default and can be omitted
-    x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
-    # This is the default and can be omitted
     x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
+    # This is the default and can be omitted
+    x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
     # defaults to "sandbox".
     environment="production",
 )

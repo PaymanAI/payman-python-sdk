@@ -95,7 +95,7 @@ class TaskCurrency(BaseModel):
 class TaskVerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
-    handler: Optional[str] = None
+    type: Optional[Literal["default", "custom_prompt", "none"]] = None
 
 
 class Task(BaseModel):
@@ -149,6 +149,9 @@ class Task(BaseModel):
     """A descriptive title for this task"""
 
     id: Optional[str] = None
+
+    cancel_reason: Optional[str] = FieldInfo(alias="cancelReason", default=None)
+    """In case the task is canceled, this stores the reason why it is canceled"""
 
     currency: Optional[TaskCurrency] = None
     """The currency in which the payout is denominated."""
