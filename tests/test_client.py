@@ -319,8 +319,8 @@ class TestPaymanai:
     def test_validate_headers(self) -> None:
         client = Paymanai(base_url=base_url, x_payman_agent_id=x_payman_agent_id, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
         request = client._build_request(FinalRequestOptions(method="get", url='/foo'))
-        assert request.headers.get("x-payman-agent-id") == x_payman_agent_id,request = client._build_request(FinalRequestOptions(method="get", url='/foo'))
-        assert request.headers.get("x-payman-api-secret") == x_payman_api_secret
+        assert request.headers.get("x-payman-api-secret") == x_payman_api_secret,request = client._build_request(FinalRequestOptions(method="get", url='/foo'))
+        assert request.headers.get("x-payman-agent-id") == x_payman_agent_id
 
         with pytest.raises(PaymanaiError):
             client2 = Paymanai(base_url=base_url, x_payman_agent_id=None, x_payman_api_secret=None, _strict_response_validation=True)
@@ -944,8 +944,8 @@ class TestAsyncPaymanai:
     def test_validate_headers(self) -> None:
         client = AsyncPaymanai(base_url=base_url, x_payman_agent_id=x_payman_agent_id, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
         request = client._build_request(FinalRequestOptions(method="get", url='/foo'))
-        assert request.headers.get("x-payman-agent-id") == x_payman_agent_id,request = client._build_request(FinalRequestOptions(method="get", url='/foo'))
-        assert request.headers.get("x-payman-api-secret") == x_payman_api_secret
+        assert request.headers.get("x-payman-api-secret") == x_payman_api_secret,request = client._build_request(FinalRequestOptions(method="get", url='/foo'))
+        assert request.headers.get("x-payman-agent-id") == x_payman_agent_id
 
         with pytest.raises(PaymanaiError):
             client2 = AsyncPaymanai(base_url=base_url, x_payman_agent_id=None, x_payman_api_secret=None, _strict_response_validation=True)

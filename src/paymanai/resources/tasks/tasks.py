@@ -37,6 +37,8 @@ from ..._response import (
     async_to_streamed_response_wrapper,
 )
 
+from ...types import task_create_task_params
+
 import warnings
 from typing import TYPE_CHECKING, Optional, Union, List, Dict, Any, Mapping, cast, overload
 from typing_extensions import Literal
@@ -126,6 +128,7 @@ class TasksResource(SyncAPIResource):
             "OPEN_ASSIGNED_SUBMISSIONS",
         ]
         | NotGiven = NOT_GIVEN,
+        verification_configuration: task_create_task_params.VerificationConfiguration | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -172,6 +175,9 @@ class TasksResource(SyncAPIResource):
               OPEN_SUBMISSIONS_ONE_PER_USER if omitted, or PRE_ASSIGNED_SUBMISSIONS if
               inviteEmails are specified.
 
+          verification_configuration: The configuration to be applied during task verification. The Payman
+              verification enginewill use this to customize the verification of this task.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -194,6 +200,7 @@ class TasksResource(SyncAPIResource):
                     "payout_wallet_id": payout_wallet_id,
                     "required_submissions": required_submissions,
                     "submission_policy": submission_policy,
+                    "verification_configuration": verification_configuration,
                 },
                 task_create_task_params.TaskCreateTaskParams,
             ),
@@ -384,6 +391,7 @@ class AsyncTasksResource(AsyncAPIResource):
             "OPEN_ASSIGNED_SUBMISSIONS",
         ]
         | NotGiven = NOT_GIVEN,
+        verification_configuration: task_create_task_params.VerificationConfiguration | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
         extra_headers: Headers | None = None,
@@ -430,6 +438,9 @@ class AsyncTasksResource(AsyncAPIResource):
               OPEN_SUBMISSIONS_ONE_PER_USER if omitted, or PRE_ASSIGNED_SUBMISSIONS if
               inviteEmails are specified.
 
+          verification_configuration: The configuration to be applied during task verification. The Payman
+              verification enginewill use this to customize the verification of this task.
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -452,6 +463,7 @@ class AsyncTasksResource(AsyncAPIResource):
                     "payout_wallet_id": payout_wallet_id,
                     "required_submissions": required_submissions,
                     "submission_policy": submission_policy,
+                    "verification_configuration": verification_configuration,
                 },
                 task_create_task_params.TaskCreateTaskParams,
             ),

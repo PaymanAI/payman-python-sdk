@@ -29,5 +29,6 @@ class SubmissionListTaskSubmissionsParams(TypedDict, total=False):
             "REJECTED",
             "VERIFICATION_FAILED",
             "DELETED",
+            "CANCELLED",
         ]
     ]

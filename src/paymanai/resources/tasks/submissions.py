@@ -59,6 +59,7 @@ class SubmissionsResource(SyncAPIResource):
                 "REJECTED",
                 "VERIFICATION_FAILED",
                 "DELETED",
+                "CANCELLED",
             ]
         ]
         | NotGiven = NOT_GIVEN,
@@ -128,6 +129,7 @@ class AsyncSubmissionsResource(AsyncAPIResource):
                 "REJECTED",
                 "VERIFICATION_FAILED",
                 "DELETED",
+                "CANCELLED",
             ]
         ]
         | NotGiven = NOT_GIVEN,

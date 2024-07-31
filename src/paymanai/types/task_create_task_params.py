@@ -16,7 +16,7 @@ from .._types import FileTypes
 from .._utils import PropertyInfo
 from ..types import shared_params
 
-__all__ = ["TaskCreateTaskParams"]
+__all__ = ["TaskCreateTaskParams", "VerificationConfiguration"]
 
 
 class TaskCreateTaskParams(TypedDict, total=False):
@@ -99,3 +99,16 @@ class TaskCreateTaskParams(TypedDict, total=False):
     Defaults to OPEN_SUBMISSIONS_ONE_PER_USER if omitted, or
     PRE_ASSIGNED_SUBMISSIONS if inviteEmails are specified.
     """
+
+    verification_configuration: Annotated[VerificationConfiguration, PropertyInfo(alias="verificationConfiguration")]
+    """The configuration to be applied during task verification.
+
+    The Payman verification enginewill use this to customize the verification of
+    this task.
+    """
+
+
+class VerificationConfiguration(TypedDict, total=False):
+    custom_prompt: Annotated[str, PropertyInfo(alias="customPrompt")]
+
+    type: Literal["default", "custom_prompt", "none"]
