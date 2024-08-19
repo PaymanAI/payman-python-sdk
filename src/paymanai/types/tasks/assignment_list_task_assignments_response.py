@@ -2,7 +2,7 @@
 
 from ..._models import BaseModel
 
-from typing import List, Optional, Dict
+from typing import Optional, List, Dict
 
 from typing_extensions import Literal
 
@@ -17,10 +17,17 @@ __all__ = [
     "AssignmentListTaskAssignmentsResponse",
     "Result",
     "ResultAssignedTo",
+    "ResultAssignedToReputationScore",
     "ResultTask",
     "ResultTaskCurrency",
     "ResultTaskVerificationConfiguration",
 ]
+
+
+class ResultAssignedToReputationScore(BaseModel):
+    raw_score: Optional[float] = FieldInfo(alias="rawScore", default=None)
+
+    score: Optional[float] = None
 
 
 class ResultAssignedTo(BaseModel):
@@ -59,10 +66,12 @@ class ResultAssignedTo(BaseModel):
     Note: may not be visible subject to caller's authorization scopes.
     """
 
+    reputation_score: Optional[ResultAssignedToReputationScore] = FieldInfo(alias="reputationScore", default=None)
+
 
 class ResultTaskCurrency(BaseModel):
-    fractional_unit_name: str = FieldInfo(alias="fractionalUnitName")
-    """The name of this currency's fractional unit"""
+    base_unit_name: str = FieldInfo(alias="baseUnitName")
+    """The name of this currency's base currency unit"""
 
     name: str
     """The name of this currency"""
@@ -96,7 +105,7 @@ class ResultTaskCurrency(BaseModel):
 class ResultTaskVerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
-    type: Optional[Literal["default", "custom_prompt", "none"]] = None
+    type: Optional[Literal["default", "custom_prompt", "developer_managed", "none"]] = None
 
 
 class ResultTask(BaseModel):

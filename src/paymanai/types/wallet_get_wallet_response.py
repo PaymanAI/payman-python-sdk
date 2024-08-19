@@ -15,8 +15,8 @@ __all__ = ["WalletGetWalletResponse", "Currency"]
 
 
 class Currency(BaseModel):
-    fractional_unit_name: str = FieldInfo(alias="fractionalUnitName")
-    """The name of this currency's fractional unit"""
+    base_unit_name: str = FieldInfo(alias="baseUnitName")
+    """The name of this currency's base currency unit"""
 
     name: str
     """The name of this currency"""

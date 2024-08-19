@@ -2,7 +2,7 @@
 
 from ..._models import BaseModel
 
-from typing import List, Optional, Dict
+from typing import Optional, List, Dict
 
 from typing_extensions import Literal
 
@@ -16,10 +16,17 @@ from ...types import shared
 __all__ = [
     "AssignmentCreateTaskAssignmentResponse",
     "AssignedTo",
+    "AssignedToReputationScore",
     "Task",
     "TaskCurrency",
     "TaskVerificationConfiguration",
 ]
+
+
+class AssignedToReputationScore(BaseModel):
+    raw_score: Optional[float] = FieldInfo(alias="rawScore", default=None)
+
+    score: Optional[float] = None
 
 
 class AssignedTo(BaseModel):
@@ -58,10 +65,12 @@ class AssignedTo(BaseModel):
     Note: may not be visible subject to caller's authorization scopes.
     """
 
+    reputation_score: Optional[AssignedToReputationScore] = FieldInfo(alias="reputationScore", default=None)
+
 
 class TaskCurrency(BaseModel):
-    fractional_unit_name: str = FieldInfo(alias="fractionalUnitName")
-    """The name of this currency's fractional unit"""
+    base_unit_name: str = FieldInfo(alias="baseUnitName")
+    """The name of this currency's base currency unit"""
 
     name: str
     """The name of this currency"""
@@ -95,7 +104,7 @@ class TaskCurrency(BaseModel):
 class TaskVerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
-    type: Optional[Literal["default", "custom_prompt", "none"]] = None
+    type: Optional[Literal["default", "custom_prompt", "developer_managed", "none"]] = None
 
 
 class Task(BaseModel):
