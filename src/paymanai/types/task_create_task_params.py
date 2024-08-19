@@ -111,4 +111,4 @@ class TaskCreateTaskParams(TypedDict, total=False):
 class VerificationConfiguration(TypedDict, total=False):
     custom_prompt: Annotated[str, PropertyInfo(alias="customPrompt")]
 
-    type: Literal["default", "custom_prompt", "none"]
+    type: Literal["default", "custom_prompt", "developer_managed", "none"]
