@@ -28,7 +28,6 @@ import httpx
 
 from ._version import __version__
 from ._qs import Querystring
-from .types import shared_params
 from ._utils import (
     extract_files,
     maybe_transform,

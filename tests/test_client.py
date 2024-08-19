@@ -10,6 +10,8 @@ from paymanai._exceptions import APITimeoutError, APIStatusError, PaymanaiError,
 
 from typing import Any, cast
 
+from paymanai._types import Omit
+
 from pydantic import ValidationError
 
 import asyncio
@@ -323,7 +325,11 @@ class TestPaymanai:
         assert request.headers.get("x-payman-agent-id") == x_payman_agent_id
 
         with pytest.raises(PaymanaiError):
-            client2 = Paymanai(base_url=base_url, x_payman_agent_id=None, x_payman_api_secret=None, _strict_response_validation=True)
+            with update_env(**{
+                "PAYMAN_API_SECRET": Omit(),
+                "PAYMAN_AGENT_ID": Omit(),
+            }) :
+                client2 = Paymanai(base_url=base_url, x_payman_agent_id=None, x_payman_api_secret=None, _strict_response_validation=True)
             _ = client2
 
     def test_default_query_option(self) -> None:
@@ -678,6 +684,32 @@ class TestPaymanai:
             self.client.get("/tasks/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
 
         assert _get_open_connections(self.client) == 0
+
+    @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
+    @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @pytest.mark.respx(base_url=base_url)
+    def test_retries_taken(
+        self,
+        client: Paymanai,
+        failures_before_success: int,
+        respx_mock: MockRouter
+    ) -> None:
+        client = client.with_options(max_retries=4)
+
+        nb_retries = 0
+
+        def retry_handler(_request: httpx.Request) -> httpx.Response:
+            nonlocal nb_retries
+            if nb_retries < failures_before_success:
+                nb_retries += 1
+                return httpx.Response(500)
+            return httpx.Response(200)
+
+        respx_mock.get("/tasks/id").mock(side_effect=retry_handler)
+
+        response = client.tasks.with_raw_response.get_task("id")
+
+        assert response.retries_taken == failures_before_success
 class TestAsyncPaymanai:
     client = AsyncPaymanai(base_url=base_url, x_payman_agent_id=x_payman_agent_id, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
 
@@ -948,7 +980,11 @@ class TestAsyncPaymanai:
         assert request.headers.get("x-payman-agent-id") == x_payman_agent_id
 
         with pytest.raises(PaymanaiError):
-            client2 = AsyncPaymanai(base_url=base_url, x_payman_agent_id=None, x_payman_api_secret=None, _strict_response_validation=True)
+            with update_env(**{
+                "PAYMAN_API_SECRET": Omit(),
+                "PAYMAN_AGENT_ID": Omit(),
+            }) :
+                client2 = AsyncPaymanai(base_url=base_url, x_payman_agent_id=None, x_payman_api_secret=None, _strict_response_validation=True)
             _ = client2
 
     def test_default_query_option(self) -> None:
@@ -1307,3 +1343,30 @@ class TestAsyncPaymanai:
             await self.client.get("/tasks/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
 
         assert _get_open_connections(self.client) == 0
+
+    @pytest.mark.parametrize("failures_before_success", [0, 2, 4])
+    @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
+    @pytest.mark.respx(base_url=base_url)
+    @pytest.mark.asyncio
+    async def test_retries_taken(
+        self,
+        async_client: AsyncPaymanai,
+        failures_before_success: int,
+        respx_mock: MockRouter
+    ) -> None:
+        client = async_client.with_options(max_retries=4)
+
+        nb_retries = 0
+
+        def retry_handler(_request: httpx.Request) -> httpx.Response:
+            nonlocal nb_retries
+            if nb_retries < failures_before_success:
+                nb_retries += 1
+                return httpx.Response(500)
+            return httpx.Response(200)
+
+        respx_mock.get("/tasks/id").mock(side_effect=retry_handler)
+
+        response = await client.tasks.with_raw_response.get_task("id")
+
+        assert response.retries_taken == failures_before_success
