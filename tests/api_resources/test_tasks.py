@@ -50,8 +50,8 @@ class TestTasks:
             required_submissions=0,
             submission_policy="OPEN_SUBMISSIONS_ONE_PER_USER",
             verification_configuration={
-                "type": "default",
                 "custom_prompt": "customPrompt",
+                "type": "default",
             },
         )
         assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
@@ -227,8 +227,8 @@ class TestAsyncTasks:
             required_submissions=0,
             submission_policy="OPEN_SUBMISSIONS_ONE_PER_USER",
             verification_configuration={
-                "type": "default",
                 "custom_prompt": "customPrompt",
+                "type": "default",
             },
         )
         assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
