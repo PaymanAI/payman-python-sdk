@@ -26,7 +26,6 @@ def event_loop() -> Iterator[asyncio.AbstractEventLoop]:
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
-x_payman_agent_id = "My X Payman Agent ID"
 x_payman_api_secret = "My X Payman API Secret"
 
 
@@ -37,10 +36,7 @@ def client(request: FixtureRequest) -> Iterator[Paymanai]:
         raise TypeError(f"Unexpected fixture parameter type {type(strict)}, expected {bool}")
 
     with Paymanai(
-        base_url=base_url,
-        x_payman_agent_id=x_payman_agent_id,
-        x_payman_api_secret=x_payman_api_secret,
-        _strict_response_validation=strict,
+        base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=strict
     ) as client:
         yield client
 
@@ -52,9 +48,6 @@ async def async_client(request: FixtureRequest) -> AsyncIterator[AsyncPaymanai]:
         raise TypeError(f"Unexpected fixture parameter type {type(strict)}, expected {bool}")
 
     async with AsyncPaymanai(
-        base_url=base_url,
-        x_payman_agent_id=x_payman_agent_id,
-        x_payman_api_secret=x_payman_api_secret,
-        _strict_response_validation=strict,
+        base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=strict
     ) as client:
         yield client
