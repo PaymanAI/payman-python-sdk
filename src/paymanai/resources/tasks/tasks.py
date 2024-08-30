@@ -2,53 +2,34 @@
 
 from __future__ import annotations
 
+from typing import Dict, List, Union
+from datetime import datetime
+from typing_extensions import Literal
+
 import httpx
 
-from .assignments import AssignmentsResource, AsyncAssignmentsResource
-
+from ...types import task_list_tasks_params, task_create_task_params, task_update_task_params
+from ..._types import NOT_GIVEN, Body, Query, Headers, NotGiven
+from ..._utils import (
+    maybe_transform,
+    async_maybe_transform,
+)
 from ..._compat import cached_property
-
-from .submissions import SubmissionsResource, AsyncSubmissionsResource
-
-from .categories import CategoriesResource, AsyncCategoriesResource
-
-from ...types.task_create_task_response import TaskCreateTaskResponse
-
-from ..._utils import maybe_transform, async_maybe_transform
-
-from ..._base_client import make_request_options
-
-from typing_extensions import Literal
-
-from typing import Union, List
-
-from datetime import datetime
-
-from ...types.task_get_task_response import TaskGetTaskResponse
-
-from ...types.task_list_tasks_response import TaskListTasksResponse
-
-from ...types.task_update_task_response import TaskUpdateTaskResponse
-
+from .categories import (
+    CategoriesResource,
+    AsyncCategoriesResource,
+    CategoriesResourceWithRawResponse,
+    AsyncCategoriesResourceWithRawResponse,
+    CategoriesResourceWithStreamingResponse,
+    AsyncCategoriesResourceWithStreamingResponse,
+)
+from ..._resource import SyncAPIResource, AsyncAPIResource
 from ..._response import (
     to_raw_response_wrapper,
-    async_to_raw_response_wrapper,
     to_streamed_response_wrapper,
+    async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-
-from ...types import task_create_task_params
-
-import warnings
-from typing import TYPE_CHECKING, Optional, Union, List, Dict, Any, Mapping, cast, overload
-from typing_extensions import Literal
-from ..._utils import extract_files, maybe_transform, required_args, deepcopy_minimal, strip_not_given
-from ..._types import NotGiven, Timeout, Headers, NoneType, Query, Body, NOT_GIVEN, FileTypes, BinaryResponseContent
-from ..._resource import SyncAPIResource, AsyncAPIResource
-from ...types import shared_params
-from ...types import task_create_task_params
-from ...types import task_list_tasks_params
-from ...types import task_update_task_params
 from .assignments import (
     AssignmentsResource,
     AsyncAssignmentsResource,
@@ -65,14 +46,11 @@ from .submissions import (
     SubmissionsResourceWithStreamingResponse,
     AsyncSubmissionsResourceWithStreamingResponse,
 )
-from .categories import (
-    CategoriesResource,
-    AsyncCategoriesResource,
-    CategoriesResourceWithRawResponse,
-    AsyncCategoriesResourceWithRawResponse,
-    CategoriesResourceWithStreamingResponse,
-    AsyncCategoriesResourceWithStreamingResponse,
-)
+from ..._base_client import make_request_options
+from ...types.task_get_task_response import TaskGetTaskResponse
+from ...types.task_list_tasks_response import TaskListTasksResponse
+from ...types.task_create_task_response import TaskCreateTaskResponse
+from ...types.task_update_task_response import TaskUpdateTaskResponse
 
 __all__ = ["TasksResource", "AsyncTasksResource"]
 
@@ -119,6 +97,7 @@ class TasksResource(SyncAPIResource):
         | NotGiven = NOT_GIVEN,
         deadline: Union[str, datetime] | NotGiven = NOT_GIVEN,
         invite_emails: List[str] | NotGiven = NOT_GIVEN,
+        metadata: Dict[str, str] | NotGiven = NOT_GIVEN,
         payout_wallet_id: str | NotGiven = NOT_GIVEN,
         required_submissions: int | NotGiven = NOT_GIVEN,
         submission_policy: Literal[
@@ -161,6 +140,10 @@ class TasksResource(SyncAPIResource):
           invite_emails: List of email addresses to invite to complete the task. If this is set, only
               users with these emails will be able to complete the task.
 
+          metadata: Agent provided metadata related to this task. You may use this to store
+              correlation data.When a task related payload is sent to any registered webhook,
+              this metadata will be included
+
           payout_wallet_id: The ID of the wallet to be used to pay out rewards for this task. This wallet
               must be owned by the organization that owns this task, the agent creating the
               task must have access to the wallet, it must have sufficient funds to cover the
@@ -197,6 +180,7 @@ class TasksResource(SyncAPIResource):
                     "category": category,
                     "deadline": deadline,
                     "invite_emails": invite_emails,
+                    "metadata": metadata,
                     "payout_wallet_id": payout_wallet_id,
                     "required_submissions": required_submissions,
                     "submission_policy": submission_policy,
@@ -382,6 +366,7 @@ class AsyncTasksResource(AsyncAPIResource):
         | NotGiven = NOT_GIVEN,
         deadline: Union[str, datetime] | NotGiven = NOT_GIVEN,
         invite_emails: List[str] | NotGiven = NOT_GIVEN,
+        metadata: Dict[str, str] | NotGiven = NOT_GIVEN,
         payout_wallet_id: str | NotGiven = NOT_GIVEN,
         required_submissions: int | NotGiven = NOT_GIVEN,
         submission_policy: Literal[
@@ -424,6 +409,10 @@ class AsyncTasksResource(AsyncAPIResource):
           invite_emails: List of email addresses to invite to complete the task. If this is set, only
               users with these emails will be able to complete the task.
 
+          metadata: Agent provided metadata related to this task. You may use this to store
+              correlation data.When a task related payload is sent to any registered webhook,
+              this metadata will be included
+
           payout_wallet_id: The ID of the wallet to be used to pay out rewards for this task. This wallet
               must be owned by the organization that owns this task, the agent creating the
               task must have access to the wallet, it must have sufficient funds to cover the
@@ -460,6 +449,7 @@ class AsyncTasksResource(AsyncAPIResource):
                     "category": category,
                     "deadline": deadline,
                     "invite_emails": invite_emails,
+                    "metadata": metadata,
                     "payout_wallet_id": payout_wallet_id,
                     "required_submissions": required_submissions,
                     "submission_policy": submission_policy,

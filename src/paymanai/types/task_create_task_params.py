@@ -2,17 +2,10 @@
 
 from __future__ import annotations
 
-from typing_extensions import TypedDict, Required, Literal, Annotated
-
-from typing import Union, List
-
+from typing import Dict, List, Union
 from datetime import datetime
+from typing_extensions import Literal, Required, Annotated, TypedDict
 
-from .._utils import PropertyInfo
-
-from typing import List, Union, Dict, Optional
-from typing_extensions import Literal, TypedDict, Required, Annotated
-from .._types import FileTypes
 from .._utils import PropertyInfo
 
 __all__ = ["TaskCreateTaskParams", "VerificationConfiguration"]
@@ -65,6 +58,13 @@ class TaskCreateTaskParams(TypedDict, total=False):
     """List of email addresses to invite to complete the task.
 
     If this is set, only users with these emails will be able to complete the task.
+    """
+
+    metadata: Dict[str, str]
+    """Agent provided metadata related to this task.
+
+    You may use this to store correlation data.When a task related payload is sent
+    to any registered webhook, this metadata will be included
     """
 
     payout_wallet_id: Annotated[str, PropertyInfo(alias="payoutWalletId")]

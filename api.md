@@ -3,7 +3,12 @@
 Types:
 
 ```python
-from paymanai.types import TaskCreateTaskResponse, TaskGetTaskResponse, TaskListTasksResponse, TaskUpdateTaskResponse
+from paymanai.types import (
+    TaskCreateTaskResponse,
+    TaskGetTaskResponse,
+    TaskListTasksResponse,
+    TaskUpdateTaskResponse,
+)
 ```
 
 Methods:
@@ -18,7 +23,10 @@ Methods:
 Types:
 
 ```python
-from paymanai.types.tasks import AssignmentCreateTaskAssignmentResponse, AssignmentListTaskAssignmentsResponse
+from paymanai.types.tasks import (
+    AssignmentCreateTaskAssignmentResponse,
+    AssignmentListTaskAssignmentsResponse,
+)
 ```
 
 Methods:

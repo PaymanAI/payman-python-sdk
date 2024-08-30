@@ -8,7 +8,7 @@ from typing import Any, TypeVar, Iterator, cast
 from datetime import date, datetime
 from typing_extensions import Literal, get_args, get_origin, assert_type
 
-from paymanai._types import NoneType, Omit
+from paymanai._types import Omit, NoneType
 from paymanai._utils import (
     is_dict,
     is_list,
