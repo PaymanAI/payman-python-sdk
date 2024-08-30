@@ -35,7 +35,6 @@ client = Paymanai(
     x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
     # defaults to "sandbox".
     environment="production",
-    x_payman_agent_id="My X Payman Agent ID",
 )
 
 task_get_task_response = client.tasks.get_task(
@@ -63,7 +62,6 @@ client = AsyncPaymanai(
     x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
     # defaults to "sandbox".
     environment="production",
-    x_payman_agent_id="My X Payman Agent ID",
 )
 
 
@@ -101,9 +99,7 @@ All errors inherit from `paymanai.APIError`.
 import paymanai
 from paymanai import Paymanai
 
-client = Paymanai(
-    x_payman_agent_id="My X Payman Agent ID",
-)
+client = Paymanai()
 
 try:
     client.tasks.get_task(
@@ -148,7 +144,6 @@ from paymanai import Paymanai
 client = Paymanai(
     # default is 2
     max_retries=0,
-    x_payman_agent_id="My X Payman Agent ID",
 )
 
 # Or, configure per-request:
@@ -169,13 +164,11 @@ from paymanai import Paymanai
 client = Paymanai(
     # 20 seconds (default is 1 minute)
     timeout=20.0,
-    x_payman_agent_id="My X Payman Agent ID",
 )
 
 # More granular control:
 client = Paymanai(
     timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
-    x_payman_agent_id="My X Payman Agent ID",
 )
 
 # Override per-request:
@@ -199,7 +192,6 @@ from paymanai import Paymanai
 
 client = Paymanai(
     default_headers={"Accept": "My-Custom-Value"},
-    x_payman_agent_id="My X Payman Agent ID",
 )
 ```
 
@@ -234,9 +226,7 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 ```py
 from paymanai import Paymanai
 
-client = Paymanai(
-    x_payman_agent_id="My X Payman Agent ID",
-)
+client = Paymanai()
 response = client.tasks.with_raw_response.get_task(
     "id",
 )
@@ -321,7 +311,6 @@ client = Paymanai(
         proxies="http://my.test.proxy.example.com",
         transport=httpx.HTTPTransport(local_address="0.0.0.0"),
     ),
-    x_payman_agent_id="My X Payman Agent ID",
 )
 ```
 

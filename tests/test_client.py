@@ -31,7 +31,6 @@ from paymanai._base_client import (
 from .utils import update_env
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
-x_payman_agent_id = "My X Payman Agent ID"
 x_payman_api_secret = "My X Payman API Secret"
 
 
@@ -54,12 +53,7 @@ def _get_open_connections(client: Paymanai | AsyncPaymanai) -> int:
 
 
 class TestPaymanai:
-    client = Paymanai(
-        base_url=base_url,
-        x_payman_agent_id=x_payman_agent_id,
-        x_payman_api_secret=x_payman_api_secret,
-        _strict_response_validation=True,
-    )
+    client = Paymanai(base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
 
     @pytest.mark.respx(base_url=base_url)
     def test_raw_response(self, respx_mock: MockRouter) -> None:
@@ -85,10 +79,6 @@ class TestPaymanai:
         copied = self.client.copy()
         assert id(copied) != id(self.client)
 
-        copied = self.client.copy(x_payman_agent_id="another My X Payman Agent ID")
-        assert copied.x_payman_agent_id == "another My X Payman Agent ID"
-        assert self.client.x_payman_agent_id == "My X Payman Agent ID"
-
         copied = self.client.copy(x_payman_api_secret="another My X Payman API Secret")
         assert copied.x_payman_api_secret == "another My X Payman API Secret"
         assert self.client.x_payman_api_secret == "My X Payman API Secret"
@@ -112,7 +102,6 @@ class TestPaymanai:
     def test_copy_default_headers(self) -> None:
         client = Paymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_headers={"X-Foo": "bar"},
@@ -150,7 +139,6 @@ class TestPaymanai:
     def test_copy_default_query(self) -> None:
         client = Paymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_query={"foo": "bar"},
@@ -279,7 +267,6 @@ class TestPaymanai:
     def test_client_timeout_option(self) -> None:
         client = Paymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             timeout=httpx.Timeout(0),
@@ -294,7 +281,6 @@ class TestPaymanai:
         with httpx.Client(timeout=None) as http_client:
             client = Paymanai(
                 base_url=base_url,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=http_client,
@@ -308,7 +294,6 @@ class TestPaymanai:
         with httpx.Client() as http_client:
             client = Paymanai(
                 base_url=base_url,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=http_client,
@@ -322,7 +307,6 @@ class TestPaymanai:
         with httpx.Client(timeout=HTTPX_DEFAULT_TIMEOUT) as http_client:
             client = Paymanai(
                 base_url=base_url,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=http_client,
@@ -337,7 +321,6 @@ class TestPaymanai:
             async with httpx.AsyncClient() as http_client:
                 Paymanai(
                     base_url=base_url,
-                    x_payman_agent_id=x_payman_agent_id,
                     x_payman_api_secret=x_payman_api_secret,
                     _strict_response_validation=True,
                     http_client=cast(Any, http_client),
@@ -346,7 +329,6 @@ class TestPaymanai:
     def test_default_headers_option(self) -> None:
         client = Paymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_headers={"X-Foo": "bar"},
@@ -357,7 +339,6 @@ class TestPaymanai:
 
         client2 = Paymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_headers={
@@ -370,29 +351,18 @@ class TestPaymanai:
         assert request.headers.get("x-stainless-lang") == "my-overriding-header"
 
     def test_validate_headers(self) -> None:
-        client = Paymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
-        )
+        client = Paymanai(base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-payman-api-secret") == x_payman_api_secret
 
         with pytest.raises(PaymanaiError):
             with update_env(**{"PAYMAN_API_SECRET": Omit()}):
-                client2 = Paymanai(
-                    base_url=base_url,
-                    x_payman_agent_id=x_payman_agent_id,
-                    x_payman_api_secret=None,
-                    _strict_response_validation=True,
-                )
+                client2 = Paymanai(base_url=base_url, x_payman_api_secret=None, _strict_response_validation=True)
             _ = client2
 
     def test_default_query_option(self) -> None:
         client = Paymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_query={"query_param": "bar"},
@@ -597,7 +567,6 @@ class TestPaymanai:
     def test_base_url_setter(self) -> None:
         client = Paymanai(
             base_url="https://example.com/from_init",
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
         )
@@ -609,26 +578,18 @@ class TestPaymanai:
 
     def test_base_url_env(self) -> None:
         with update_env(PAYMANAI_BASE_URL="http://localhost:5000/from/env"):
-            client = Paymanai(
-                x_payman_agent_id=x_payman_agent_id,
-                x_payman_api_secret=x_payman_api_secret,
-                _strict_response_validation=True,
-            )
+            client = Paymanai(x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
         # explicit environment arg requires explicitness
         with update_env(PAYMANAI_BASE_URL="http://localhost:5000/from/env"):
             with pytest.raises(ValueError, match=r"you must pass base_url=None"):
                 Paymanai(
-                    x_payman_agent_id=x_payman_agent_id,
-                    x_payman_api_secret=x_payman_api_secret,
-                    _strict_response_validation=True,
-                    environment="sandbox",
+                    x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True, environment="sandbox"
                 )
 
             client = Paymanai(
                 base_url=None,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 environment="sandbox",
@@ -640,13 +601,11 @@ class TestPaymanai:
         [
             Paymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
             ),
             Paymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=httpx.Client(),
@@ -669,13 +628,11 @@ class TestPaymanai:
         [
             Paymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
             ),
             Paymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=httpx.Client(),
@@ -698,13 +655,11 @@ class TestPaymanai:
         [
             Paymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
             ),
             Paymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=httpx.Client(),
@@ -723,12 +678,7 @@ class TestPaymanai:
         assert request.url == "https://myapi.com/foo"
 
     def test_copied_client_does_not_close_http(self) -> None:
-        client = Paymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
-        )
+        client = Paymanai(base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
         assert not client.is_closed()
 
         copied = client.copy()
@@ -739,12 +689,7 @@ class TestPaymanai:
         assert not client.is_closed()
 
     def test_client_context_manager(self) -> None:
-        client = Paymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
-        )
+        client = Paymanai(base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
         with client as c2:
             assert c2 is client
             assert not c2.is_closed()
@@ -767,7 +712,6 @@ class TestPaymanai:
         with pytest.raises(TypeError, match=r"max_retries cannot be None"):
             Paymanai(
                 base_url=base_url,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 max_retries=cast(Any, None),
@@ -781,21 +725,13 @@ class TestPaymanai:
         respx_mock.get("/foo").mock(return_value=httpx.Response(200, text="my-custom-format"))
 
         strict_client = Paymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
+            base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True
         )
 
         with pytest.raises(APIResponseValidationError):
             strict_client.get("/foo", cast_to=Model)
 
-        client = Paymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=False,
-        )
+        client = Paymanai(base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=False)
 
         response = client.get("/foo", cast_to=Model)
         assert isinstance(response, str)  # type: ignore[unreachable]
@@ -822,12 +758,7 @@ class TestPaymanai:
     )
     @mock.patch("time.time", mock.MagicMock(return_value=1696004797))
     def test_parse_retry_after_header(self, remaining_retries: int, retry_after: str, timeout: float) -> None:
-        client = Paymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
-        )
+        client = Paymanai(base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
 
         headers = httpx.Headers({"retry-after": retry_after})
         options = FinalRequestOptions(method="get", url="/foo", max_retries=3)
@@ -877,12 +808,7 @@ class TestPaymanai:
 
 
 class TestAsyncPaymanai:
-    client = AsyncPaymanai(
-        base_url=base_url,
-        x_payman_agent_id=x_payman_agent_id,
-        x_payman_api_secret=x_payman_api_secret,
-        _strict_response_validation=True,
-    )
+    client = AsyncPaymanai(base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
 
     @pytest.mark.respx(base_url=base_url)
     @pytest.mark.asyncio
@@ -910,10 +836,6 @@ class TestAsyncPaymanai:
         copied = self.client.copy()
         assert id(copied) != id(self.client)
 
-        copied = self.client.copy(x_payman_agent_id="another My X Payman Agent ID")
-        assert copied.x_payman_agent_id == "another My X Payman Agent ID"
-        assert self.client.x_payman_agent_id == "My X Payman Agent ID"
-
         copied = self.client.copy(x_payman_api_secret="another My X Payman API Secret")
         assert copied.x_payman_api_secret == "another My X Payman API Secret"
         assert self.client.x_payman_api_secret == "My X Payman API Secret"
@@ -937,7 +859,6 @@ class TestAsyncPaymanai:
     def test_copy_default_headers(self) -> None:
         client = AsyncPaymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_headers={"X-Foo": "bar"},
@@ -975,7 +896,6 @@ class TestAsyncPaymanai:
     def test_copy_default_query(self) -> None:
         client = AsyncPaymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_query={"foo": "bar"},
@@ -1104,7 +1024,6 @@ class TestAsyncPaymanai:
     async def test_client_timeout_option(self) -> None:
         client = AsyncPaymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             timeout=httpx.Timeout(0),
@@ -1119,7 +1038,6 @@ class TestAsyncPaymanai:
         async with httpx.AsyncClient(timeout=None) as http_client:
             client = AsyncPaymanai(
                 base_url=base_url,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=http_client,
@@ -1133,7 +1051,6 @@ class TestAsyncPaymanai:
         async with httpx.AsyncClient() as http_client:
             client = AsyncPaymanai(
                 base_url=base_url,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=http_client,
@@ -1147,7 +1064,6 @@ class TestAsyncPaymanai:
         async with httpx.AsyncClient(timeout=HTTPX_DEFAULT_TIMEOUT) as http_client:
             client = AsyncPaymanai(
                 base_url=base_url,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=http_client,
@@ -1162,7 +1078,6 @@ class TestAsyncPaymanai:
             with httpx.Client() as http_client:
                 AsyncPaymanai(
                     base_url=base_url,
-                    x_payman_agent_id=x_payman_agent_id,
                     x_payman_api_secret=x_payman_api_secret,
                     _strict_response_validation=True,
                     http_client=cast(Any, http_client),
@@ -1171,7 +1086,6 @@ class TestAsyncPaymanai:
     def test_default_headers_option(self) -> None:
         client = AsyncPaymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_headers={"X-Foo": "bar"},
@@ -1182,7 +1096,6 @@ class TestAsyncPaymanai:
 
         client2 = AsyncPaymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_headers={
@@ -1196,28 +1109,19 @@ class TestAsyncPaymanai:
 
     def test_validate_headers(self) -> None:
         client = AsyncPaymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
+            base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True
         )
         request = client._build_request(FinalRequestOptions(method="get", url="/foo"))
         assert request.headers.get("x-payman-api-secret") == x_payman_api_secret
 
         with pytest.raises(PaymanaiError):
             with update_env(**{"PAYMAN_API_SECRET": Omit()}):
-                client2 = AsyncPaymanai(
-                    base_url=base_url,
-                    x_payman_agent_id=x_payman_agent_id,
-                    x_payman_api_secret=None,
-                    _strict_response_validation=True,
-                )
+                client2 = AsyncPaymanai(base_url=base_url, x_payman_api_secret=None, _strict_response_validation=True)
             _ = client2
 
     def test_default_query_option(self) -> None:
         client = AsyncPaymanai(
             base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
             default_query={"query_param": "bar"},
@@ -1422,7 +1326,6 @@ class TestAsyncPaymanai:
     def test_base_url_setter(self) -> None:
         client = AsyncPaymanai(
             base_url="https://example.com/from_init",
-            x_payman_agent_id=x_payman_agent_id,
             x_payman_api_secret=x_payman_api_secret,
             _strict_response_validation=True,
         )
@@ -1434,26 +1337,18 @@ class TestAsyncPaymanai:
 
     def test_base_url_env(self) -> None:
         with update_env(PAYMANAI_BASE_URL="http://localhost:5000/from/env"):
-            client = AsyncPaymanai(
-                x_payman_agent_id=x_payman_agent_id,
-                x_payman_api_secret=x_payman_api_secret,
-                _strict_response_validation=True,
-            )
+            client = AsyncPaymanai(x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True)
             assert client.base_url == "http://localhost:5000/from/env/"
 
         # explicit environment arg requires explicitness
         with update_env(PAYMANAI_BASE_URL="http://localhost:5000/from/env"):
             with pytest.raises(ValueError, match=r"you must pass base_url=None"):
                 AsyncPaymanai(
-                    x_payman_agent_id=x_payman_agent_id,
-                    x_payman_api_secret=x_payman_api_secret,
-                    _strict_response_validation=True,
-                    environment="sandbox",
+                    x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True, environment="sandbox"
                 )
 
             client = AsyncPaymanai(
                 base_url=None,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 environment="sandbox",
@@ -1465,13 +1360,11 @@ class TestAsyncPaymanai:
         [
             AsyncPaymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
             ),
             AsyncPaymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=httpx.AsyncClient(),
@@ -1494,13 +1387,11 @@ class TestAsyncPaymanai:
         [
             AsyncPaymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
             ),
             AsyncPaymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=httpx.AsyncClient(),
@@ -1523,13 +1414,11 @@ class TestAsyncPaymanai:
         [
             AsyncPaymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
             ),
             AsyncPaymanai(
                 base_url="http://localhost:5000/custom/path/",
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 http_client=httpx.AsyncClient(),
@@ -1549,10 +1438,7 @@ class TestAsyncPaymanai:
 
     async def test_copied_client_does_not_close_http(self) -> None:
         client = AsyncPaymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
+            base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True
         )
         assert not client.is_closed()
 
@@ -1566,10 +1452,7 @@ class TestAsyncPaymanai:
 
     async def test_client_context_manager(self) -> None:
         client = AsyncPaymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
+            base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True
         )
         async with client as c2:
             assert c2 is client
@@ -1594,7 +1477,6 @@ class TestAsyncPaymanai:
         with pytest.raises(TypeError, match=r"max_retries cannot be None"):
             AsyncPaymanai(
                 base_url=base_url,
-                x_payman_agent_id=x_payman_agent_id,
                 x_payman_api_secret=x_payman_api_secret,
                 _strict_response_validation=True,
                 max_retries=cast(Any, None),
@@ -1609,20 +1491,14 @@ class TestAsyncPaymanai:
         respx_mock.get("/foo").mock(return_value=httpx.Response(200, text="my-custom-format"))
 
         strict_client = AsyncPaymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
+            base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True
         )
 
         with pytest.raises(APIResponseValidationError):
             await strict_client.get("/foo", cast_to=Model)
 
         client = AsyncPaymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=False,
+            base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=False
         )
 
         response = await client.get("/foo", cast_to=Model)
@@ -1652,10 +1528,7 @@ class TestAsyncPaymanai:
     @pytest.mark.asyncio
     async def test_parse_retry_after_header(self, remaining_retries: int, retry_after: str, timeout: float) -> None:
         client = AsyncPaymanai(
-            base_url=base_url,
-            x_payman_agent_id=x_payman_agent_id,
-            x_payman_api_secret=x_payman_api_secret,
-            _strict_response_validation=True,
+            base_url=base_url, x_payman_api_secret=x_payman_api_secret, _strict_response_validation=True
         )
 
         headers = httpx.Headers({"retry-after": retry_after})
