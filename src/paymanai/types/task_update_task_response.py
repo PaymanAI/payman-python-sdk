@@ -1,17 +1,12 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .._models import BaseModel
-
-from typing_extensions import Literal
-
-from typing import Optional, Dict
-
+from typing import Dict, Optional
 from datetime import datetime
-
-from typing import Optional, Union, List, Dict, Any
 from typing_extensions import Literal
+
 from pydantic import Field as FieldInfo
-from ..types import shared
+
+from .._models import BaseModel
 
 __all__ = ["TaskUpdateTaskResponse", "Currency", "VerificationConfiguration"]
 
@@ -126,6 +121,13 @@ class TaskUpdateTaskResponse(BaseModel):
     This map is only populated immediately in response to the creation of the task
     and will contain the link that was emailedto each invited address. Also note
     that these links will only become valid once the task is published.
+    """
+
+    metadata: Optional[Dict[str, str]] = None
+    """Agent provided metadata related to this task.
+
+    You may use this to store correlation data.When a task related payload is sent
+    to any registered webhook, this metadata will be included
     """
 
     payout_wallet_id: Optional[str] = FieldInfo(alias="payoutWalletId", default=None)

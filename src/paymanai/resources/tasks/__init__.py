@@ -1,32 +1,36 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from .assignments import AssignmentsResource, AsyncAssignmentsResource
-from .assignments import (
-    AssignmentsResourceWithRawResponse,
-    AsyncAssignmentsResourceWithRawResponse,
-    AssignmentsResourceWithStreamingResponse,
-    AsyncAssignmentsResourceWithStreamingResponse,
+from .tasks import (
+    TasksResource,
+    AsyncTasksResource,
+    TasksResourceWithRawResponse,
+    AsyncTasksResourceWithRawResponse,
+    TasksResourceWithStreamingResponse,
+    AsyncTasksResourceWithStreamingResponse,
 )
-from .submissions import SubmissionsResource, AsyncSubmissionsResource
-from .submissions import (
-    SubmissionsResourceWithRawResponse,
-    AsyncSubmissionsResourceWithRawResponse,
-    SubmissionsResourceWithStreamingResponse,
-    AsyncSubmissionsResourceWithStreamingResponse,
-)
-from .categories import CategoriesResource, AsyncCategoriesResource
 from .categories import (
+    CategoriesResource,
+    AsyncCategoriesResource,
     CategoriesResourceWithRawResponse,
     AsyncCategoriesResourceWithRawResponse,
     CategoriesResourceWithStreamingResponse,
     AsyncCategoriesResourceWithStreamingResponse,
 )
-from .tasks import TasksResource, AsyncTasksResource
-from .tasks import (
-    TasksResourceWithRawResponse,
-    AsyncTasksResourceWithRawResponse,
-    TasksResourceWithStreamingResponse,
-    AsyncTasksResourceWithStreamingResponse,
+from .assignments import (
+    AssignmentsResource,
+    AsyncAssignmentsResource,
+    AssignmentsResourceWithRawResponse,
+    AsyncAssignmentsResourceWithRawResponse,
+    AssignmentsResourceWithStreamingResponse,
+    AsyncAssignmentsResourceWithStreamingResponse,
+)
+from .submissions import (
+    SubmissionsResource,
+    AsyncSubmissionsResource,
+    SubmissionsResourceWithRawResponse,
+    AsyncSubmissionsResourceWithRawResponse,
+    SubmissionsResourceWithStreamingResponse,
+    AsyncSubmissionsResourceWithStreamingResponse,
 )
 
 __all__ = [

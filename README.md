@@ -33,10 +33,9 @@ from paymanai import Paymanai
 client = Paymanai(
     # This is the default and can be omitted
     x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
-    # This is the default and can be omitted
-    x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
     # defaults to "sandbox".
     environment="production",
+    x_payman_agent_id="My X Payman Agent ID",
 )
 
 task_get_task_response = client.tasks.get_task(
@@ -45,10 +44,10 @@ task_get_task_response = client.tasks.get_task(
 print(task_get_task_response.id)
 ```
 
-While you can provide a `x_payman_agent_id` keyword argument,
+While you can provide a `x_payman_api_secret` keyword argument,
 we recommend using [python-dotenv](https://pypi.org/project/python-dotenv/)
-to add `PAYMAN_AGENT_ID="My X Payman Agent ID"` to your `.env` file
-so that your X Payman Agent ID is not stored in source control.
+to add `PAYMAN_API_SECRET="My X Payman API Secret"` to your `.env` file
+so that your X Payman API Secret is not stored in source control.
 
 ## Async usage
 
@@ -62,17 +61,18 @@ from paymanai import AsyncPaymanai
 client = AsyncPaymanai(
     # This is the default and can be omitted
     x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
-    # This is the default and can be omitted
-    x_payman_agent_id=os.environ.get("PAYMAN_AGENT_ID"),
     # defaults to "sandbox".
     environment="production",
+    x_payman_agent_id="My X Payman Agent ID",
 )
 
+
 async def main() -> None:
-  task_get_task_response = await client.tasks.get_task(
-      "id",
-  )
-  print(task_get_task_response.id)
+    task_get_task_response = await client.tasks.get_task(
+        "id",
+    )
+    print(task_get_task_response.id)
+
 
 asyncio.run(main())
 ```
@@ -101,7 +101,9 @@ All errors inherit from `paymanai.APIError`.
 import paymanai
 from paymanai import Paymanai
 
-client = Paymanai()
+client = Paymanai(
+    x_payman_agent_id="My X Payman Agent ID",
+)
 
 try:
     client.tasks.get_task(
@@ -109,7 +111,7 @@ try:
     )
 except paymanai.APIConnectionError as e:
     print("The server could not be reached")
-    print(e.__cause__) # an underlying Exception, likely raised within httpx.
+    print(e.__cause__)  # an underlying Exception, likely raised within httpx.
 except paymanai.RateLimitError as e:
     print("A 429 status code was received; we should back off a bit.")
 except paymanai.APIStatusError as e:
@@ -146,10 +148,11 @@ from paymanai import Paymanai
 client = Paymanai(
     # default is 2
     max_retries=0,
+    x_payman_agent_id="My X Payman Agent ID",
 )
 
 # Or, configure per-request:
-client.with_options(max_retries = 5).tasks.get_task(
+client.with_options(max_retries=5).tasks.get_task(
     "id",
 )
 ```
@@ -166,15 +169,17 @@ from paymanai import Paymanai
 client = Paymanai(
     # 20 seconds (default is 1 minute)
     timeout=20.0,
+    x_payman_agent_id="My X Payman Agent ID",
 )
 
 # More granular control:
 client = Paymanai(
     timeout=httpx.Timeout(60.0, read=5.0, write=10.0, connect=2.0),
+    x_payman_agent_id="My X Payman Agent ID",
 )
 
 # Override per-request:
-client.with_options(timeout = 5.0).tasks.get_task(
+client.with_options(timeout=5.0).tasks.get_task(
     "id",
 )
 ```
@@ -193,9 +198,8 @@ If you need to, you can override it by setting default headers per-request or on
 from paymanai import Paymanai
 
 client = Paymanai(
-    default_headers={
-        "Accept": "My-Custom-Value"
-    },
+    default_headers={"Accept": "My-Custom-Value"},
+    x_payman_agent_id="My X Payman Agent ID",
 )
 ```
 
@@ -230,7 +234,9 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 ```py
 from paymanai import Paymanai
 
-client = Paymanai()
+client = Paymanai(
+    x_payman_agent_id="My X Payman Agent ID",
+)
 response = client.tasks.with_raw_response.get_task(
     "id",
 )
@@ -253,11 +259,11 @@ To stream the response body, use `.with_streaming_response` instead, which requi
 ```python
 with client.tasks.with_streaming_response.get_task(
     "id",
-) as response :
-    print(response.headers.get('X-My-Header'))
+) as response:
+    print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():
-      print(line)
+        print(line)
 ```
 
 The context manager is required so that the response will reliably be closed.
@@ -311,7 +317,11 @@ from paymanai import Paymanai, DefaultHttpxClient
 client = Paymanai(
     # Or use the `PAYMANAI_BASE_URL` env var
     base_url="http://my.test.server.example.com:8083",
-    http_client=DefaultHttpxClient(proxies="http://my.test.proxy.example.com", transport=httpx.HTTPTransport(local_address="0.0.0.0")),
+    http_client=DefaultHttpxClient(
+        proxies="http://my.test.proxy.example.com",
+        transport=httpx.HTTPTransport(local_address="0.0.0.0"),
+    ),
+    x_payman_agent_id="My X Payman Agent ID",
 )
 ```
 
