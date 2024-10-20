@@ -5,6 +5,7 @@ Types:
 ```python
 from paymanai.types import (
     TaskCreateTaskResponse,
+    TaskGetCategoriesResponse,
     TaskGetTaskResponse,
     TaskListTasksResponse,
     TaskUpdateTaskResponse,
@@ -14,6 +15,7 @@ from paymanai.types import (
 Methods:
 
 - <code title="post /tasks">client.tasks.<a href="./src/paymanai/resources/tasks/tasks.py">create_task</a>(\*\*<a href="src/paymanai/types/task_create_task_params.py">params</a>) -> <a href="./src/paymanai/types/task_create_task_response.py">TaskCreateTaskResponse</a></code>
+- <code title="get /tasks/categories">client.tasks.<a href="./src/paymanai/resources/tasks/tasks.py">get_categories</a>() -> <a href="./src/paymanai/types/task_get_categories_response.py">TaskGetCategoriesResponse</a></code>
 - <code title="get /tasks/{id}">client.tasks.<a href="./src/paymanai/resources/tasks/tasks.py">get_task</a>(id) -> <a href="./src/paymanai/types/task_get_task_response.py">TaskGetTaskResponse</a></code>
 - <code title="get /tasks">client.tasks.<a href="./src/paymanai/resources/tasks/tasks.py">list_tasks</a>(\*\*<a href="src/paymanai/types/task_list_tasks_params.py">params</a>) -> <a href="./src/paymanai/types/task_list_tasks_response.py">TaskListTasksResponse</a></code>
 - <code title="put /tasks/{id}">client.tasks.<a href="./src/paymanai/resources/tasks/tasks.py">update_task</a>(id, \*\*<a href="src/paymanai/types/task_update_task_params.py">params</a>) -> <a href="./src/paymanai/types/task_update_task_response.py">TaskUpdateTaskResponse</a></code>
@@ -75,3 +77,28 @@ Methods:
 Methods:
 
 - <code title="get /version">client.version.<a href="./src/paymanai/resources/version.py">get_server_version</a>() -> BinaryAPIResponse</code>
+
+# Balances
+
+Types:
+
+```python
+from paymanai.types import BalanceGetCustomerBalanceResponse, BalanceGetSpendableBalanceResponse
+```
+
+Methods:
+
+- <code title="get /balances/customers/{customerId}/currencies/{currency}">client.balances.<a href="./src/paymanai/resources/balances.py">get_customer_balance</a>(currency, \*, customer_id) -> <a href="./src/paymanai/types/balance_get_customer_balance_response.py">BalanceGetCustomerBalanceResponse</a></code>
+- <code title="get /balances/currencies/{currency}">client.balances.<a href="./src/paymanai/resources/balances.py">get_spendable_balance</a>(currency) -> <a href="./src/paymanai/types/balance_get_spendable_balance_response.py">BalanceGetSpendableBalanceResponse</a></code>
+
+# Payments
+
+Types:
+
+```python
+from paymanai.types import PaymentInitiateCustomerDepositResponse
+```
+
+Methods:
+
+- <code title="post /payments/initiate-customer-deposit">client.payments.<a href="./src/paymanai/resources/payments.py">initiate_customer_deposit</a>(\*\*<a href="src/paymanai/types/payment_initiate_customer_deposit_params.py">params</a>) -> <a href="./src/paymanai/types/payment_initiate_customer_deposit_response.py">PaymentInitiateCustomerDepositResponse</a></code>

@@ -24,6 +24,22 @@ from .wallets import (
     WalletsResourceWithStreamingResponse,
     AsyncWalletsResourceWithStreamingResponse,
 )
+from .balances import (
+    BalancesResource,
+    AsyncBalancesResource,
+    BalancesResourceWithRawResponse,
+    AsyncBalancesResourceWithRawResponse,
+    BalancesResourceWithStreamingResponse,
+    AsyncBalancesResourceWithStreamingResponse,
+)
+from .payments import (
+    PaymentsResource,
+    AsyncPaymentsResource,
+    PaymentsResourceWithRawResponse,
+    AsyncPaymentsResourceWithRawResponse,
+    PaymentsResourceWithStreamingResponse,
+    AsyncPaymentsResourceWithStreamingResponse,
+)
 
 __all__ = [
     "TasksResource",
@@ -44,4 +60,16 @@ __all__ = [
     "AsyncVersionResourceWithRawResponse",
     "VersionResourceWithStreamingResponse",
     "AsyncVersionResourceWithStreamingResponse",
+    "BalancesResource",
+    "AsyncBalancesResource",
+    "BalancesResourceWithRawResponse",
+    "AsyncBalancesResourceWithRawResponse",
+    "BalancesResourceWithStreamingResponse",
+    "AsyncBalancesResourceWithStreamingResponse",
+    "PaymentsResource",
+    "AsyncPaymentsResource",
+    "PaymentsResourceWithRawResponse",
+    "AsyncPaymentsResourceWithRawResponse",
+    "PaymentsResourceWithStreamingResponse",
+    "AsyncPaymentsResourceWithStreamingResponse",
 ]

@@ -55,6 +55,8 @@ class Paymanai(SyncAPIClient):
     tasks: resources.TasksResource
     wallets: resources.WalletsResource
     version: resources.VersionResource
+    balances: resources.BalancesResource
+    payments: resources.PaymentsResource
     with_raw_response: PaymanaiWithRawResponse
     with_streaming_response: PaymanaiWithStreamedResponse
 
@@ -139,6 +141,8 @@ class Paymanai(SyncAPIClient):
         self.tasks = resources.TasksResource(self)
         self.wallets = resources.WalletsResource(self)
         self.version = resources.VersionResource(self)
+        self.balances = resources.BalancesResource(self)
+        self.payments = resources.PaymentsResource(self)
         self.with_raw_response = PaymanaiWithRawResponse(self)
         self.with_streaming_response = PaymanaiWithStreamedResponse(self)
 
@@ -254,6 +258,8 @@ class AsyncPaymanai(AsyncAPIClient):
     tasks: resources.AsyncTasksResource
     wallets: resources.AsyncWalletsResource
     version: resources.AsyncVersionResource
+    balances: resources.AsyncBalancesResource
+    payments: resources.AsyncPaymentsResource
     with_raw_response: AsyncPaymanaiWithRawResponse
     with_streaming_response: AsyncPaymanaiWithStreamedResponse
 
@@ -338,6 +344,8 @@ class AsyncPaymanai(AsyncAPIClient):
         self.tasks = resources.AsyncTasksResource(self)
         self.wallets = resources.AsyncWalletsResource(self)
         self.version = resources.AsyncVersionResource(self)
+        self.balances = resources.AsyncBalancesResource(self)
+        self.payments = resources.AsyncPaymentsResource(self)
         self.with_raw_response = AsyncPaymanaiWithRawResponse(self)
         self.with_streaming_response = AsyncPaymanaiWithStreamedResponse(self)
 
@@ -454,6 +462,8 @@ class PaymanaiWithRawResponse:
         self.tasks = resources.TasksResourceWithRawResponse(client.tasks)
         self.wallets = resources.WalletsResourceWithRawResponse(client.wallets)
         self.version = resources.VersionResourceWithRawResponse(client.version)
+        self.balances = resources.BalancesResourceWithRawResponse(client.balances)
+        self.payments = resources.PaymentsResourceWithRawResponse(client.payments)
 
 
 class AsyncPaymanaiWithRawResponse:
@@ -461,6 +471,8 @@ class AsyncPaymanaiWithRawResponse:
         self.tasks = resources.AsyncTasksResourceWithRawResponse(client.tasks)
         self.wallets = resources.AsyncWalletsResourceWithRawResponse(client.wallets)
         self.version = resources.AsyncVersionResourceWithRawResponse(client.version)
+        self.balances = resources.AsyncBalancesResourceWithRawResponse(client.balances)
+        self.payments = resources.AsyncPaymentsResourceWithRawResponse(client.payments)
 
 
 class PaymanaiWithStreamedResponse:
@@ -468,6 +480,8 @@ class PaymanaiWithStreamedResponse:
         self.tasks = resources.TasksResourceWithStreamingResponse(client.tasks)
         self.wallets = resources.WalletsResourceWithStreamingResponse(client.wallets)
         self.version = resources.VersionResourceWithStreamingResponse(client.version)
+        self.balances = resources.BalancesResourceWithStreamingResponse(client.balances)
+        self.payments = resources.PaymentsResourceWithStreamingResponse(client.payments)
 
 
 class AsyncPaymanaiWithStreamedResponse:
@@ -475,6 +489,8 @@ class AsyncPaymanaiWithStreamedResponse:
         self.tasks = resources.AsyncTasksResourceWithStreamingResponse(client.tasks)
         self.wallets = resources.AsyncWalletsResourceWithStreamingResponse(client.wallets)
         self.version = resources.AsyncVersionResourceWithStreamingResponse(client.version)
+        self.balances = resources.AsyncBalancesResourceWithStreamingResponse(client.balances)
+        self.payments = resources.AsyncPaymentsResourceWithStreamingResponse(client.payments)
 
 
 Client = Paymanai

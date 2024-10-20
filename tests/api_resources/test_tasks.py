@@ -14,6 +14,7 @@ from paymanai.types import (
     TaskListTasksResponse,
     TaskCreateTaskResponse,
     TaskUpdateTaskResponse,
+    TaskGetCategoriesResponse,
 )
 from paymanai._utils import parse_datetime
 
@@ -78,6 +79,31 @@ class TestTasks:
 
             task = response.parse()
             assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_method_get_categories(self, client: Paymanai) -> None:
+        task = client.tasks.get_categories()
+        assert_matches_type(TaskGetCategoriesResponse, task, path=["response"])
+
+    @parametrize
+    def test_raw_response_get_categories(self, client: Paymanai) -> None:
+        response = client.tasks.with_raw_response.get_categories()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        task = response.parse()
+        assert_matches_type(TaskGetCategoriesResponse, task, path=["response"])
+
+    @parametrize
+    def test_streaming_response_get_categories(self, client: Paymanai) -> None:
+        with client.tasks.with_streaming_response.get_categories() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            task = response.parse()
+            assert_matches_type(TaskGetCategoriesResponse, task, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
@@ -257,6 +283,31 @@ class TestAsyncTasks:
 
             task = await response.parse()
             assert_matches_type(TaskCreateTaskResponse, task, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_method_get_categories(self, async_client: AsyncPaymanai) -> None:
+        task = await async_client.tasks.get_categories()
+        assert_matches_type(TaskGetCategoriesResponse, task, path=["response"])
+
+    @parametrize
+    async def test_raw_response_get_categories(self, async_client: AsyncPaymanai) -> None:
+        response = await async_client.tasks.with_raw_response.get_categories()
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        task = await response.parse()
+        assert_matches_type(TaskGetCategoriesResponse, task, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_get_categories(self, async_client: AsyncPaymanai) -> None:
+        async with async_client.tasks.with_streaming_response.get_categories() as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            task = await response.parse()
+            assert_matches_type(TaskGetCategoriesResponse, task, path=["response"])
 
         assert cast(Any, response.is_closed) is True
 
