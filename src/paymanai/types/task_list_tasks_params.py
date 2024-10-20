@@ -12,4 +12,4 @@ class TaskListTasksParams(TypedDict, total=False):
     """The number of items per page"""
 
     page: int
-    """The page number to retrieve"""
+    """The page number to retrieve (0-indexed)"""

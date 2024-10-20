@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from typing import List
 from typing_extensions import Literal
 
 import httpx
@@ -30,10 +29,21 @@ __all__ = ["SubmissionsResource", "AsyncSubmissionsResource"]
 class SubmissionsResource(SyncAPIResource):
     @cached_property
     def with_raw_response(self) -> SubmissionsResourceWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#accessing-raw-response-data-eg-headers
+        """
         return SubmissionsResourceWithRawResponse(self)
 
     @cached_property
     def with_streaming_response(self) -> SubmissionsResourceWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
+        """
         return SubmissionsResourceWithStreamingResponse(self)
 
     def list_task_submissions(
@@ -42,17 +52,15 @@ class SubmissionsResource(SyncAPIResource):
         *,
         limit: int | NotGiven = NOT_GIVEN,
         page: int | NotGiven = NOT_GIVEN,
-        statuses: List[
-            Literal[
-                "PENDING",
-                "APPROVED_REQUIRES_REVIEW",
-                "REJECTED_REQUIRES_REVIEW",
-                "APPROVED",
-                "REJECTED",
-                "VERIFICATION_FAILED",
-                "DELETED",
-                "CANCELLED",
-            ]
+        statuses: Literal[
+            "PENDING",
+            "APPROVED_REQUIRES_REVIEW",
+            "REJECTED_REQUIRES_REVIEW",
+            "APPROVED",
+            "REJECTED",
+            "VERIFICATION_FAILED",
+            "DELETED",
+            "CANCELLED",
         ]
         | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -66,6 +74,12 @@ class SubmissionsResource(SyncAPIResource):
         Get all submissions for a task
 
         Args:
+          limit: The number of items per page
+
+          page: The page number to retrieve (0-indexed)
+
+          statuses: The statuses you want to filter by. Defaults to PENDING and APPROVED
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -100,10 +114,21 @@ class SubmissionsResource(SyncAPIResource):
 class AsyncSubmissionsResource(AsyncAPIResource):
     @cached_property
     def with_raw_response(self) -> AsyncSubmissionsResourceWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#accessing-raw-response-data-eg-headers
+        """
         return AsyncSubmissionsResourceWithRawResponse(self)
 
     @cached_property
     def with_streaming_response(self) -> AsyncSubmissionsResourceWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
+        """
         return AsyncSubmissionsResourceWithStreamingResponse(self)
 
     async def list_task_submissions(
@@ -112,17 +137,15 @@ class AsyncSubmissionsResource(AsyncAPIResource):
         *,
         limit: int | NotGiven = NOT_GIVEN,
         page: int | NotGiven = NOT_GIVEN,
-        statuses: List[
-            Literal[
-                "PENDING",
-                "APPROVED_REQUIRES_REVIEW",
-                "REJECTED_REQUIRES_REVIEW",
-                "APPROVED",
-                "REJECTED",
-                "VERIFICATION_FAILED",
-                "DELETED",
-                "CANCELLED",
-            ]
+        statuses: Literal[
+            "PENDING",
+            "APPROVED_REQUIRES_REVIEW",
+            "REJECTED_REQUIRES_REVIEW",
+            "APPROVED",
+            "REJECTED",
+            "VERIFICATION_FAILED",
+            "DELETED",
+            "CANCELLED",
         ]
         | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -136,6 +159,12 @@ class AsyncSubmissionsResource(AsyncAPIResource):
         Get all submissions for a task
 
         Args:
+          limit: The number of items per page
+
+          page: The page number to retrieve (0-indexed)
+
+          statuses: The statuses you want to filter by. Defaults to PENDING and APPROVED
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request

@@ -19,7 +19,7 @@ class TaskCreateTaskParams(TypedDict, total=False):
     expected standard.
     """
 
-    payout: Required[int]
+    payout_decimal: Required[Annotated[float, PropertyInfo(alias="payoutDecimal")]]
     """The amount being offered for each approved submission on this task.
 
     Note the amount is denominated in base units of the currency, so a payout of 100
@@ -45,6 +45,11 @@ class TaskCreateTaskParams(TypedDict, total=False):
 
     Defaults to 'OTHER' if omitted.
     """
+
+    currency: str
+    """The currency is only required if a customerId is provided."""
+
+    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
 
     deadline: Annotated[Union[str, datetime], PropertyInfo(format="iso8601")]
     """The deadline for this task.
@@ -84,21 +89,6 @@ class TaskCreateTaskParams(TypedDict, total=False):
     provided if present).
     """
 
-    submission_policy: Annotated[
-        Literal[
-            "OPEN_SUBMISSIONS_ONE_PER_USER",
-            "OPEN_SUBMISSIONS_MANY_PER_USER",
-            "PRE_ASSIGNED_SUBMISSIONS",
-            "OPEN_ASSIGNED_SUBMISSIONS",
-        ],
-        PropertyInfo(alias="submissionPolicy"),
-    ]
-    """The policy determining who may submit solutions for this task.
-
-    Defaults to OPEN_SUBMISSIONS_ONE_PER_USER if omitted, or
-    PRE_ASSIGNED_SUBMISSIONS if inviteEmails are specified.
-    """
-
     verification_configuration: Annotated[VerificationConfiguration, PropertyInfo(alias="verificationConfiguration")]
     """The configuration to be applied during task verification.
 
@@ -110,4 +100,4 @@ class TaskCreateTaskParams(TypedDict, total=False):
 class VerificationConfiguration(TypedDict, total=False):
     custom_prompt: Annotated[str, PropertyInfo(alias="customPrompt")]
 
-    type: Literal["default", "custom_prompt", "developer_managed", "none"]
+    type: Literal["generic", "custom_prompt", "developer_managed", "none"]

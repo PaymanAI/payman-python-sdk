@@ -37,10 +37,10 @@ client = Paymanai(
     environment="production",
 )
 
-task_get_task_response = client.tasks.get_task(
+response = client.tasks.get_task(
     "id",
 )
-print(task_get_task_response.id)
+print(response.id)
 ```
 
 While you can provide a `x_payman_api_secret` keyword argument,
@@ -66,10 +66,10 @@ client = AsyncPaymanai(
 
 
 async def main() -> None:
-    task_get_task_response = await client.tasks.get_task(
+    response = await client.tasks.get_task(
         "id",
     )
-    print(task_get_task_response.id)
+    print(response.id)
 
 
 asyncio.run(main())
@@ -336,6 +336,21 @@ We take backwards-compatibility seriously and work hard to ensure you can rely o
 
 We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/paymanai-python/issues) with questions, bugs, or suggestions.
 
+### Determining the installed version
+
+If you've upgraded to the latest version but aren't seeing any new features you were expecting then your python environment is likely still using an older version.
+
+You can determine the version that is being used at runtime with:
+
+```py
+import paymanai
+print(paymanai.__version__)
+```
+
 ## Requirements
 
 Python 3.7 or higher.
+
+## Contributing
+
+See [the contributing documentation](./CONTRIBUTING.md).

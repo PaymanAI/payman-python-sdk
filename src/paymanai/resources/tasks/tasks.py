@@ -70,17 +70,28 @@ class TasksResource(SyncAPIResource):
 
     @cached_property
     def with_raw_response(self) -> TasksResourceWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#accessing-raw-response-data-eg-headers
+        """
         return TasksResourceWithRawResponse(self)
 
     @cached_property
     def with_streaming_response(self) -> TasksResourceWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
+        """
         return TasksResourceWithStreamingResponse(self)
 
     def create_task(
         self,
         *,
         description: str,
-        payout: int,
+        payout_decimal: float,
         title: str,
         category: Literal[
             "MARKETING",
@@ -95,18 +106,13 @@ class TasksResource(SyncAPIResource):
             "OTHER",
         ]
         | NotGiven = NOT_GIVEN,
+        currency: str | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         deadline: Union[str, datetime] | NotGiven = NOT_GIVEN,
         invite_emails: List[str] | NotGiven = NOT_GIVEN,
         metadata: Dict[str, str] | NotGiven = NOT_GIVEN,
         payout_wallet_id: str | NotGiven = NOT_GIVEN,
         required_submissions: int | NotGiven = NOT_GIVEN,
-        submission_policy: Literal[
-            "OPEN_SUBMISSIONS_ONE_PER_USER",
-            "OPEN_SUBMISSIONS_MANY_PER_USER",
-            "PRE_ASSIGNED_SUBMISSIONS",
-            "OPEN_ASSIGNED_SUBMISSIONS",
-        ]
-        | NotGiven = NOT_GIVEN,
         verification_configuration: task_create_task_params.VerificationConfiguration | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -123,7 +129,7 @@ class TasksResource(SyncAPIResource):
         This should include enough information for
               the user to complete the task to the expected standard.
 
-          payout: The amount being offered for each approved submission on this task. Note the
+          payout_decimal: The amount being offered for each approved submission on this task. Note the
               amount is denominated in base units of the currency, so a payout of 100 in USD
               would mean the payout would be $1.00.
 
@@ -131,6 +137,8 @@ class TasksResource(SyncAPIResource):
 
           category: The task category this task should be shown under. Defaults to 'OTHER' if
               omitted.
+
+          currency: The currency is only required if a customerId is provided.
 
           deadline: The deadline for this task. If this is set, the task will be closed after this
               time regardless of the number of submissions received and approved. If unset,
@@ -154,10 +162,6 @@ class TasksResource(SyncAPIResource):
               and approved. Defaults to 1 if omitted (or the number of inviteEmails provided
               if present).
 
-          submission_policy: The policy determining who may submit solutions for this task. Defaults to
-              OPEN_SUBMISSIONS_ONE_PER_USER if omitted, or PRE_ASSIGNED_SUBMISSIONS if
-              inviteEmails are specified.
-
           verification_configuration: The configuration to be applied during task verification. The Payman
               verification enginewill use this to customize the verification of this task.
 
@@ -175,15 +179,16 @@ class TasksResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "description": description,
-                    "payout": payout,
+                    "payout_decimal": payout_decimal,
                     "title": title,
                     "category": category,
+                    "currency": currency,
+                    "customer_id": customer_id,
                     "deadline": deadline,
                     "invite_emails": invite_emails,
                     "metadata": metadata,
                     "payout_wallet_id": payout_wallet_id,
                     "required_submissions": required_submissions,
-                    "submission_policy": submission_policy,
                     "verification_configuration": verification_configuration,
                 },
                 task_create_task_params.TaskCreateTaskParams,
@@ -246,7 +251,7 @@ class TasksResource(SyncAPIResource):
         Args:
           limit: The number of items per page
 
-          page: The page number to retrieve
+          page: The page number to retrieve (0-indexed)
 
           extra_headers: Send extra headers
 
@@ -339,17 +344,28 @@ class AsyncTasksResource(AsyncAPIResource):
 
     @cached_property
     def with_raw_response(self) -> AsyncTasksResourceWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#accessing-raw-response-data-eg-headers
+        """
         return AsyncTasksResourceWithRawResponse(self)
 
     @cached_property
     def with_streaming_response(self) -> AsyncTasksResourceWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
+        """
         return AsyncTasksResourceWithStreamingResponse(self)
 
     async def create_task(
         self,
         *,
         description: str,
-        payout: int,
+        payout_decimal: float,
         title: str,
         category: Literal[
             "MARKETING",
@@ -364,18 +380,13 @@ class AsyncTasksResource(AsyncAPIResource):
             "OTHER",
         ]
         | NotGiven = NOT_GIVEN,
+        currency: str | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         deadline: Union[str, datetime] | NotGiven = NOT_GIVEN,
         invite_emails: List[str] | NotGiven = NOT_GIVEN,
         metadata: Dict[str, str] | NotGiven = NOT_GIVEN,
         payout_wallet_id: str | NotGiven = NOT_GIVEN,
         required_submissions: int | NotGiven = NOT_GIVEN,
-        submission_policy: Literal[
-            "OPEN_SUBMISSIONS_ONE_PER_USER",
-            "OPEN_SUBMISSIONS_MANY_PER_USER",
-            "PRE_ASSIGNED_SUBMISSIONS",
-            "OPEN_ASSIGNED_SUBMISSIONS",
-        ]
-        | NotGiven = NOT_GIVEN,
         verification_configuration: task_create_task_params.VerificationConfiguration | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -392,7 +403,7 @@ class AsyncTasksResource(AsyncAPIResource):
         This should include enough information for
               the user to complete the task to the expected standard.
 
-          payout: The amount being offered for each approved submission on this task. Note the
+          payout_decimal: The amount being offered for each approved submission on this task. Note the
               amount is denominated in base units of the currency, so a payout of 100 in USD
               would mean the payout would be $1.00.
 
@@ -400,6 +411,8 @@ class AsyncTasksResource(AsyncAPIResource):
 
           category: The task category this task should be shown under. Defaults to 'OTHER' if
               omitted.
+
+          currency: The currency is only required if a customerId is provided.
 
           deadline: The deadline for this task. If this is set, the task will be closed after this
               time regardless of the number of submissions received and approved. If unset,
@@ -423,10 +436,6 @@ class AsyncTasksResource(AsyncAPIResource):
               and approved. Defaults to 1 if omitted (or the number of inviteEmails provided
               if present).
 
-          submission_policy: The policy determining who may submit solutions for this task. Defaults to
-              OPEN_SUBMISSIONS_ONE_PER_USER if omitted, or PRE_ASSIGNED_SUBMISSIONS if
-              inviteEmails are specified.
-
           verification_configuration: The configuration to be applied during task verification. The Payman
               verification enginewill use this to customize the verification of this task.
 
@@ -444,15 +453,16 @@ class AsyncTasksResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "description": description,
-                    "payout": payout,
+                    "payout_decimal": payout_decimal,
                     "title": title,
                     "category": category,
+                    "currency": currency,
+                    "customer_id": customer_id,
                     "deadline": deadline,
                     "invite_emails": invite_emails,
                     "metadata": metadata,
                     "payout_wallet_id": payout_wallet_id,
                     "required_submissions": required_submissions,
-                    "submission_policy": submission_policy,
                     "verification_configuration": verification_configuration,
                 },
                 task_create_task_params.TaskCreateTaskParams,
@@ -515,7 +525,7 @@ class AsyncTasksResource(AsyncAPIResource):
         Args:
           limit: The number of items per page
 
-          page: The page number to retrieve
+          page: The page number to retrieve (0-indexed)
 
           extra_headers: Send extra headers
 

@@ -22,10 +22,21 @@ __all__ = ["CategoriesResource", "AsyncCategoriesResource"]
 class CategoriesResource(SyncAPIResource):
     @cached_property
     def with_raw_response(self) -> CategoriesResourceWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#accessing-raw-response-data-eg-headers
+        """
         return CategoriesResourceWithRawResponse(self)
 
     @cached_property
     def with_streaming_response(self) -> CategoriesResourceWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
+        """
         return CategoriesResourceWithStreamingResponse(self)
 
     def list_task_categories(
@@ -55,10 +66,21 @@ class CategoriesResource(SyncAPIResource):
 class AsyncCategoriesResource(AsyncAPIResource):
     @cached_property
     def with_raw_response(self) -> AsyncCategoriesResourceWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#accessing-raw-response-data-eg-headers
+        """
         return AsyncCategoriesResourceWithRawResponse(self)
 
     @cached_property
     def with_streaming_response(self) -> AsyncCategoriesResourceWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
+        """
         return AsyncCategoriesResourceWithStreamingResponse(self)
 
     async def list_task_categories(
