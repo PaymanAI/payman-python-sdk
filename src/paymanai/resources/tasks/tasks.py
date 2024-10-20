@@ -51,6 +51,7 @@ from ...types.task_get_task_response import TaskGetTaskResponse
 from ...types.task_list_tasks_response import TaskListTasksResponse
 from ...types.task_create_task_response import TaskCreateTaskResponse
 from ...types.task_update_task_response import TaskUpdateTaskResponse
+from ...types.task_get_categories_response import TaskGetCategoriesResponse
 
 __all__ = ["TasksResource", "AsyncTasksResource"]
 
@@ -197,6 +198,29 @@ class TasksResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=TaskCreateTaskResponse,
+        )
+
+    def get_categories(
+        self,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> TaskGetCategoriesResponse:
+        """
+        Provides a list of available task categories that may be used when creating
+        tasks.
+        """
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return self._get(
+            "/tasks/categories",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=TaskGetCategoriesResponse,
         )
 
     def get_task(
@@ -473,6 +497,29 @@ class AsyncTasksResource(AsyncAPIResource):
             cast_to=TaskCreateTaskResponse,
         )
 
+    async def get_categories(
+        self,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> TaskGetCategoriesResponse:
+        """
+        Provides a list of available task categories that may be used when creating
+        tasks.
+        """
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return await self._get(
+            "/tasks/categories",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=TaskGetCategoriesResponse,
+        )
+
     async def get_task(
         self,
         id: str,
@@ -610,6 +657,9 @@ class TasksResourceWithRawResponse:
         self.create_task = to_raw_response_wrapper(
             tasks.create_task,
         )
+        self.get_categories = to_raw_response_wrapper(
+            tasks.get_categories,
+        )
         self.get_task = to_raw_response_wrapper(
             tasks.get_task,
         )
@@ -639,6 +689,9 @@ class AsyncTasksResourceWithRawResponse:
 
         self.create_task = async_to_raw_response_wrapper(
             tasks.create_task,
+        )
+        self.get_categories = async_to_raw_response_wrapper(
+            tasks.get_categories,
         )
         self.get_task = async_to_raw_response_wrapper(
             tasks.get_task,
@@ -670,6 +723,9 @@ class TasksResourceWithStreamingResponse:
         self.create_task = to_streamed_response_wrapper(
             tasks.create_task,
         )
+        self.get_categories = to_streamed_response_wrapper(
+            tasks.get_categories,
+        )
         self.get_task = to_streamed_response_wrapper(
             tasks.get_task,
         )
@@ -699,6 +755,9 @@ class AsyncTasksResourceWithStreamingResponse:
 
         self.create_task = async_to_streamed_response_wrapper(
             tasks.create_task,
+        )
+        self.get_categories = async_to_streamed_response_wrapper(
+            tasks.get_categories,
         )
         self.get_task = async_to_streamed_response_wrapper(
             tasks.get_task,
