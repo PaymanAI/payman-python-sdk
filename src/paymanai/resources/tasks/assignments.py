@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import List, Union
+from typing import Union
 from datetime import datetime
 from typing_extensions import Literal
 
@@ -32,10 +32,21 @@ __all__ = ["AssignmentsResource", "AsyncAssignmentsResource"]
 class AssignmentsResource(SyncAPIResource):
     @cached_property
     def with_raw_response(self) -> AssignmentsResourceWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#accessing-raw-response-data-eg-headers
+        """
         return AssignmentsResourceWithRawResponse(self)
 
     @cached_property
     def with_streaming_response(self) -> AssignmentsResourceWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
+        """
         return AssignmentsResourceWithStreamingResponse(self)
 
     def create_task_assignment(
@@ -90,7 +101,7 @@ class AssignmentsResource(SyncAPIResource):
         *,
         limit: int | NotGiven = NOT_GIVEN,
         page: int | NotGiven = NOT_GIVEN,
-        statuses: List[Literal["IN_REVIEW", "PENDING", "COMPLETED", "EXPIRED", "DELETED", "REJECTED", "ACCEPTED"]]
+        statuses: Literal["IN_REVIEW", "PENDING", "COMPLETED", "EXPIRED", "DELETED", "REJECTED", "ACCEPTED"]
         | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -103,6 +114,12 @@ class AssignmentsResource(SyncAPIResource):
         Get all assignments for a task
 
         Args:
+          limit: The number of items per page
+
+          page: The page number to retrieve (0-indexed)
+
+          statuses: The statuses you want to filter by. Defaults to PENDING, ACCEPTED and COMPLETED
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request
@@ -137,10 +154,21 @@ class AssignmentsResource(SyncAPIResource):
 class AsyncAssignmentsResource(AsyncAPIResource):
     @cached_property
     def with_raw_response(self) -> AsyncAssignmentsResourceWithRawResponse:
+        """
+        This property can be used as a prefix for any HTTP method call to return the
+        the raw response object instead of the parsed content.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#accessing-raw-response-data-eg-headers
+        """
         return AsyncAssignmentsResourceWithRawResponse(self)
 
     @cached_property
     def with_streaming_response(self) -> AsyncAssignmentsResourceWithStreamingResponse:
+        """
+        An alternative to `.with_raw_response` that doesn't eagerly read the response body.
+
+        For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
+        """
         return AsyncAssignmentsResourceWithStreamingResponse(self)
 
     async def create_task_assignment(
@@ -195,7 +223,7 @@ class AsyncAssignmentsResource(AsyncAPIResource):
         *,
         limit: int | NotGiven = NOT_GIVEN,
         page: int | NotGiven = NOT_GIVEN,
-        statuses: List[Literal["IN_REVIEW", "PENDING", "COMPLETED", "EXPIRED", "DELETED", "REJECTED", "ACCEPTED"]]
+        statuses: Literal["IN_REVIEW", "PENDING", "COMPLETED", "EXPIRED", "DELETED", "REJECTED", "ACCEPTED"]
         | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -208,6 +236,12 @@ class AsyncAssignmentsResource(AsyncAPIResource):
         Get all assignments for a task
 
         Args:
+          limit: The number of items per page
+
+          page: The page number to retrieve (0-indexed)
+
+          statuses: The statuses you want to filter by. Defaults to PENDING, ACCEPTED and COMPLETED
+
           extra_headers: Send extra headers
 
           extra_query: Add additional query parameters to the request

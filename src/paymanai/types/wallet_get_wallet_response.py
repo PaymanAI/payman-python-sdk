@@ -11,9 +11,6 @@ __all__ = ["WalletGetWalletResponse", "Currency"]
 
 
 class Currency(BaseModel):
-    base_unit_name: str = FieldInfo(alias="baseUnitName")
-    """The name of this currency's base currency unit"""
-
     name: str
     """The name of this currency"""
 
@@ -21,8 +18,6 @@ class Currency(BaseModel):
     """The currency symbol to use"""
 
     type: Literal["CRYPTOCURRENCY", "FIAT"]
-
-    active: Optional[bool] = None
 
     code: Optional[str] = None
     """The unique short code for this currency"""
@@ -32,9 +27,6 @@ class Currency(BaseModel):
 
     description: Optional[str] = None
     """A longer form description of the item"""
-
-    display_decimal_places: Optional[int] = FieldInfo(alias="displayDecimalPlaces", default=None)
-    """The number of decimal places to show when rendering an amount of this currency."""
 
     label: Optional[str] = None
     """A descriptive label of the item"""

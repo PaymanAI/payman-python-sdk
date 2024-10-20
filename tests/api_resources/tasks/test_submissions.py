@@ -30,7 +30,7 @@ class TestSubmissions:
             id="id",
             limit=0,
             page=0,
-            statuses=["PENDING"],
+            statuses="PENDING",
         )
         assert_matches_type(SubmissionListTaskSubmissionsResponse, submission, path=["response"])
 
@@ -82,7 +82,7 @@ class TestAsyncSubmissions:
             id="id",
             limit=0,
             page=0,
-            statuses=["PENDING"],
+            statuses="PENDING",
         )
         assert_matches_type(SubmissionListTaskSubmissionsResponse, submission, path=["response"])
 

@@ -81,7 +81,7 @@ class TestAssignments:
             id="id",
             limit=0,
             page=0,
-            statuses=["IN_REVIEW"],
+            statuses="IN_REVIEW",
         )
         assert_matches_type(AssignmentListTaskAssignmentsResponse, assignment, path=["response"])
 
@@ -180,7 +180,7 @@ class TestAsyncAssignments:
             id="id",
             limit=0,
             page=0,
-            statuses=["IN_REVIEW"],
+            statuses="IN_REVIEW",
         )
         assert_matches_type(AssignmentListTaskAssignmentsResponse, assignment, path=["response"])
 

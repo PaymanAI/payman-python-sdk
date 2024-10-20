@@ -12,9 +12,6 @@ __all__ = ["TaskListTasksResponse", "Result", "ResultCurrency", "ResultVerificat
 
 
 class ResultCurrency(BaseModel):
-    base_unit_name: str = FieldInfo(alias="baseUnitName")
-    """The name of this currency's base currency unit"""
-
     name: str
     """The name of this currency"""
 
@@ -22,8 +19,6 @@ class ResultCurrency(BaseModel):
     """The currency symbol to use"""
 
     type: Literal["CRYPTOCURRENCY", "FIAT"]
-
-    active: Optional[bool] = None
 
     code: Optional[str] = None
     """The unique short code for this currency"""
@@ -33,9 +28,6 @@ class ResultCurrency(BaseModel):
 
     description: Optional[str] = None
     """A longer form description of the item"""
-
-    display_decimal_places: Optional[int] = FieldInfo(alias="displayDecimalPlaces", default=None)
-    """The number of decimal places to show when rendering an amount of this currency."""
 
     label: Optional[str] = None
     """A descriptive label of the item"""
@@ -47,7 +39,7 @@ class ResultCurrency(BaseModel):
 class ResultVerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
-    type: Optional[Literal["default", "custom_prompt", "developer_managed", "none"]] = None
+    type: Optional[Literal["generic", "custom_prompt", "developer_managed", "none"]] = None
 
 
 class Result(BaseModel):
@@ -108,6 +100,13 @@ class Result(BaseModel):
     currency: Optional[ResultCurrency] = None
     """The currency in which the payout is denominated."""
 
+    customer_id: Optional[str] = FieldInfo(alias="customerId", default=None)
+    """The unique identifier for your end user that paid for this task.
+
+    Note you may supply either your own unique ID, or the Payman generated one (if
+    you have it).
+    """
+
     deadline: Optional[datetime] = None
     """The deadline for this task.
 
@@ -128,6 +127,13 @@ class Result(BaseModel):
 
     You may use this to store correlation data.When a task related payload is sent
     to any registered webhook, this metadata will be included
+    """
+
+    payout_decimal: Optional[float] = FieldInfo(alias="payoutDecimal", default=None)
+    """
+    The amount being offered for each approved submission on this task, denominated
+    in currency units. For example a payout of '1.00' in USD would mean the payout
+    would be $1.00
     """
 
     payout_wallet_id: Optional[str] = FieldInfo(alias="payoutWalletId", default=None)

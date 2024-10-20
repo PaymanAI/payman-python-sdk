@@ -1,6 +1,6 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 from datetime import datetime
 from typing_extensions import Literal
 
@@ -19,54 +19,22 @@ __all__ = [
 
 
 class AssignedToReputationScore(BaseModel):
-    raw_score: Optional[float] = FieldInfo(alias="rawScore", default=None)
-
     score: Optional[float] = None
 
 
 class AssignedTo(BaseModel):
-    authentication_methods: List[Literal["PASSWORD", "GOOGLE"]] = FieldInfo(alias="authenticationMethods")
-    """The authentication methods for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
-    email: str
-    """The email address for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
-
     first_name: str = FieldInfo(alias="firstName")
     """The first name of this user."""
-
-    kyc_status: Literal["PENDING", "IN_REVIEW", "APPROVED", "REJECTED"] = FieldInfo(alias="kycStatus")
-    """The current KYC status of this user account.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
 
     last_name: str = FieldInfo(alias="lastName")
     """The last name of this user."""
 
-    status: Literal["ACTIVE", "DELETED", "LOCKED", "PENDING"]
-    """The current status of this user account"""
-
     id: Optional[str] = None
-
-    phone: Optional[str] = None
-    """The phone number for this user.
-
-    Note: may not be visible subject to caller's authorization scopes.
-    """
 
     reputation_score: Optional[AssignedToReputationScore] = FieldInfo(alias="reputationScore", default=None)
 
 
 class TaskCurrency(BaseModel):
-    base_unit_name: str = FieldInfo(alias="baseUnitName")
-    """The name of this currency's base currency unit"""
-
     name: str
     """The name of this currency"""
 
@@ -74,8 +42,6 @@ class TaskCurrency(BaseModel):
     """The currency symbol to use"""
 
     type: Literal["CRYPTOCURRENCY", "FIAT"]
-
-    active: Optional[bool] = None
 
     code: Optional[str] = None
     """The unique short code for this currency"""
@@ -85,9 +51,6 @@ class TaskCurrency(BaseModel):
 
     description: Optional[str] = None
     """A longer form description of the item"""
-
-    display_decimal_places: Optional[int] = FieldInfo(alias="displayDecimalPlaces", default=None)
-    """The number of decimal places to show when rendering an amount of this currency."""
 
     label: Optional[str] = None
     """A descriptive label of the item"""
@@ -99,7 +62,7 @@ class TaskCurrency(BaseModel):
 class TaskVerificationConfiguration(BaseModel):
     custom_prompt: Optional[str] = FieldInfo(alias="customPrompt", default=None)
 
-    type: Optional[Literal["default", "custom_prompt", "developer_managed", "none"]] = None
+    type: Optional[Literal["generic", "custom_prompt", "developer_managed", "none"]] = None
 
 
 class Task(BaseModel):
@@ -160,6 +123,13 @@ class Task(BaseModel):
     currency: Optional[TaskCurrency] = None
     """The currency in which the payout is denominated."""
 
+    customer_id: Optional[str] = FieldInfo(alias="customerId", default=None)
+    """The unique identifier for your end user that paid for this task.
+
+    Note you may supply either your own unique ID, or the Payman generated one (if
+    you have it).
+    """
+
     deadline: Optional[datetime] = None
     """The deadline for this task.
 
@@ -180,6 +150,13 @@ class Task(BaseModel):
 
     You may use this to store correlation data.When a task related payload is sent
     to any registered webhook, this metadata will be included
+    """
+
+    payout_decimal: Optional[float] = FieldInfo(alias="payoutDecimal", default=None)
+    """
+    The amount being offered for each approved submission on this task, denominated
+    in currency units. For example a payout of '1.00' in USD would mean the payout
+    would be $1.00
     """
 
     payout_wallet_id: Optional[str] = FieldInfo(alias="payoutWalletId", default=None)
@@ -225,8 +202,6 @@ class Task(BaseModel):
 
 
 class AssignmentCreateTaskAssignmentResponse(BaseModel):
-    organization_id: str = FieldInfo(alias="organizationId")
-
     status: Literal["IN_REVIEW", "PENDING", "COMPLETED", "EXPIRED", "DELETED", "REJECTED", "ACCEPTED"]
 
     task_id: str = FieldInfo(alias="taskId")
@@ -236,14 +211,8 @@ class AssignmentCreateTaskAssignmentResponse(BaseModel):
     assigned_to: Optional[AssignedTo] = FieldInfo(alias="assignedTo", default=None)
     """The user that this task is assigned to"""
 
-    assigned_to_id: Optional[str] = FieldInfo(alias="assignedToId", default=None)
-
     completed_at: Optional[datetime] = FieldInfo(alias="completedAt", default=None)
 
     expires_at: Optional[datetime] = FieldInfo(alias="expiresAt", default=None)
-
-    invite_code: Optional[str] = FieldInfo(alias="inviteCode", default=None)
-
-    invite_email: Optional[str] = FieldInfo(alias="inviteEmail", default=None)
 
     task: Optional[Task] = None
