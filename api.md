@@ -44,6 +44,7 @@ Types:
 from paymanai.types.tasks import (
     SubmissionApproveTaskSubmissionResponse,
     SubmissionListTaskSubmissionsResponse,
+    SubmissionRejectTaskSubmissionResponse,
 )
 ```
 
@@ -51,6 +52,7 @@ Methods:
 
 - <code title="post /tasks/submissions/{id}/approve">client.tasks.submissions.<a href="./src/paymanai/resources/tasks/submissions.py">approve_task_submission</a>(id) -> <a href="./src/paymanai/types/tasks/submission_approve_task_submission_response.py">SubmissionApproveTaskSubmissionResponse</a></code>
 - <code title="get /tasks/{id}/submissions">client.tasks.submissions.<a href="./src/paymanai/resources/tasks/submissions.py">list_task_submissions</a>(id, \*\*<a href="src/paymanai/types/tasks/submission_list_task_submissions_params.py">params</a>) -> <a href="./src/paymanai/types/tasks/submission_list_task_submissions_response.py">SubmissionListTaskSubmissionsResponse</a></code>
+- <code title="post /tasks/submissions/{id}/reject">client.tasks.submissions.<a href="./src/paymanai/resources/tasks/submissions.py">reject_task_submission</a>(id, \*\*<a href="src/paymanai/types/tasks/submission_reject_task_submission_params.py">params</a>) -> <a href="./src/paymanai/types/tasks/submission_reject_task_submission_response.py">SubmissionRejectTaskSubmissionResponse</a></code>
 
 ## Categories
 

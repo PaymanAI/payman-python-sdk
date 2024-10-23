@@ -19,9 +19,10 @@ from ..._response import (
     async_to_raw_response_wrapper,
     async_to_streamed_response_wrapper,
 )
-from ...types.tasks import submission_list_task_submissions_params
+from ...types.tasks import submission_list_task_submissions_params, submission_reject_task_submission_params
 from ..._base_client import make_request_options
 from ...types.tasks.submission_list_task_submissions_response import SubmissionListTaskSubmissionsResponse
+from ...types.tasks.submission_reject_task_submission_response import SubmissionRejectTaskSubmissionResponse
 from ...types.tasks.submission_approve_task_submission_response import SubmissionApproveTaskSubmissionResponse
 
 __all__ = ["SubmissionsResource", "AsyncSubmissionsResource"]
@@ -145,6 +146,42 @@ class SubmissionsResource(SyncAPIResource):
             cast_to=SubmissionListTaskSubmissionsResponse,
         )
 
+    def reject_task_submission(
+        self,
+        id: str,
+        *,
+        body: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> SubmissionRejectTaskSubmissionResponse:
+        """
+        Mark the task submission as rejected
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not id:
+            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return self._post(
+            f"/tasks/submissions/{id}/reject",
+            body=maybe_transform(body, submission_reject_task_submission_params.SubmissionRejectTaskSubmissionParams),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=SubmissionRejectTaskSubmissionResponse,
+        )
+
 
 class AsyncSubmissionsResource(AsyncAPIResource):
     @cached_property
@@ -264,6 +301,44 @@ class AsyncSubmissionsResource(AsyncAPIResource):
             cast_to=SubmissionListTaskSubmissionsResponse,
         )
 
+    async def reject_task_submission(
+        self,
+        id: str,
+        *,
+        body: str,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> SubmissionRejectTaskSubmissionResponse:
+        """
+        Mark the task submission as rejected
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not id:
+            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return await self._post(
+            f"/tasks/submissions/{id}/reject",
+            body=await async_maybe_transform(
+                body, submission_reject_task_submission_params.SubmissionRejectTaskSubmissionParams
+            ),
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=SubmissionRejectTaskSubmissionResponse,
+        )
+
 
 class SubmissionsResourceWithRawResponse:
     def __init__(self, submissions: SubmissionsResource) -> None:
@@ -274,6 +349,9 @@ class SubmissionsResourceWithRawResponse:
         )
         self.list_task_submissions = to_raw_response_wrapper(
             submissions.list_task_submissions,
+        )
+        self.reject_task_submission = to_raw_response_wrapper(
+            submissions.reject_task_submission,
         )
 
 
@@ -287,6 +365,9 @@ class AsyncSubmissionsResourceWithRawResponse:
         self.list_task_submissions = async_to_raw_response_wrapper(
             submissions.list_task_submissions,
         )
+        self.reject_task_submission = async_to_raw_response_wrapper(
+            submissions.reject_task_submission,
+        )
 
 
 class SubmissionsResourceWithStreamingResponse:
@@ -299,6 +380,9 @@ class SubmissionsResourceWithStreamingResponse:
         self.list_task_submissions = to_streamed_response_wrapper(
             submissions.list_task_submissions,
         )
+        self.reject_task_submission = to_streamed_response_wrapper(
+            submissions.reject_task_submission,
+        )
 
 
 class AsyncSubmissionsResourceWithStreamingResponse:
@@ -310,4 +394,7 @@ class AsyncSubmissionsResourceWithStreamingResponse:
         )
         self.list_task_submissions = async_to_streamed_response_wrapper(
             submissions.list_task_submissions,
+        )
+        self.reject_task_submission = async_to_streamed_response_wrapper(
+            submissions.reject_task_submission,
         )

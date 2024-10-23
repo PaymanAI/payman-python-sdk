@@ -14,6 +14,9 @@ from .submission_list_task_submissions_params import (
 from .assignment_create_task_assignment_params import (
     AssignmentCreateTaskAssignmentParams as AssignmentCreateTaskAssignmentParams,
 )
+from .submission_reject_task_submission_params import (
+    SubmissionRejectTaskSubmissionParams as SubmissionRejectTaskSubmissionParams,
+)
 from .assignment_list_task_assignments_response import (
     AssignmentListTaskAssignmentsResponse as AssignmentListTaskAssignmentsResponse,
 )
@@ -22,6 +25,9 @@ from .submission_list_task_submissions_response import (
 )
 from .assignment_create_task_assignment_response import (
     AssignmentCreateTaskAssignmentResponse as AssignmentCreateTaskAssignmentResponse,
+)
+from .submission_reject_task_submission_response import (
+    SubmissionRejectTaskSubmissionResponse as SubmissionRejectTaskSubmissionResponse,
 )
 from .submission_approve_task_submission_response import (
     SubmissionApproveTaskSubmissionResponse as SubmissionApproveTaskSubmissionResponse,
