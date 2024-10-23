@@ -23,3 +23,6 @@ from .submission_list_task_submissions_response import (
 from .assignment_create_task_assignment_response import (
     AssignmentCreateTaskAssignmentResponse as AssignmentCreateTaskAssignmentResponse,
 )
+from .submission_approve_task_submission_response import (
+    SubmissionApproveTaskSubmissionResponse as SubmissionApproveTaskSubmissionResponse,
+)

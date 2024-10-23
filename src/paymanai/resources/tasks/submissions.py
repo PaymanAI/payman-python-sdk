@@ -22,6 +22,7 @@ from ..._response import (
 from ...types.tasks import submission_list_task_submissions_params
 from ..._base_client import make_request_options
 from ...types.tasks.submission_list_task_submissions_response import SubmissionListTaskSubmissionsResponse
+from ...types.tasks.submission_approve_task_submission_response import SubmissionApproveTaskSubmissionResponse
 
 __all__ = ["SubmissionsResource", "AsyncSubmissionsResource"]
 
@@ -45,6 +46,40 @@ class SubmissionsResource(SyncAPIResource):
         For more information, see https://www.github.com/stainless-sdks/paymanai-python#with_streaming_response
         """
         return SubmissionsResourceWithStreamingResponse(self)
+
+    def approve_task_submission(
+        self,
+        id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> SubmissionApproveTaskSubmissionResponse:
+        """
+        Mark the task submission as approved and release the funds
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not id:
+            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return self._post(
+            f"/tasks/submissions/{id}/approve",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=SubmissionApproveTaskSubmissionResponse,
+        )
 
     def list_task_submissions(
         self,
@@ -131,6 +166,40 @@ class AsyncSubmissionsResource(AsyncAPIResource):
         """
         return AsyncSubmissionsResourceWithStreamingResponse(self)
 
+    async def approve_task_submission(
+        self,
+        id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> SubmissionApproveTaskSubmissionResponse:
+        """
+        Mark the task submission as approved and release the funds
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not id:
+            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return await self._post(
+            f"/tasks/submissions/{id}/approve",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=SubmissionApproveTaskSubmissionResponse,
+        )
+
     async def list_task_submissions(
         self,
         id: str,
@@ -200,6 +269,9 @@ class SubmissionsResourceWithRawResponse:
     def __init__(self, submissions: SubmissionsResource) -> None:
         self._submissions = submissions
 
+        self.approve_task_submission = to_raw_response_wrapper(
+            submissions.approve_task_submission,
+        )
         self.list_task_submissions = to_raw_response_wrapper(
             submissions.list_task_submissions,
         )
@@ -209,6 +281,9 @@ class AsyncSubmissionsResourceWithRawResponse:
     def __init__(self, submissions: AsyncSubmissionsResource) -> None:
         self._submissions = submissions
 
+        self.approve_task_submission = async_to_raw_response_wrapper(
+            submissions.approve_task_submission,
+        )
         self.list_task_submissions = async_to_raw_response_wrapper(
             submissions.list_task_submissions,
         )
@@ -218,6 +293,9 @@ class SubmissionsResourceWithStreamingResponse:
     def __init__(self, submissions: SubmissionsResource) -> None:
         self._submissions = submissions
 
+        self.approve_task_submission = to_streamed_response_wrapper(
+            submissions.approve_task_submission,
+        )
         self.list_task_submissions = to_streamed_response_wrapper(
             submissions.list_task_submissions,
         )
@@ -227,6 +305,9 @@ class AsyncSubmissionsResourceWithStreamingResponse:
     def __init__(self, submissions: AsyncSubmissionsResource) -> None:
         self._submissions = submissions
 
+        self.approve_task_submission = async_to_streamed_response_wrapper(
+            submissions.approve_task_submission,
+        )
         self.list_task_submissions = async_to_streamed_response_wrapper(
             submissions.list_task_submissions,
         )

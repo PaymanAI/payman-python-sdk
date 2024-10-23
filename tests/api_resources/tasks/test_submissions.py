@@ -9,13 +9,54 @@ import pytest
 
 from paymanai import Paymanai, AsyncPaymanai
 from tests.utils import assert_matches_type
-from paymanai.types.tasks import SubmissionListTaskSubmissionsResponse
+from paymanai.types.tasks import (
+    SubmissionListTaskSubmissionsResponse,
+    SubmissionApproveTaskSubmissionResponse,
+)
 
 base_url = os.environ.get("TEST_API_BASE_URL", "http://127.0.0.1:4010")
 
 
 class TestSubmissions:
     parametrize = pytest.mark.parametrize("client", [False, True], indirect=True, ids=["loose", "strict"])
+
+    @parametrize
+    def test_method_approve_task_submission(self, client: Paymanai) -> None:
+        submission = client.tasks.submissions.approve_task_submission(
+            "id",
+        )
+        assert_matches_type(SubmissionApproveTaskSubmissionResponse, submission, path=["response"])
+
+    @parametrize
+    def test_raw_response_approve_task_submission(self, client: Paymanai) -> None:
+        response = client.tasks.submissions.with_raw_response.approve_task_submission(
+            "id",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        submission = response.parse()
+        assert_matches_type(SubmissionApproveTaskSubmissionResponse, submission, path=["response"])
+
+    @parametrize
+    def test_streaming_response_approve_task_submission(self, client: Paymanai) -> None:
+        with client.tasks.submissions.with_streaming_response.approve_task_submission(
+            "id",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            submission = response.parse()
+            assert_matches_type(SubmissionApproveTaskSubmissionResponse, submission, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_path_params_approve_task_submission(self, client: Paymanai) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
+            client.tasks.submissions.with_raw_response.approve_task_submission(
+                "",
+            )
 
     @parametrize
     def test_method_list_task_submissions(self, client: Paymanai) -> None:
@@ -68,6 +109,44 @@ class TestSubmissions:
 
 class TestAsyncSubmissions:
     parametrize = pytest.mark.parametrize("async_client", [False, True], indirect=True, ids=["loose", "strict"])
+
+    @parametrize
+    async def test_method_approve_task_submission(self, async_client: AsyncPaymanai) -> None:
+        submission = await async_client.tasks.submissions.approve_task_submission(
+            "id",
+        )
+        assert_matches_type(SubmissionApproveTaskSubmissionResponse, submission, path=["response"])
+
+    @parametrize
+    async def test_raw_response_approve_task_submission(self, async_client: AsyncPaymanai) -> None:
+        response = await async_client.tasks.submissions.with_raw_response.approve_task_submission(
+            "id",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        submission = await response.parse()
+        assert_matches_type(SubmissionApproveTaskSubmissionResponse, submission, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_approve_task_submission(self, async_client: AsyncPaymanai) -> None:
+        async with async_client.tasks.submissions.with_streaming_response.approve_task_submission(
+            "id",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            submission = await response.parse()
+            assert_matches_type(SubmissionApproveTaskSubmissionResponse, submission, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_path_params_approve_task_submission(self, async_client: AsyncPaymanai) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
+            await async_client.tasks.submissions.with_raw_response.approve_task_submission(
+                "",
+            )
 
     @parametrize
     async def test_method_list_task_submissions(self, async_client: AsyncPaymanai) -> None:
