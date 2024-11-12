@@ -31,8 +31,9 @@ import os
 from paymanai import Paymanai
 
 client = Paymanai(
-    # This is the default and can be omitted
-    x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
+    x_payman_api_secret=os.environ.get(
+        "PAYMAN_API_SECRET"
+    ),  # This is the default and can be omitted
     # defaults to "sandbox".
     environment="production",
 )
@@ -58,8 +59,9 @@ import asyncio
 from paymanai import AsyncPaymanai
 
 client = AsyncPaymanai(
-    # This is the default and can be omitted
-    x_payman_api_secret=os.environ.get("PAYMAN_API_SECRET"),
+    x_payman_api_secret=os.environ.get(
+        "PAYMAN_API_SECRET"
+    ),  # This is the default and can be omitted
     # defaults to "sandbox".
     environment="production",
 )
