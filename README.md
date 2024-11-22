@@ -203,11 +203,13 @@ client = Paymanai(
 
 We use the standard library [`logging`](https://docs.python.org/3/library/logging.html) module.
 
-You can enable logging by setting the environment variable `PAYMANAI_LOG` to `debug`.
+You can enable logging by setting the environment variable `PAYMANAI_LOG` to `info`.
 
 ```shell
-$ export PAYMANAI_LOG=debug
+$ export PAYMANAI_LOG=info
 ```
+
+Or to `debug` for more verbose logging.
 
 ### How to tell whether `None` means `null` or missing
 
