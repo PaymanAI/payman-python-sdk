@@ -23,15 +23,11 @@ class PaymentInitiateCustomerDepositParams(TypedDict, total=False):
     This can be any unique ID as held within your system.
     """
 
-    currency_code: Annotated[str, PropertyInfo(alias="currencyCode")]
-    """The currency code for which to generate a URL.
-
-    Either USD or USDCBASE. If omitted the currency will match the agent's default
-    currency.
-    """
-
-    email: str
+    customer_email: Annotated[str, PropertyInfo(alias="customerEmail")]
     """An email address to associate with this customer."""
+
+    customer_name: Annotated[str, PropertyInfo(alias="customerName")]
+    """A name to associate with this customer."""
 
     fee_mode: Annotated[Literal["INCLUDED_IN_AMOUNT", "ADD_TO_AMOUNT"], PropertyInfo(alias="feeMode")]
     """Determines whether to add any processing fees to the requested amount.
@@ -42,18 +38,13 @@ class PaymentInitiateCustomerDepositParams(TypedDict, total=False):
     specified plus any fees required. Defaults to 'INCLUDED_IN_AMOUNT'.
     """
 
-    metadata: Dict[str, str]
-    """Agent provided metadata related to this deposit.
+    memo: str
+    """A memo to associate with any transactions created in the Payman ledger."""
 
-    You may use this to store correlation data.When a task related payload is sent
-    to any registered webhook, this metadata will be included
-    """
-
-    name: str
-    """A name to associate with this customer."""
+    metadata: Dict[str, object]
 
     wallet_id: Annotated[str, PropertyInfo(alias="walletId")]
-    """The wallet into which to deposit the funds.
+    """The ID of the wallet you would like the customer to add funds to.
 
-    If omitted the funds will be deposited into a wallet created for the customer.
+    Only required if the agent has access to more than one wallet.
     """
