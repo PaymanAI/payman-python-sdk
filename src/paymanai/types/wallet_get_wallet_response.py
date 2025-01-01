@@ -1,6 +1,7 @@
 # File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 from typing import Optional
+from datetime import datetime
 from typing_extensions import Literal
 
 from pydantic import Field as FieldInfo
@@ -40,7 +41,7 @@ class WalletGetWalletResponse(BaseModel):
     """The amount of currency that is currently held in escrow against created tasks."""
 
     currency: Currency
-    """The currency in which the payout is denominated."""
+    """The currency this wallet is denominated in."""
 
     spendable_balance: int = FieldInfo(alias="spendableBalance")
     """The amount of currency that can be spent from this wallet."""
@@ -53,6 +54,10 @@ class WalletGetWalletResponse(BaseModel):
 
     id: Optional[str] = None
 
+    created_at: Optional[datetime] = FieldInfo(alias="createdAt", default=None)
+
+    created_by: Optional[str] = FieldInfo(alias="createdBy", default=None)
+
     name: Optional[str] = None
     """A descriptive name for this wallet"""
 
@@ -64,3 +69,7 @@ class WalletGetWalletResponse(BaseModel):
     The total balance of this wallet, including spendable balance, balance in
     escrow, and unconfirmed balance.
     """
+
+    updated_at: Optional[datetime] = FieldInfo(alias="updatedAt", default=None)
+
+    updated_by: Optional[str] = FieldInfo(alias="updatedBy", default=None)

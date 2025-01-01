@@ -773,20 +773,20 @@ class TestPaymanai:
     @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/tasks/id").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.get("/wallets/id").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            self.client.get("/tasks/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
+            self.client.get("/wallets/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
 
         assert _get_open_connections(self.client) == 0
 
     @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/tasks/id").mock(return_value=httpx.Response(500))
+        respx_mock.get("/wallets/id").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            self.client.get("/tasks/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
+            self.client.get("/wallets/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
 
         assert _get_open_connections(self.client) == 0
 
@@ -814,9 +814,9 @@ class TestPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/tasks/id").mock(side_effect=retry_handler)
+        respx_mock.get("/wallets/id").mock(side_effect=retry_handler)
 
-        response = client.tasks.with_raw_response.get_task("id")
+        response = client.wallets.with_raw_response.get_wallet("id")
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -838,9 +838,9 @@ class TestPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/tasks/id").mock(side_effect=retry_handler)
+        respx_mock.get("/wallets/id").mock(side_effect=retry_handler)
 
-        response = client.tasks.with_raw_response.get_task("id", extra_headers={"x-stainless-retry-count": Omit()})
+        response = client.wallets.with_raw_response.get_wallet("id", extra_headers={"x-stainless-retry-count": Omit()})
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
@@ -861,9 +861,9 @@ class TestPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/tasks/id").mock(side_effect=retry_handler)
+        respx_mock.get("/wallets/id").mock(side_effect=retry_handler)
 
-        response = client.tasks.with_raw_response.get_task("id", extra_headers={"x-stainless-retry-count": "42"})
+        response = client.wallets.with_raw_response.get_wallet("id", extra_headers={"x-stainless-retry-count": "42"})
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 
@@ -1601,11 +1601,11 @@ class TestAsyncPaymanai:
     @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/tasks/id").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.get("/wallets/id").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
             await self.client.get(
-                "/tasks/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}}
+                "/wallets/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}}
             )
 
         assert _get_open_connections(self.client) == 0
@@ -1613,11 +1613,11 @@ class TestAsyncPaymanai:
     @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/tasks/id").mock(return_value=httpx.Response(500))
+        respx_mock.get("/wallets/id").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
             await self.client.get(
-                "/tasks/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}}
+                "/wallets/id", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}}
             )
 
         assert _get_open_connections(self.client) == 0
@@ -1647,9 +1647,9 @@ class TestAsyncPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/tasks/id").mock(side_effect=retry_handler)
+        respx_mock.get("/wallets/id").mock(side_effect=retry_handler)
 
-        response = await client.tasks.with_raw_response.get_task("id")
+        response = await client.wallets.with_raw_response.get_wallet("id")
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -1672,9 +1672,9 @@ class TestAsyncPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/tasks/id").mock(side_effect=retry_handler)
+        respx_mock.get("/wallets/id").mock(side_effect=retry_handler)
 
-        response = await client.tasks.with_raw_response.get_task(
+        response = await client.wallets.with_raw_response.get_wallet(
             "id", extra_headers={"x-stainless-retry-count": Omit()}
         )
 
@@ -1698,9 +1698,11 @@ class TestAsyncPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/tasks/id").mock(side_effect=retry_handler)
+        respx_mock.get("/wallets/id").mock(side_effect=retry_handler)
 
-        response = await client.tasks.with_raw_response.get_task("id", extra_headers={"x-stainless-retry-count": "42"})
+        response = await client.wallets.with_raw_response.get_wallet(
+            "id", extra_headers={"x-stainless-retry-count": "42"}
+        )
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 
