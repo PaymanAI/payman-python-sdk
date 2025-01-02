@@ -16,7 +16,7 @@ The REST API documentation can be found on [docs.paymanai.com](https://docs.paym
 
 ```sh
 # install from PyPI
-pip install --pre paymanai
+pip install paymanai
 ```
 
 ## Usage
