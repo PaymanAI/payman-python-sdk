@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.0.1 (2025-01-10)
+
+Full Changelog: [v2.0.0...v2.0.1](https://github.com/PaymanAI/payman-python-sdk/compare/v2.0.0...v2.0.1)
+
+### Bug Fixes
+
+* **client:** only call .close() when needed ([#7](https://github.com/PaymanAI/payman-python-sdk/issues/7)) ([a7dea5e](https://github.com/PaymanAI/payman-python-sdk/commit/a7dea5e06c531d144cff7aca7cfb134344abc1ac))
+* correctly handle deserialising `cls` fields ([#10](https://github.com/PaymanAI/payman-python-sdk/issues/10)) ([ea76799](https://github.com/PaymanAI/payman-python-sdk/commit/ea76799a2495b16982f01717966de28c8ece6985))
+
+
+### Chores
+
+* add missing isclass check ([#4](https://github.com/PaymanAI/payman-python-sdk/issues/4)) ([a6dcc83](https://github.com/PaymanAI/payman-python-sdk/commit/a6dcc83c530544c26875bef34a9b823c73cba55f))
+* **internal:** codegen related update ([#6](https://github.com/PaymanAI/payman-python-sdk/issues/6)) ([859d775](https://github.com/PaymanAI/payman-python-sdk/commit/859d7752f73baa91fce79b87b2cbed6f5b85ce8e))
+* **internal:** codegen related update ([#9](https://github.com/PaymanAI/payman-python-sdk/issues/9)) ([3c71bee](https://github.com/PaymanAI/payman-python-sdk/commit/3c71bee94a95ff3f2c877ffef09e5504a6c81103))
+
+
+### Documentation
+
+* fix typos ([#8](https://github.com/PaymanAI/payman-python-sdk/issues/8)) ([78687be](https://github.com/PaymanAI/payman-python-sdk/commit/78687be4cc1e73bb00c2c27d31ee0c59e913d53a))
+
 ## 2.0.0 (2025-01-02)
 
 Full Changelog: [v0.0.1-alpha.0...v2.0.0](https://github.com/PaymanAI/payman-python-sdk/compare/v0.0.1-alpha.0...v2.0.0)
