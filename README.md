@@ -36,7 +36,8 @@ client = Paymanai(
 )
 
 response = client.payments.send_payment(
-    amount_decimal=0,
+    amount_decimal=10,
+    payment_destination_id="pd-1234",
 )
 print(response.reference)
 ```
@@ -66,7 +67,8 @@ client = AsyncPaymanai(
 
 async def main() -> None:
     response = await client.payments.send_payment(
-        amount_decimal=0,
+        amount_decimal=10,
+        payment_destination_id="pd-1234",
     )
     print(response.reference)
 
