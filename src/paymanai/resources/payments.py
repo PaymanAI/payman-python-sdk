@@ -9,7 +9,7 @@ import httpx
 
 from ..types import (
     payment_send_payment_params,
-    payment_search_destinations_params,
+    payment_search_payees_params,
     payment_initiate_customer_deposit_params,
 )
 from .._types import NOT_GIVEN, Body, Query, Headers, NotGiven
@@ -27,7 +27,7 @@ from .._response import (
 )
 from .._base_client import make_request_options
 from ..types.payment_send_payment_response import PaymentSendPaymentResponse
-from ..types.payment_search_destinations_response import PaymentSearchDestinationsResponse
+from ..types.payment_search_payees_response import PaymentSearchPayeesResponse
 from ..types.payment_initiate_customer_deposit_response import PaymentInitiateCustomerDepositResponse
 
 __all__ = ["PaymentsResource", "AsyncPaymentsResource"]
@@ -130,7 +130,7 @@ class PaymentsResource(SyncAPIResource):
             cast_to=PaymentInitiateCustomerDepositResponse,
         )
 
-    def search_destinations(
+    def search_payees(
         self,
         *,
         account_number: str | NotGiven = NOT_GIVEN,
@@ -146,7 +146,7 @@ class PaymentsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> PaymentSearchDestinationsResponse:
+    ) -> PaymentSearchPayeesResponse:
         """Searches existing payment destinations for potential matches.
 
         Additional
@@ -195,10 +195,10 @@ class PaymentsResource(SyncAPIResource):
                         "routing_number": routing_number,
                         "type": type,
                     },
-                    payment_search_destinations_params.PaymentSearchDestinationsParams,
+                    payment_search_payees_params.PaymentSearchPayeesParams,
                 ),
             ),
-            cast_to=PaymentSearchDestinationsResponse,
+            cast_to=PaymentSearchPayeesResponse,
         )
 
     def send_payment(
@@ -382,7 +382,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
             cast_to=PaymentInitiateCustomerDepositResponse,
         )
 
-    async def search_destinations(
+    async def search_payees(
         self,
         *,
         account_number: str | NotGiven = NOT_GIVEN,
@@ -398,7 +398,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> PaymentSearchDestinationsResponse:
+    ) -> PaymentSearchPayeesResponse:
         """Searches existing payment destinations for potential matches.
 
         Additional
@@ -447,10 +447,10 @@ class AsyncPaymentsResource(AsyncAPIResource):
                         "routing_number": routing_number,
                         "type": type,
                     },
-                    payment_search_destinations_params.PaymentSearchDestinationsParams,
+                    payment_search_payees_params.PaymentSearchPayeesParams,
                 ),
             ),
-            cast_to=PaymentSearchDestinationsResponse,
+            cast_to=PaymentSearchPayeesResponse,
         )
 
     async def send_payment(
@@ -544,8 +544,8 @@ class PaymentsResourceWithRawResponse:
         self.initiate_customer_deposit = to_raw_response_wrapper(
             payments.initiate_customer_deposit,
         )
-        self.search_destinations = to_raw_response_wrapper(
-            payments.search_destinations,
+        self.search_payees = to_raw_response_wrapper(
+            payments.search_payees,
         )
         self.send_payment = to_raw_response_wrapper(
             payments.send_payment,
@@ -559,8 +559,8 @@ class AsyncPaymentsResourceWithRawResponse:
         self.initiate_customer_deposit = async_to_raw_response_wrapper(
             payments.initiate_customer_deposit,
         )
-        self.search_destinations = async_to_raw_response_wrapper(
-            payments.search_destinations,
+        self.search_payees = async_to_raw_response_wrapper(
+            payments.search_payees,
         )
         self.send_payment = async_to_raw_response_wrapper(
             payments.send_payment,
@@ -574,8 +574,8 @@ class PaymentsResourceWithStreamingResponse:
         self.initiate_customer_deposit = to_streamed_response_wrapper(
             payments.initiate_customer_deposit,
         )
-        self.search_destinations = to_streamed_response_wrapper(
-            payments.search_destinations,
+        self.search_payees = to_streamed_response_wrapper(
+            payments.search_payees,
         )
         self.send_payment = to_streamed_response_wrapper(
             payments.send_payment,
@@ -589,8 +589,8 @@ class AsyncPaymentsResourceWithStreamingResponse:
         self.initiate_customer_deposit = async_to_streamed_response_wrapper(
             payments.initiate_customer_deposit,
         )
-        self.search_destinations = async_to_streamed_response_wrapper(
-            payments.search_destinations,
+        self.search_payees = async_to_streamed_response_wrapper(
+            payments.search_payees,
         )
         self.send_payment = async_to_streamed_response_wrapper(
             payments.send_payment,
