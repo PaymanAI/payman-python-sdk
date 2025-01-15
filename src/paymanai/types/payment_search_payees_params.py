@@ -6,10 +6,10 @@ from typing_extensions import Annotated, TypedDict
 
 from .._utils import PropertyInfo
 
-__all__ = ["PaymentSearchDestinationsParams"]
+__all__ = ["PaymentSearchPayeesParams"]
 
 
-class PaymentSearchDestinationsParams(TypedDict, total=False):
+class PaymentSearchPayeesParams(TypedDict, total=False):
     account_number: Annotated[str, PropertyInfo(alias="accountNumber")]
     """The US Bank account number to search for."""
 
