@@ -9,13 +9,13 @@ from pydantic import Field as FieldInfo
 from .._models import BaseModel
 
 __all__ = [
-    "PaymentSearchDestinationsResponse",
-    "PaymentSearchDestinationsResponseItem",
-    "PaymentSearchDestinationsResponseItemContactDetails",
+    "PaymentSearchPayeesResponse",
+    "PaymentSearchPayeesResponseItem",
+    "PaymentSearchPayeesResponseItemContactDetails",
 ]
 
 
-class PaymentSearchDestinationsResponseItemContactDetails(BaseModel):
+class PaymentSearchPayeesResponseItemContactDetails(BaseModel):
     address: Optional[str] = None
     """The address string of the payment destination contact"""
 
@@ -32,7 +32,7 @@ class PaymentSearchDestinationsResponseItemContactDetails(BaseModel):
     """The tax identification of the payment destination contact"""
 
 
-class PaymentSearchDestinationsResponseItem(BaseModel):
+class PaymentSearchPayeesResponseItem(BaseModel):
     name: str
     """The user-assigned name of the payment destination"""
 
@@ -43,7 +43,7 @@ class PaymentSearchDestinationsResponseItem(BaseModel):
 
     id: Optional[str] = None
 
-    contact_details: Optional[PaymentSearchDestinationsResponseItemContactDetails] = FieldInfo(
+    contact_details: Optional[PaymentSearchPayeesResponseItemContactDetails] = FieldInfo(
         alias="contactDetails", default=None
     )
     """Contact details for this payment destination"""
@@ -72,4 +72,4 @@ class PaymentSearchDestinationsResponseItem(BaseModel):
     updated_by: Optional[str] = FieldInfo(alias="updatedBy", default=None)
 
 
-PaymentSearchDestinationsResponse: TypeAlias = List[PaymentSearchDestinationsResponseItem]
+PaymentSearchPayeesResponse: TypeAlias = List[PaymentSearchPayeesResponseItem]

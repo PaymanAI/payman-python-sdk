@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.0 (2025-01-16)
+
+Full Changelog: [v2.0.1...v2.1.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.0.1...v2.1.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#12](https://github.com/PaymanAI/payman-python-sdk/issues/12)) ([6a0f81f](https://github.com/PaymanAI/payman-python-sdk/commit/6a0f81fcb8996ec094f433ea1313c97415862058))
+* **api:** update via SDK Studio ([#14](https://github.com/PaymanAI/payman-python-sdk/issues/14)) ([f70a52c](https://github.com/PaymanAI/payman-python-sdk/commit/f70a52cd68e21b2205ea5dbafe2f8600b9476473))
+* **api:** update via SDK Studio ([#15](https://github.com/PaymanAI/payman-python-sdk/issues/15)) ([ad22e91](https://github.com/PaymanAI/payman-python-sdk/commit/ad22e91bc2e8d83cdcd53356436f60b768f770ee))
+* **api:** update via SDK Studio ([#16](https://github.com/PaymanAI/payman-python-sdk/issues/16)) ([de5ffa0](https://github.com/PaymanAI/payman-python-sdk/commit/de5ffa0f831f11dffbff488da9104f822251c0c7))
+* **api:** update via SDK Studio ([#17](https://github.com/PaymanAI/payman-python-sdk/issues/17)) ([3c724d8](https://github.com/PaymanAI/payman-python-sdk/commit/3c724d8f5035882cee4d0007f652a1ec6a0d5b3a))
+* **api:** update via SDK Studio ([#18](https://github.com/PaymanAI/payman-python-sdk/issues/18)) ([c19a169](https://github.com/PaymanAI/payman-python-sdk/commit/c19a169f1f5af8dc944a519f557586dcc20f8165))
+* **api:** update via SDK Studio ([#19](https://github.com/PaymanAI/payman-python-sdk/issues/19)) ([80bc811](https://github.com/PaymanAI/payman-python-sdk/commit/80bc811f98d56264d3467c37941cec4f216c8b4c))
+
 ## 2.0.1 (2025-01-10)
 
 Full Changelog: [v2.0.0...v2.0.1](https://github.com/PaymanAI/payman-python-sdk/compare/v2.0.0...v2.0.1)
