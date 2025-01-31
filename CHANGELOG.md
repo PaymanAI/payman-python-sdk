@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.3.0 (2025-01-31)
+
+Full Changelog: [v2.2.0...v2.3.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.2.0...v2.3.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#30](https://github.com/PaymanAI/payman-python-sdk/issues/30)) ([7b3826a](https://github.com/PaymanAI/payman-python-sdk/commit/7b3826a0a156c09a820284a26f8dfb1a93bcfafc))
+
+
+### Bug Fixes
+
+* **tests:** make test_get_platform less flaky ([#26](https://github.com/PaymanAI/payman-python-sdk/issues/26)) ([10e606e](https://github.com/PaymanAI/payman-python-sdk/commit/10e606ec42f5e77a825747b9e2fd844c2ef0442b))
+
+
+### Chores
+
+* **internal:** avoid pytest-asyncio deprecation warning ([#27](https://github.com/PaymanAI/payman-python-sdk/issues/27)) ([b0e75f4](https://github.com/PaymanAI/payman-python-sdk/commit/b0e75f421f61d01e5ffb37d68d6f5c68c7a13423))
+* **internal:** codegen related update ([#29](https://github.com/PaymanAI/payman-python-sdk/issues/29)) ([287caf5](https://github.com/PaymanAI/payman-python-sdk/commit/287caf52914408cecb16f0f4f5f6719628efb38b))
+* **internal:** minor style changes ([#28](https://github.com/PaymanAI/payman-python-sdk/issues/28)) ([71b5640](https://github.com/PaymanAI/payman-python-sdk/commit/71b56408d28db3a9050fdc198649107fc5cf8f65))
+
+
+### Documentation
+
+* **raw responses:** fix duplicate `the` ([#24](https://github.com/PaymanAI/payman-python-sdk/issues/24)) ([a9677fd](https://github.com/PaymanAI/payman-python-sdk/commit/a9677fd410427517152b9f340758cdd6266558ff))
+
 ## 2.2.0 (2025-01-17)
 
 Full Changelog: [v2.1.0...v2.2.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.1.0...v2.2.0)

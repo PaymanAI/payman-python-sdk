@@ -36,12 +36,12 @@ class TestPayments:
             address="address",
             contact_details={
                 "address": "address",
-                "contact_type": "individual",
                 "email": "email",
                 "phone_number": "phoneNumber",
                 "tax_id": "taxId",
             },
             currency="currency",
+            customer_id="customerId",
             name="name",
             tags=["string"],
         )
@@ -74,24 +74,72 @@ class TestPayments:
     @parametrize
     def test_method_create_payee_overload_2(self, client: Paymanai) -> None:
         payment = client.payments.create_payee(
-            type="US_ACH",
+            type="PAYMAN_AGENT",
         )
         assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
 
     @parametrize
     def test_method_create_payee_with_all_params_overload_2(self, client: Paymanai) -> None:
         payment = client.payments.create_payee(
-            type="US_ACH",
-            account_holder_name="accountHolderName",
-            account_number="accountNumber",
-            account_type="accountType",
+            type="PAYMAN_AGENT",
             contact_details={
                 "address": "address",
-                "contact_type": "individual",
                 "email": "email",
                 "phone_number": "phoneNumber",
                 "tax_id": "taxId",
             },
+            name="name",
+            payman_agent_id="paymanAgentId",
+            tags=["string"],
+        )
+        assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    def test_raw_response_create_payee_overload_2(self, client: Paymanai) -> None:
+        response = client.payments.with_raw_response.create_payee(
+            type="PAYMAN_AGENT",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        payment = response.parse()
+        assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    def test_streaming_response_create_payee_overload_2(self, client: Paymanai) -> None:
+        with client.payments.with_streaming_response.create_payee(
+            type="PAYMAN_AGENT",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            payment = response.parse()
+            assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_method_create_payee_overload_3(self, client: Paymanai) -> None:
+        payment = client.payments.create_payee(
+            type="US_ACH",
+        )
+        assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    def test_method_create_payee_with_all_params_overload_3(self, client: Paymanai) -> None:
+        payment = client.payments.create_payee(
+            type="US_ACH",
+            account_holder_name="accountHolderName",
+            account_holder_type="individual",
+            account_number="accountNumber",
+            account_type="accountType",
+            contact_details={
+                "address": "address",
+                "email": "email",
+                "phone_number": "phoneNumber",
+                "tax_id": "taxId",
+            },
+            customer_id="customerId",
             name="name",
             routing_number="routingNumber",
             tags=["string"],
@@ -99,7 +147,7 @@ class TestPayments:
         assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
 
     @parametrize
-    def test_raw_response_create_payee_overload_2(self, client: Paymanai) -> None:
+    def test_raw_response_create_payee_overload_3(self, client: Paymanai) -> None:
         response = client.payments.with_raw_response.create_payee(
             type="US_ACH",
         )
@@ -110,7 +158,7 @@ class TestPayments:
         assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
 
     @parametrize
-    def test_streaming_response_create_payee_overload_2(self, client: Paymanai) -> None:
+    def test_streaming_response_create_payee_overload_3(self, client: Paymanai) -> None:
         with client.payments.with_streaming_response.create_payee(
             type="US_ACH",
         ) as response:
@@ -182,6 +230,7 @@ class TestPayments:
             contact_email="contactEmail",
             contact_phone_number="contactPhoneNumber",
             contact_tax_id="contactTaxId",
+            customer_id="customerId",
             name="name",
             routing_number="routingNumber",
             type="type",
@@ -230,12 +279,12 @@ class TestPayments:
                 "address": "address",
                 "contact_details": {
                     "address": "address",
-                    "contact_type": "individual",
                     "email": "email",
                     "phone_number": "phoneNumber",
                     "tax_id": "taxId",
                 },
                 "currency": "currency",
+                "customer_id": "customerId",
                 "name": "name",
                 "tags": ["string"],
             },
@@ -286,12 +335,12 @@ class TestAsyncPayments:
             address="address",
             contact_details={
                 "address": "address",
-                "contact_type": "individual",
                 "email": "email",
                 "phone_number": "phoneNumber",
                 "tax_id": "taxId",
             },
             currency="currency",
+            customer_id="customerId",
             name="name",
             tags=["string"],
         )
@@ -324,24 +373,72 @@ class TestAsyncPayments:
     @parametrize
     async def test_method_create_payee_overload_2(self, async_client: AsyncPaymanai) -> None:
         payment = await async_client.payments.create_payee(
-            type="US_ACH",
+            type="PAYMAN_AGENT",
         )
         assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
 
     @parametrize
     async def test_method_create_payee_with_all_params_overload_2(self, async_client: AsyncPaymanai) -> None:
         payment = await async_client.payments.create_payee(
-            type="US_ACH",
-            account_holder_name="accountHolderName",
-            account_number="accountNumber",
-            account_type="accountType",
+            type="PAYMAN_AGENT",
             contact_details={
                 "address": "address",
-                "contact_type": "individual",
                 "email": "email",
                 "phone_number": "phoneNumber",
                 "tax_id": "taxId",
             },
+            name="name",
+            payman_agent_id="paymanAgentId",
+            tags=["string"],
+        )
+        assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    async def test_raw_response_create_payee_overload_2(self, async_client: AsyncPaymanai) -> None:
+        response = await async_client.payments.with_raw_response.create_payee(
+            type="PAYMAN_AGENT",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        payment = await response.parse()
+        assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_create_payee_overload_2(self, async_client: AsyncPaymanai) -> None:
+        async with async_client.payments.with_streaming_response.create_payee(
+            type="PAYMAN_AGENT",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            payment = await response.parse()
+            assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_method_create_payee_overload_3(self, async_client: AsyncPaymanai) -> None:
+        payment = await async_client.payments.create_payee(
+            type="US_ACH",
+        )
+        assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    async def test_method_create_payee_with_all_params_overload_3(self, async_client: AsyncPaymanai) -> None:
+        payment = await async_client.payments.create_payee(
+            type="US_ACH",
+            account_holder_name="accountHolderName",
+            account_holder_type="individual",
+            account_number="accountNumber",
+            account_type="accountType",
+            contact_details={
+                "address": "address",
+                "email": "email",
+                "phone_number": "phoneNumber",
+                "tax_id": "taxId",
+            },
+            customer_id="customerId",
             name="name",
             routing_number="routingNumber",
             tags=["string"],
@@ -349,7 +446,7 @@ class TestAsyncPayments:
         assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
 
     @parametrize
-    async def test_raw_response_create_payee_overload_2(self, async_client: AsyncPaymanai) -> None:
+    async def test_raw_response_create_payee_overload_3(self, async_client: AsyncPaymanai) -> None:
         response = await async_client.payments.with_raw_response.create_payee(
             type="US_ACH",
         )
@@ -360,7 +457,7 @@ class TestAsyncPayments:
         assert_matches_type(PaymentCreatePayeeResponse, payment, path=["response"])
 
     @parametrize
-    async def test_streaming_response_create_payee_overload_2(self, async_client: AsyncPaymanai) -> None:
+    async def test_streaming_response_create_payee_overload_3(self, async_client: AsyncPaymanai) -> None:
         async with async_client.payments.with_streaming_response.create_payee(
             type="US_ACH",
         ) as response:
@@ -432,6 +529,7 @@ class TestAsyncPayments:
             contact_email="contactEmail",
             contact_phone_number="contactPhoneNumber",
             contact_tax_id="contactTaxId",
+            customer_id="customerId",
             name="name",
             routing_number="routingNumber",
             type="type",
@@ -480,12 +578,12 @@ class TestAsyncPayments:
                 "address": "address",
                 "contact_details": {
                     "address": "address",
-                    "contact_type": "individual",
                     "email": "email",
                     "phone_number": "phoneNumber",
                     "tax_id": "taxId",
                 },
                 "currency": "currency",
+                "customer_id": "customerId",
                 "name": "name",
                 "tags": ["string"],
             },

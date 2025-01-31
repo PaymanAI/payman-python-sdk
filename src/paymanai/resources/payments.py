@@ -40,7 +40,7 @@ class PaymentsResource(SyncAPIResource):
     @cached_property
     def with_raw_response(self) -> PaymentsResourceWithRawResponse:
         """
-        This property can be used as a prefix for any HTTP method call to return the
+        This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
         For more information, see https://www.github.com/PaymanAI/payman-python-sdk#accessing-raw-response-data-eg-headers
@@ -65,6 +65,7 @@ class PaymentsResource(SyncAPIResource):
         contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         currency: str | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -75,7 +76,7 @@ class PaymentsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> PaymentCreatePayeeResponse:
         """
-        Sends funds from an agent controlled wallet to a payment destination.
+        Create a new payee (aka payment destination) for future payments to be sent to
 
         Args:
           type: The type of payment destination
@@ -85,6 +86,9 @@ class PaymentsResource(SyncAPIResource):
           contact_details: Contact details for this payment destination
 
           currency: The the blockchain to use for the transaction
+
+          customer_id: The ID of your customer who owns this payment destination. This is optional
+              unless you are using the Account API, in which case it is required.
 
           name: The name you wish to associate with this payment destination for future lookups.
 
@@ -104,12 +108,55 @@ class PaymentsResource(SyncAPIResource):
     def create_payee(
         self,
         *,
+        type: Literal["PAYMAN_AGENT"],
+        contact_details: payment_create_payee_params.PaymanAgentPaymentDestinationDescriptorContactDetails
+        | NotGiven = NOT_GIVEN,
+        name: str | NotGiven = NOT_GIVEN,
+        payman_agent_id: str | NotGiven = NOT_GIVEN,
+        tags: List[str] | NotGiven = NOT_GIVEN,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> PaymentCreatePayeeResponse:
+        """
+        Create a new payee (aka payment destination) for future payments to be sent to
+
+        Args:
+          type: The type of payment destination
+
+          contact_details: Contact details for this payment destination
+
+          name: The name you wish to associate with this payment destination for future lookups.
+
+          payman_agent_id: The Payman unique id assigned to the receiver agent
+
+          tags: Any additional labels you wish to assign to this payment destination
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    def create_payee(
+        self,
+        *,
         type: Literal["US_ACH"],
         account_holder_name: str | NotGiven = NOT_GIVEN,
+        account_holder_type: Literal["individual", "business"] | NotGiven = NOT_GIVEN,
         account_number: str | NotGiven = NOT_GIVEN,
         account_type: str | NotGiven = NOT_GIVEN,
         contact_details: payment_create_payee_params.UsachPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
@@ -121,18 +168,23 @@ class PaymentsResource(SyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> PaymentCreatePayeeResponse:
         """
-        Sends funds from an agent controlled wallet to a payment destination.
+        Create a new payee (aka payment destination) for future payments to be sent to
 
         Args:
           type: The type of payment destination
 
           account_holder_name: The name of the account holder
 
+          account_holder_type: The type of the account holder
+
           account_number: The bank account number for the account
 
           account_type: The type of account it is (checking or savings)
 
           contact_details: Contact details for this payment destination
+
+          customer_id: The ID of your customer who owns this payment destination. This is optional
+              unless you are using the Account API, in which case it is required.
 
           name: The name you wish to associate with this payment destination for future lookups.
 
@@ -154,14 +206,17 @@ class PaymentsResource(SyncAPIResource):
     def create_payee(
         self,
         *,
-        type: Literal["CRYPTO_ADDRESS"] | Literal["US_ACH"],
+        type: Literal["CRYPTO_ADDRESS"] | Literal["PAYMAN_AGENT"] | Literal["US_ACH"],
         address: str | NotGiven = NOT_GIVEN,
         contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         currency: str | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
+        payman_agent_id: str | NotGiven = NOT_GIVEN,
         account_holder_name: str | NotGiven = NOT_GIVEN,
+        account_holder_type: Literal["individual", "business"] | NotGiven = NOT_GIVEN,
         account_number: str | NotGiven = NOT_GIVEN,
         account_type: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
@@ -181,9 +236,12 @@ class PaymentsResource(SyncAPIResource):
                     "address": address,
                     "contact_details": contact_details,
                     "currency": currency,
+                    "customer_id": customer_id,
                     "name": name,
                     "tags": tags,
+                    "payman_agent_id": payman_agent_id,
                     "account_holder_name": account_holder_name,
+                    "account_holder_type": account_holder_type,
                     "account_number": account_number,
                     "account_type": account_type,
                     "routing_number": routing_number,
@@ -280,6 +338,7 @@ class PaymentsResource(SyncAPIResource):
         contact_email: str | NotGiven = NOT_GIVEN,
         contact_phone_number: str | NotGiven = NOT_GIVEN,
         contact_tax_id: str | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
         type: str | NotGiven = NOT_GIVEN,
@@ -303,6 +362,10 @@ class PaymentsResource(SyncAPIResource):
           contact_phone_number: The contact phone number to search for.
 
           contact_tax_id: The contact tax id to search for.
+
+          customer_id: The ID of the customer who owns the payment destination. If the Account API is
+              enabled, this is required to prevent unauthorized access to payment
+              destinations.
 
           name: The name of the payment destination to search for. This can be a partial,
               case-insensitive match.
@@ -333,6 +396,7 @@ class PaymentsResource(SyncAPIResource):
                         "contact_email": contact_email,
                         "contact_phone_number": contact_phone_number,
                         "contact_tax_id": contact_tax_id,
+                        "customer_id": customer_id,
                         "name": name,
                         "routing_number": routing_number,
                         "type": type,
@@ -375,12 +439,15 @@ class PaymentsResource(SyncAPIResource):
           customer_id: The ID of the customer on whose behalf you're transferring funds. This can be
               any unique ID as held within your system. Providing this will limit the
               spendableamounts to what the customer has already deposited (unless
-              ignoreCustomerSpendLimits is set to true).
+              ignoreCustomerSpendLimits is set to true).Note that if the Account API is
+              enabled for your account, this field becomes mandatory to preventaccidental
+              unauthorized transfers.
 
           customer_name: A name to associate with this customer.
 
           ignore_customer_spend_limits: By default Payman will limit spending on behalf of a customer to the amount they
-              have deposited. If you wish to ignore this limit, set this to true.
+              have deposited. If you wish to ignore this limit, set this to true. Note, if the
+              Account API is enabled for your account, this field may not be used.
 
           memo: A note or memo to associate with this payment.
 
@@ -431,7 +498,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
     @cached_property
     def with_raw_response(self) -> AsyncPaymentsResourceWithRawResponse:
         """
-        This property can be used as a prefix for any HTTP method call to return the
+        This property can be used as a prefix for any HTTP method call to return
         the raw response object instead of the parsed content.
 
         For more information, see https://www.github.com/PaymanAI/payman-python-sdk#accessing-raw-response-data-eg-headers
@@ -456,6 +523,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
         contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         currency: str | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -466,7 +534,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> PaymentCreatePayeeResponse:
         """
-        Sends funds from an agent controlled wallet to a payment destination.
+        Create a new payee (aka payment destination) for future payments to be sent to
 
         Args:
           type: The type of payment destination
@@ -476,6 +544,9 @@ class AsyncPaymentsResource(AsyncAPIResource):
           contact_details: Contact details for this payment destination
 
           currency: The the blockchain to use for the transaction
+
+          customer_id: The ID of your customer who owns this payment destination. This is optional
+              unless you are using the Account API, in which case it is required.
 
           name: The name you wish to associate with this payment destination for future lookups.
 
@@ -495,12 +566,55 @@ class AsyncPaymentsResource(AsyncAPIResource):
     async def create_payee(
         self,
         *,
+        type: Literal["PAYMAN_AGENT"],
+        contact_details: payment_create_payee_params.PaymanAgentPaymentDestinationDescriptorContactDetails
+        | NotGiven = NOT_GIVEN,
+        name: str | NotGiven = NOT_GIVEN,
+        payman_agent_id: str | NotGiven = NOT_GIVEN,
+        tags: List[str] | NotGiven = NOT_GIVEN,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> PaymentCreatePayeeResponse:
+        """
+        Create a new payee (aka payment destination) for future payments to be sent to
+
+        Args:
+          type: The type of payment destination
+
+          contact_details: Contact details for this payment destination
+
+          name: The name you wish to associate with this payment destination for future lookups.
+
+          payman_agent_id: The Payman unique id assigned to the receiver agent
+
+          tags: Any additional labels you wish to assign to this payment destination
+
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        ...
+
+    @overload
+    async def create_payee(
+        self,
+        *,
         type: Literal["US_ACH"],
         account_holder_name: str | NotGiven = NOT_GIVEN,
+        account_holder_type: Literal["individual", "business"] | NotGiven = NOT_GIVEN,
         account_number: str | NotGiven = NOT_GIVEN,
         account_type: str | NotGiven = NOT_GIVEN,
         contact_details: payment_create_payee_params.UsachPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
@@ -512,18 +626,23 @@ class AsyncPaymentsResource(AsyncAPIResource):
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> PaymentCreatePayeeResponse:
         """
-        Sends funds from an agent controlled wallet to a payment destination.
+        Create a new payee (aka payment destination) for future payments to be sent to
 
         Args:
           type: The type of payment destination
 
           account_holder_name: The name of the account holder
 
+          account_holder_type: The type of the account holder
+
           account_number: The bank account number for the account
 
           account_type: The type of account it is (checking or savings)
 
           contact_details: Contact details for this payment destination
+
+          customer_id: The ID of your customer who owns this payment destination. This is optional
+              unless you are using the Account API, in which case it is required.
 
           name: The name you wish to associate with this payment destination for future lookups.
 
@@ -545,14 +664,17 @@ class AsyncPaymentsResource(AsyncAPIResource):
     async def create_payee(
         self,
         *,
-        type: Literal["CRYPTO_ADDRESS"] | Literal["US_ACH"],
+        type: Literal["CRYPTO_ADDRESS"] | Literal["PAYMAN_AGENT"] | Literal["US_ACH"],
         address: str | NotGiven = NOT_GIVEN,
         contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         currency: str | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
+        payman_agent_id: str | NotGiven = NOT_GIVEN,
         account_holder_name: str | NotGiven = NOT_GIVEN,
+        account_holder_type: Literal["individual", "business"] | NotGiven = NOT_GIVEN,
         account_number: str | NotGiven = NOT_GIVEN,
         account_type: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
@@ -572,9 +694,12 @@ class AsyncPaymentsResource(AsyncAPIResource):
                     "address": address,
                     "contact_details": contact_details,
                     "currency": currency,
+                    "customer_id": customer_id,
                     "name": name,
                     "tags": tags,
+                    "payman_agent_id": payman_agent_id,
                     "account_holder_name": account_holder_name,
+                    "account_holder_type": account_holder_type,
                     "account_number": account_number,
                     "account_type": account_type,
                     "routing_number": routing_number,
@@ -671,6 +796,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
         contact_email: str | NotGiven = NOT_GIVEN,
         contact_phone_number: str | NotGiven = NOT_GIVEN,
         contact_tax_id: str | NotGiven = NOT_GIVEN,
+        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
         type: str | NotGiven = NOT_GIVEN,
@@ -694,6 +820,10 @@ class AsyncPaymentsResource(AsyncAPIResource):
           contact_phone_number: The contact phone number to search for.
 
           contact_tax_id: The contact tax id to search for.
+
+          customer_id: The ID of the customer who owns the payment destination. If the Account API is
+              enabled, this is required to prevent unauthorized access to payment
+              destinations.
 
           name: The name of the payment destination to search for. This can be a partial,
               case-insensitive match.
@@ -724,6 +854,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
                         "contact_email": contact_email,
                         "contact_phone_number": contact_phone_number,
                         "contact_tax_id": contact_tax_id,
+                        "customer_id": customer_id,
                         "name": name,
                         "routing_number": routing_number,
                         "type": type,
@@ -766,12 +897,15 @@ class AsyncPaymentsResource(AsyncAPIResource):
           customer_id: The ID of the customer on whose behalf you're transferring funds. This can be
               any unique ID as held within your system. Providing this will limit the
               spendableamounts to what the customer has already deposited (unless
-              ignoreCustomerSpendLimits is set to true).
+              ignoreCustomerSpendLimits is set to true).Note that if the Account API is
+              enabled for your account, this field becomes mandatory to preventaccidental
+              unauthorized transfers.
 
           customer_name: A name to associate with this customer.
 
           ignore_customer_spend_limits: By default Payman will limit spending on behalf of a customer to the amount they
-              have deposited. If you wish to ignore this limit, set this to true.
+              have deposited. If you wish to ignore this limit, set this to true. Note, if the
+              Account API is enabled for your account, this field may not be used.
 
           memo: A note or memo to associate with this payment.
 
