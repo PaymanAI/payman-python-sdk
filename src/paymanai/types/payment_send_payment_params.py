@@ -12,6 +12,8 @@ __all__ = [
     "PaymentDestination",
     "PaymentDestinationCryptoAddressPaymentDestinationDescriptor",
     "PaymentDestinationCryptoAddressPaymentDestinationDescriptorContactDetails",
+    "PaymentDestinationPaymanAgentPaymentDestinationDescriptor",
+    "PaymentDestinationPaymanAgentPaymentDestinationDescriptorContactDetails",
     "PaymentDestinationUsachPaymentDestinationDescriptor",
     "PaymentDestinationUsachPaymentDestinationDescriptorContactDetails",
 ]
@@ -32,7 +34,9 @@ class PaymentSendPaymentParams(TypedDict, total=False):
 
     This can be any unique ID as held within your system. Providing this will limit
     the spendableamounts to what the customer has already deposited (unless
-    ignoreCustomerSpendLimits is set to true).
+    ignoreCustomerSpendLimits is set to true).Note that if the Account API is
+    enabled for your account, this field becomes mandatory to preventaccidental
+    unauthorized transfers.
     """
 
     customer_name: Annotated[str, PropertyInfo(alias="customerName")]
@@ -41,7 +45,8 @@ class PaymentSendPaymentParams(TypedDict, total=False):
     ignore_customer_spend_limits: Annotated[bool, PropertyInfo(alias="ignoreCustomerSpendLimits")]
     """
     By default Payman will limit spending on behalf of a customer to the amount they
-    have deposited. If you wish to ignore this limit, set this to true.
+    have deposited. If you wish to ignore this limit, set this to true. Note, if the
+    Account API is enabled for your account, this field may not be used.
     """
 
     memo: str
@@ -72,9 +77,6 @@ class PaymentDestinationCryptoAddressPaymentDestinationDescriptorContactDetails(
     address: str
     """The address string of the payment destination contact"""
 
-    contact_type: Annotated[Literal["individual", "business"], PropertyInfo(alias="contactType")]
-    """The type of the payment destination contact"""
-
     email: str
     """The email address of the payment destination contact"""
 
@@ -100,6 +102,13 @@ class PaymentDestinationCryptoAddressPaymentDestinationDescriptor(TypedDict, tot
     currency: str
     """The the blockchain to use for the transaction"""
 
+    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
+    """The ID of your customer who owns this payment destination.
+
+    This is optional unless you are using the Account API, in which case it is
+    required.
+    """
+
     name: str
     """
     The name you wish to associate with this payment destination for future lookups.
@@ -109,12 +118,44 @@ class PaymentDestinationCryptoAddressPaymentDestinationDescriptor(TypedDict, tot
     """Any additional labels you wish to assign to this payment destination"""
 
 
-class PaymentDestinationUsachPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
+class PaymentDestinationPaymanAgentPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
     address: str
     """The address string of the payment destination contact"""
 
-    contact_type: Annotated[Literal["individual", "business"], PropertyInfo(alias="contactType")]
-    """The type of the payment destination contact"""
+    email: str
+    """The email address of the payment destination contact"""
+
+    phone_number: Annotated[str, PropertyInfo(alias="phoneNumber")]
+    """The phone number of the payment destination contact"""
+
+    tax_id: Annotated[str, PropertyInfo(alias="taxId")]
+    """The tax identification of the payment destination contact"""
+
+
+class PaymentDestinationPaymanAgentPaymentDestinationDescriptor(TypedDict, total=False):
+    type: Required[Literal["PAYMAN_AGENT"]]
+    """The type of payment destination"""
+
+    contact_details: Annotated[
+        PaymentDestinationPaymanAgentPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")
+    ]
+    """Contact details for this payment destination"""
+
+    name: str
+    """
+    The name you wish to associate with this payment destination for future lookups.
+    """
+
+    payman_agent_id: Annotated[str, PropertyInfo(alias="paymanAgentId")]
+    """The Payman unique id assigned to the receiver agent"""
+
+    tags: List[str]
+    """Any additional labels you wish to assign to this payment destination"""
+
+
+class PaymentDestinationUsachPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
+    address: str
+    """The address string of the payment destination contact"""
 
     email: str
     """The email address of the payment destination contact"""
@@ -133,6 +174,9 @@ class PaymentDestinationUsachPaymentDestinationDescriptor(TypedDict, total=False
     account_holder_name: Annotated[str, PropertyInfo(alias="accountHolderName")]
     """The name of the account holder"""
 
+    account_holder_type: Annotated[Literal["individual", "business"], PropertyInfo(alias="accountHolderType")]
+    """The type of the account holder"""
+
     account_number: Annotated[str, PropertyInfo(alias="accountNumber")]
     """The bank account number for the account"""
 
@@ -143,6 +187,13 @@ class PaymentDestinationUsachPaymentDestinationDescriptor(TypedDict, total=False
         PaymentDestinationUsachPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")
     ]
     """Contact details for this payment destination"""
+
+    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
+    """The ID of your customer who owns this payment destination.
+
+    This is optional unless you are using the Account API, in which case it is
+    required.
+    """
 
     name: str
     """
@@ -157,5 +208,7 @@ class PaymentDestinationUsachPaymentDestinationDescriptor(TypedDict, total=False
 
 
 PaymentDestination: TypeAlias = Union[
-    PaymentDestinationCryptoAddressPaymentDestinationDescriptor, PaymentDestinationUsachPaymentDestinationDescriptor
+    PaymentDestinationCryptoAddressPaymentDestinationDescriptor,
+    PaymentDestinationPaymanAgentPaymentDestinationDescriptor,
+    PaymentDestinationUsachPaymentDestinationDescriptor,
 ]
