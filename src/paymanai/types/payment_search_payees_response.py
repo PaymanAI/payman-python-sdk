@@ -19,9 +19,6 @@ class PaymentSearchPayeesResponseItemContactDetails(BaseModel):
     address: Optional[str] = None
     """The address string of the payment destination contact"""
 
-    contact_type: Optional[Literal["individual", "business"]] = FieldInfo(alias="contactType", default=None)
-    """The type of the payment destination contact"""
-
     email: Optional[str] = None
     """The email address of the payment destination contact"""
 
@@ -38,7 +35,7 @@ class PaymentSearchPayeesResponseItem(BaseModel):
 
     organization_id: str = FieldInfo(alias="organizationId")
 
-    type: Literal["US_ACH", "CRYPTO_ADDRESS"]
+    type: Literal["US_ACH", "CRYPTO_ADDRESS", "PAYMAN_AGENT"]
     """The type of payment destination"""
 
     id: Optional[str] = None
@@ -51,6 +48,9 @@ class PaymentSearchPayeesResponseItem(BaseModel):
     created_at: Optional[datetime] = FieldInfo(alias="createdAt", default=None)
 
     created_by: Optional[str] = FieldInfo(alias="createdBy", default=None)
+
+    customer_id: Optional[str] = FieldInfo(alias="customerId", default=None)
+    """The ID of the customer this payment destination is associated with"""
 
     destination_details: Optional[Dict[str, object]] = FieldInfo(alias="destinationDetails", default=None)
 

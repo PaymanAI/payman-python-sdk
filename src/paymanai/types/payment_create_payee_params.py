@@ -11,6 +11,8 @@ __all__ = [
     "PaymentCreatePayeeParams",
     "CryptoAddressPaymentDestinationDescriptor",
     "CryptoAddressPaymentDestinationDescriptorContactDetails",
+    "PaymanAgentPaymentDestinationDescriptor",
+    "PaymanAgentPaymentDestinationDescriptorContactDetails",
     "UsachPaymentDestinationDescriptor",
     "UsachPaymentDestinationDescriptorContactDetails",
 ]
@@ -31,6 +33,13 @@ class CryptoAddressPaymentDestinationDescriptor(TypedDict, total=False):
     currency: str
     """The the blockchain to use for the transaction"""
 
+    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
+    """The ID of your customer who owns this payment destination.
+
+    This is optional unless you are using the Account API, in which case it is
+    required.
+    """
+
     name: str
     """
     The name you wish to associate with this payment destination for future lookups.
@@ -44,8 +53,40 @@ class CryptoAddressPaymentDestinationDescriptorContactDetails(TypedDict, total=F
     address: str
     """The address string of the payment destination contact"""
 
-    contact_type: Annotated[Literal["individual", "business"], PropertyInfo(alias="contactType")]
-    """The type of the payment destination contact"""
+    email: str
+    """The email address of the payment destination contact"""
+
+    phone_number: Annotated[str, PropertyInfo(alias="phoneNumber")]
+    """The phone number of the payment destination contact"""
+
+    tax_id: Annotated[str, PropertyInfo(alias="taxId")]
+    """The tax identification of the payment destination contact"""
+
+
+class PaymanAgentPaymentDestinationDescriptor(TypedDict, total=False):
+    type: Required[Literal["PAYMAN_AGENT"]]
+    """The type of payment destination"""
+
+    contact_details: Annotated[
+        PaymanAgentPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")
+    ]
+    """Contact details for this payment destination"""
+
+    name: str
+    """
+    The name you wish to associate with this payment destination for future lookups.
+    """
+
+    payman_agent_id: Annotated[str, PropertyInfo(alias="paymanAgentId")]
+    """The Payman unique id assigned to the receiver agent"""
+
+    tags: List[str]
+    """Any additional labels you wish to assign to this payment destination"""
+
+
+class PaymanAgentPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
+    address: str
+    """The address string of the payment destination contact"""
 
     email: str
     """The email address of the payment destination contact"""
@@ -64,6 +105,9 @@ class UsachPaymentDestinationDescriptor(TypedDict, total=False):
     account_holder_name: Annotated[str, PropertyInfo(alias="accountHolderName")]
     """The name of the account holder"""
 
+    account_holder_type: Annotated[Literal["individual", "business"], PropertyInfo(alias="accountHolderType")]
+    """The type of the account holder"""
+
     account_number: Annotated[str, PropertyInfo(alias="accountNumber")]
     """The bank account number for the account"""
 
@@ -72,6 +116,13 @@ class UsachPaymentDestinationDescriptor(TypedDict, total=False):
 
     contact_details: Annotated[UsachPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")]
     """Contact details for this payment destination"""
+
+    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
+    """The ID of your customer who owns this payment destination.
+
+    This is optional unless you are using the Account API, in which case it is
+    required.
+    """
 
     name: str
     """
@@ -89,9 +140,6 @@ class UsachPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
     address: str
     """The address string of the payment destination contact"""
 
-    contact_type: Annotated[Literal["individual", "business"], PropertyInfo(alias="contactType")]
-    """The type of the payment destination contact"""
-
     email: str
     """The email address of the payment destination contact"""
 
@@ -103,5 +151,7 @@ class UsachPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
 
 
 PaymentCreatePayeeParams: TypeAlias = Union[
-    CryptoAddressPaymentDestinationDescriptor, UsachPaymentDestinationDescriptor
+    CryptoAddressPaymentDestinationDescriptor,
+    PaymanAgentPaymentDestinationDescriptor,
+    UsachPaymentDestinationDescriptor,
 ]
