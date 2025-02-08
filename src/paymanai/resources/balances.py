@@ -50,12 +50,13 @@ class BalancesResource(SyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> BalanceGetSpendableBalanceResponse:
-        """Get the current agent's own spendable balance for a specific curreny.
+        """Get the current agent's own spendable balance for a specific currency.
 
         A balance
-        is considered spendable if it is not reserved for open tasks and has been
-        verified as having arrived in the Payman wallet. The balance will be returned in
-        the currency's full units (e.g. '1.000000' is 1 USDC).
+        is considered spendable if it has been verified as having arrived in the Payman
+        wallet and is reduced according to any applicable spend limit controls. The
+        balance will be returned in the currency's full units (e.g. '1.00' is $1 in USD,
+        '1.000000' is 1 USDC).
 
         Args:
           extra_headers: Send extra headers
@@ -109,12 +110,13 @@ class AsyncBalancesResource(AsyncAPIResource):
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
     ) -> BalanceGetSpendableBalanceResponse:
-        """Get the current agent's own spendable balance for a specific curreny.
+        """Get the current agent's own spendable balance for a specific currency.
 
         A balance
-        is considered spendable if it is not reserved for open tasks and has been
-        verified as having arrived in the Payman wallet. The balance will be returned in
-        the currency's full units (e.g. '1.000000' is 1 USDC).
+        is considered spendable if it has been verified as having arrived in the Payman
+        wallet and is reduced according to any applicable spend limit controls. The
+        balance will be returned in the currency's full units (e.g. '1.00' is $1 in USD,
+        '1.000000' is 1 USDC).
 
         Args:
           extra_headers: Send extra headers
