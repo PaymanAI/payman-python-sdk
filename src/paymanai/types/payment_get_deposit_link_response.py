@@ -5,9 +5,9 @@ from pydantic import Field as FieldInfo
 
 from .._models import BaseModel
 
-__all__ = ["PaymentInitiateCustomerDepositResponse"]
+__all__ = ["PaymentGetDepositLinkResponse"]
 
 
-class PaymentInitiateCustomerDepositResponse(BaseModel):
+class PaymentGetDepositLinkResponse(BaseModel):
     checkout_url: str = FieldInfo(alias="checkoutUrl")
     """A URL that you can redirect the user to in order to complete the deposit."""

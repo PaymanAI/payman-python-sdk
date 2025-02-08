@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.4.0 (2025-02-08)
+
+Full Changelog: [v2.3.0...v2.4.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.3.0...v2.4.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#38](https://github.com/PaymanAI/payman-python-sdk/issues/38)) ([e580736](https://github.com/PaymanAI/payman-python-sdk/commit/e580736e453e937b64e2295c59812c7dea882de0))
+* **api:** update via SDK Studio ([#39](https://github.com/PaymanAI/payman-python-sdk/issues/39)) ([412599f](https://github.com/PaymanAI/payman-python-sdk/commit/412599f603fda4087a7889989d0fa83fcef0556c))
+* **client:** send `X-Stainless-Read-Timeout` header ([#35](https://github.com/PaymanAI/payman-python-sdk/issues/35)) ([de4b6e3](https://github.com/PaymanAI/payman-python-sdk/commit/de4b6e306c5022ba8f431c2171b0a90519847efe))
+
+
+### Chores
+
+* **internal:** bummp ruff dependency ([#34](https://github.com/PaymanAI/payman-python-sdk/issues/34)) ([e5cf43f](https://github.com/PaymanAI/payman-python-sdk/commit/e5cf43f3c7bf73a7d240026bf81bb1ecf998337a))
+* **internal:** change default timeout to an int ([#32](https://github.com/PaymanAI/payman-python-sdk/issues/32)) ([9f73235](https://github.com/PaymanAI/payman-python-sdk/commit/9f73235be87de5590b09f19a2bbd4989525e52ce))
+* **internal:** fix type traversing dictionary params ([#36](https://github.com/PaymanAI/payman-python-sdk/issues/36)) ([7673618](https://github.com/PaymanAI/payman-python-sdk/commit/7673618b940858afb882f43e2a79a31377066a88))
+* **internal:** minor type handling changes ([#37](https://github.com/PaymanAI/payman-python-sdk/issues/37)) ([4a2bcec](https://github.com/PaymanAI/payman-python-sdk/commit/4a2bcecdb08c0718058611f1c55949534abed6e0))
+
 ## 2.3.0 (2025-01-31)
 
 Full Changelog: [v2.2.0...v2.3.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.2.0...v2.3.0)

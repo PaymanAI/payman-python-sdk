@@ -24,7 +24,7 @@ from ._utils import (
     get_async_library,
 )
 from ._version import __version__
-from .resources import version, wallets, balances, payments
+from .resources import version, balances, payments
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import PaymanaiError, APIStatusError
 from ._base_client import (
@@ -52,7 +52,6 @@ ENVIRONMENTS: Dict[str, str] = {
 
 
 class Paymanai(SyncAPIClient):
-    wallets: wallets.WalletsResource
     version: version.VersionResource
     balances: balances.BalancesResource
     payments: payments.PaymentsResource
@@ -137,7 +136,6 @@ class Paymanai(SyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.wallets = wallets.WalletsResource(self)
         self.version = version.VersionResource(self)
         self.balances = balances.BalancesResource(self)
         self.payments = payments.PaymentsResource(self)
@@ -253,7 +251,6 @@ class Paymanai(SyncAPIClient):
 
 
 class AsyncPaymanai(AsyncAPIClient):
-    wallets: wallets.AsyncWalletsResource
     version: version.AsyncVersionResource
     balances: balances.AsyncBalancesResource
     payments: payments.AsyncPaymentsResource
@@ -338,7 +335,6 @@ class AsyncPaymanai(AsyncAPIClient):
             _strict_response_validation=_strict_response_validation,
         )
 
-        self.wallets = wallets.AsyncWalletsResource(self)
         self.version = version.AsyncVersionResource(self)
         self.balances = balances.AsyncBalancesResource(self)
         self.payments = payments.AsyncPaymentsResource(self)
@@ -455,7 +451,6 @@ class AsyncPaymanai(AsyncAPIClient):
 
 class PaymanaiWithRawResponse:
     def __init__(self, client: Paymanai) -> None:
-        self.wallets = wallets.WalletsResourceWithRawResponse(client.wallets)
         self.version = version.VersionResourceWithRawResponse(client.version)
         self.balances = balances.BalancesResourceWithRawResponse(client.balances)
         self.payments = payments.PaymentsResourceWithRawResponse(client.payments)
@@ -463,7 +458,6 @@ class PaymanaiWithRawResponse:
 
 class AsyncPaymanaiWithRawResponse:
     def __init__(self, client: AsyncPaymanai) -> None:
-        self.wallets = wallets.AsyncWalletsResourceWithRawResponse(client.wallets)
         self.version = version.AsyncVersionResourceWithRawResponse(client.version)
         self.balances = balances.AsyncBalancesResourceWithRawResponse(client.balances)
         self.payments = payments.AsyncPaymentsResourceWithRawResponse(client.payments)
@@ -471,7 +465,6 @@ class AsyncPaymanaiWithRawResponse:
 
 class PaymanaiWithStreamedResponse:
     def __init__(self, client: Paymanai) -> None:
-        self.wallets = wallets.WalletsResourceWithStreamingResponse(client.wallets)
         self.version = version.VersionResourceWithStreamingResponse(client.version)
         self.balances = balances.BalancesResourceWithStreamingResponse(client.balances)
         self.payments = payments.PaymentsResourceWithStreamingResponse(client.payments)
@@ -479,7 +472,6 @@ class PaymanaiWithStreamedResponse:
 
 class AsyncPaymanaiWithStreamedResponse:
     def __init__(self, client: AsyncPaymanai) -> None:
-        self.wallets = wallets.AsyncWalletsResourceWithStreamingResponse(client.wallets)
         self.version = version.AsyncVersionResourceWithStreamingResponse(client.version)
         self.balances = balances.AsyncBalancesResourceWithStreamingResponse(client.balances)
         self.payments = payments.AsyncPaymentsResourceWithStreamingResponse(client.payments)

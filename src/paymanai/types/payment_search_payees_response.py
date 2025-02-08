@@ -49,9 +49,6 @@ class PaymentSearchPayeesResponseItem(BaseModel):
 
     created_by: Optional[str] = FieldInfo(alias="createdBy", default=None)
 
-    customer_id: Optional[str] = FieldInfo(alias="customerId", default=None)
-    """The ID of the customer this payment destination is associated with"""
-
     destination_details: Optional[Dict[str, object]] = FieldInfo(alias="destinationDetails", default=None)
 
     provider_info: Optional[Dict[str, object]] = FieldInfo(alias="providerInfo", default=None)

@@ -11,7 +11,7 @@ from ..types import (
     payment_create_payee_params,
     payment_send_payment_params,
     payment_search_payees_params,
-    payment_initiate_customer_deposit_params,
+    payment_get_deposit_link_params,
 )
 from .._types import NOT_GIVEN, Body, Query, Headers, NotGiven
 from .._utils import (
@@ -31,7 +31,7 @@ from .._base_client import make_request_options
 from ..types.payment_create_payee_response import PaymentCreatePayeeResponse
 from ..types.payment_send_payment_response import PaymentSendPaymentResponse
 from ..types.payment_search_payees_response import PaymentSearchPayeesResponse
-from ..types.payment_initiate_customer_deposit_response import PaymentInitiateCustomerDepositResponse
+from ..types.payment_get_deposit_link_response import PaymentGetDepositLinkResponse
 
 __all__ = ["PaymentsResource", "AsyncPaymentsResource"]
 
@@ -65,7 +65,6 @@ class PaymentsResource(SyncAPIResource):
         contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         currency: str | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -86,9 +85,6 @@ class PaymentsResource(SyncAPIResource):
           contact_details: Contact details for this payment destination
 
           currency: The the blockchain to use for the transaction
-
-          customer_id: The ID of your customer who owns this payment destination. This is optional
-              unless you are using the Account API, in which case it is required.
 
           name: The name you wish to associate with this payment destination for future lookups.
 
@@ -156,7 +152,6 @@ class PaymentsResource(SyncAPIResource):
         account_type: str | NotGiven = NOT_GIVEN,
         contact_details: payment_create_payee_params.UsachPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
@@ -183,9 +178,6 @@ class PaymentsResource(SyncAPIResource):
 
           contact_details: Contact details for this payment destination
 
-          customer_id: The ID of your customer who owns this payment destination. This is optional
-              unless you are using the Account API, in which case it is required.
-
           name: The name you wish to associate with this payment destination for future lookups.
 
           routing_number: The routing number of the bank
@@ -211,7 +203,6 @@ class PaymentsResource(SyncAPIResource):
         contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         currency: str | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
         payman_agent_id: str | NotGiven = NOT_GIVEN,
@@ -236,7 +227,6 @@ class PaymentsResource(SyncAPIResource):
                     "address": address,
                     "contact_details": contact_details,
                     "currency": currency,
-                    "customer_id": customer_id,
                     "name": name,
                     "tags": tags,
                     "payman_agent_id": payman_agent_id,
@@ -254,13 +244,10 @@ class PaymentsResource(SyncAPIResource):
             cast_to=PaymentCreatePayeeResponse,
         )
 
-    def initiate_customer_deposit(
+    def get_deposit_link(
         self,
         *,
         amount_decimal: float,
-        customer_id: str,
-        customer_email: str | NotGiven = NOT_GIVEN,
-        customer_name: str | NotGiven = NOT_GIVEN,
         fee_mode: Literal["INCLUDED_IN_AMOUNT", "ADD_TO_AMOUNT"] | NotGiven = NOT_GIVEN,
         memo: str | NotGiven = NOT_GIVEN,
         metadata: Dict[str, object] | NotGiven = NOT_GIVEN,
@@ -271,24 +258,18 @@ class PaymentsResource(SyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> PaymentInitiateCustomerDepositResponse:
+    ) -> PaymentGetDepositLinkResponse:
         """
-        Initiates the creation of a checkout link, through which the customer can add
-        funds to the agent's wallet. For example this could be used to have your
-        customer pay for some activity the agent is going to undertake on their behalf.
-        The returned JSON checkoutUrl property will contain a URL that the customer can
-        visit to complete the payment.
+        Initiates the creation of a checkout link, through which a user can add funds to
+        the agent's wallet. For example this could be used to have your customer pay for
+        some activity the agent is going to undertake on their behalf. The returned JSON
+        checkoutUrl property will contain a URL that the customer can visit to complete
+        the payment.Funds received in this way will be comingled with the agent's other
+        funds. For a more segregated approach, consider using the Accounts API.
 
         Args:
           amount_decimal: The amount to generate a checkout link for. For example, '10.00' for USD is
               $10.00 or '1.000000' USDCBASE is 1 USDC.
-
-          customer_id: The ID of the customer to deposit funds for. This can be any unique ID as held
-              within your system.
-
-          customer_email: An email address to associate with this customer.
-
-          customer_name: A name to associate with this customer.
 
           fee_mode: Determines whether to add any processing fees to the requested amount. If set to
               INCLUDED_IN_AMOUNT, the customer will be charged the exact amount specified, and
@@ -311,24 +292,21 @@ class PaymentsResource(SyncAPIResource):
         """
         extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
         return self._post(
-            "/payments/customer-deposit-link",
+            "/payments/deposit-link",
             body=maybe_transform(
                 {
                     "amount_decimal": amount_decimal,
-                    "customer_id": customer_id,
-                    "customer_email": customer_email,
-                    "customer_name": customer_name,
                     "fee_mode": fee_mode,
                     "memo": memo,
                     "metadata": metadata,
                     "wallet_id": wallet_id,
                 },
-                payment_initiate_customer_deposit_params.PaymentInitiateCustomerDepositParams,
+                payment_get_deposit_link_params.PaymentGetDepositLinkParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=PaymentInitiateCustomerDepositResponse,
+            cast_to=PaymentGetDepositLinkResponse,
         )
 
     def search_payees(
@@ -338,7 +316,6 @@ class PaymentsResource(SyncAPIResource):
         contact_email: str | NotGiven = NOT_GIVEN,
         contact_phone_number: str | NotGiven = NOT_GIVEN,
         contact_tax_id: str | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
         type: str | NotGiven = NOT_GIVEN,
@@ -362,10 +339,6 @@ class PaymentsResource(SyncAPIResource):
           contact_phone_number: The contact phone number to search for.
 
           contact_tax_id: The contact tax id to search for.
-
-          customer_id: The ID of the customer who owns the payment destination. If the Account API is
-              enabled, this is required to prevent unauthorized access to payment
-              destinations.
 
           name: The name of the payment destination to search for. This can be a partial,
               case-insensitive match.
@@ -396,7 +369,6 @@ class PaymentsResource(SyncAPIResource):
                         "contact_email": contact_email,
                         "contact_phone_number": contact_phone_number,
                         "contact_tax_id": contact_tax_id,
-                        "customer_id": customer_id,
                         "name": name,
                         "routing_number": routing_number,
                         "type": type,
@@ -411,10 +383,6 @@ class PaymentsResource(SyncAPIResource):
         self,
         *,
         amount_decimal: float,
-        customer_email: str | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
-        customer_name: str | NotGiven = NOT_GIVEN,
-        ignore_customer_spend_limits: bool | NotGiven = NOT_GIVEN,
         memo: str | NotGiven = NOT_GIVEN,
         metadata: Dict[str, object] | NotGiven = NOT_GIVEN,
         payment_destination: payment_send_payment_params.PaymentDestination | NotGiven = NOT_GIVEN,
@@ -433,21 +401,6 @@ class PaymentsResource(SyncAPIResource):
         Args:
           amount_decimal: The amount to generate a checkout link for. For example, '10.00' for USD is
               $10.00 or '1.000000' USDCBASE is 1 USDC.
-
-          customer_email: An email address to associate with this customer.
-
-          customer_id: The ID of the customer on whose behalf you're transferring funds. This can be
-              any unique ID as held within your system. Providing this will limit the
-              spendableamounts to what the customer has already deposited (unless
-              ignoreCustomerSpendLimits is set to true).Note that if the Account API is
-              enabled for your account, this field becomes mandatory to preventaccidental
-              unauthorized transfers.
-
-          customer_name: A name to associate with this customer.
-
-          ignore_customer_spend_limits: By default Payman will limit spending on behalf of a customer to the amount they
-              have deposited. If you wish to ignore this limit, set this to true. Note, if the
-              Account API is enabled for your account, this field may not be used.
 
           memo: A note or memo to associate with this payment.
 
@@ -475,10 +428,6 @@ class PaymentsResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "amount_decimal": amount_decimal,
-                    "customer_email": customer_email,
-                    "customer_id": customer_id,
-                    "customer_name": customer_name,
-                    "ignore_customer_spend_limits": ignore_customer_spend_limits,
                     "memo": memo,
                     "metadata": metadata,
                     "payment_destination": payment_destination,
@@ -523,7 +472,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
         contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         currency: str | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
@@ -544,9 +492,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
           contact_details: Contact details for this payment destination
 
           currency: The the blockchain to use for the transaction
-
-          customer_id: The ID of your customer who owns this payment destination. This is optional
-              unless you are using the Account API, in which case it is required.
 
           name: The name you wish to associate with this payment destination for future lookups.
 
@@ -614,7 +559,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
         account_type: str | NotGiven = NOT_GIVEN,
         contact_details: payment_create_payee_params.UsachPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
@@ -641,9 +585,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
 
           contact_details: Contact details for this payment destination
 
-          customer_id: The ID of your customer who owns this payment destination. This is optional
-              unless you are using the Account API, in which case it is required.
-
           name: The name you wish to associate with this payment destination for future lookups.
 
           routing_number: The routing number of the bank
@@ -669,7 +610,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
         contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         currency: str | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
         payman_agent_id: str | NotGiven = NOT_GIVEN,
@@ -694,7 +634,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
                     "address": address,
                     "contact_details": contact_details,
                     "currency": currency,
-                    "customer_id": customer_id,
                     "name": name,
                     "tags": tags,
                     "payman_agent_id": payman_agent_id,
@@ -712,13 +651,10 @@ class AsyncPaymentsResource(AsyncAPIResource):
             cast_to=PaymentCreatePayeeResponse,
         )
 
-    async def initiate_customer_deposit(
+    async def get_deposit_link(
         self,
         *,
         amount_decimal: float,
-        customer_id: str,
-        customer_email: str | NotGiven = NOT_GIVEN,
-        customer_name: str | NotGiven = NOT_GIVEN,
         fee_mode: Literal["INCLUDED_IN_AMOUNT", "ADD_TO_AMOUNT"] | NotGiven = NOT_GIVEN,
         memo: str | NotGiven = NOT_GIVEN,
         metadata: Dict[str, object] | NotGiven = NOT_GIVEN,
@@ -729,24 +665,18 @@ class AsyncPaymentsResource(AsyncAPIResource):
         extra_query: Query | None = None,
         extra_body: Body | None = None,
         timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> PaymentInitiateCustomerDepositResponse:
+    ) -> PaymentGetDepositLinkResponse:
         """
-        Initiates the creation of a checkout link, through which the customer can add
-        funds to the agent's wallet. For example this could be used to have your
-        customer pay for some activity the agent is going to undertake on their behalf.
-        The returned JSON checkoutUrl property will contain a URL that the customer can
-        visit to complete the payment.
+        Initiates the creation of a checkout link, through which a user can add funds to
+        the agent's wallet. For example this could be used to have your customer pay for
+        some activity the agent is going to undertake on their behalf. The returned JSON
+        checkoutUrl property will contain a URL that the customer can visit to complete
+        the payment.Funds received in this way will be comingled with the agent's other
+        funds. For a more segregated approach, consider using the Accounts API.
 
         Args:
           amount_decimal: The amount to generate a checkout link for. For example, '10.00' for USD is
               $10.00 or '1.000000' USDCBASE is 1 USDC.
-
-          customer_id: The ID of the customer to deposit funds for. This can be any unique ID as held
-              within your system.
-
-          customer_email: An email address to associate with this customer.
-
-          customer_name: A name to associate with this customer.
 
           fee_mode: Determines whether to add any processing fees to the requested amount. If set to
               INCLUDED_IN_AMOUNT, the customer will be charged the exact amount specified, and
@@ -769,24 +699,21 @@ class AsyncPaymentsResource(AsyncAPIResource):
         """
         extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
         return await self._post(
-            "/payments/customer-deposit-link",
+            "/payments/deposit-link",
             body=await async_maybe_transform(
                 {
                     "amount_decimal": amount_decimal,
-                    "customer_id": customer_id,
-                    "customer_email": customer_email,
-                    "customer_name": customer_name,
                     "fee_mode": fee_mode,
                     "memo": memo,
                     "metadata": metadata,
                     "wallet_id": wallet_id,
                 },
-                payment_initiate_customer_deposit_params.PaymentInitiateCustomerDepositParams,
+                payment_get_deposit_link_params.PaymentGetDepositLinkParams,
             ),
             options=make_request_options(
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
-            cast_to=PaymentInitiateCustomerDepositResponse,
+            cast_to=PaymentGetDepositLinkResponse,
         )
 
     async def search_payees(
@@ -796,7 +723,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
         contact_email: str | NotGiven = NOT_GIVEN,
         contact_phone_number: str | NotGiven = NOT_GIVEN,
         contact_tax_id: str | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
         routing_number: str | NotGiven = NOT_GIVEN,
         type: str | NotGiven = NOT_GIVEN,
@@ -820,10 +746,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
           contact_phone_number: The contact phone number to search for.
 
           contact_tax_id: The contact tax id to search for.
-
-          customer_id: The ID of the customer who owns the payment destination. If the Account API is
-              enabled, this is required to prevent unauthorized access to payment
-              destinations.
 
           name: The name of the payment destination to search for. This can be a partial,
               case-insensitive match.
@@ -854,7 +776,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
                         "contact_email": contact_email,
                         "contact_phone_number": contact_phone_number,
                         "contact_tax_id": contact_tax_id,
-                        "customer_id": customer_id,
                         "name": name,
                         "routing_number": routing_number,
                         "type": type,
@@ -869,10 +790,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
         self,
         *,
         amount_decimal: float,
-        customer_email: str | NotGiven = NOT_GIVEN,
-        customer_id: str | NotGiven = NOT_GIVEN,
-        customer_name: str | NotGiven = NOT_GIVEN,
-        ignore_customer_spend_limits: bool | NotGiven = NOT_GIVEN,
         memo: str | NotGiven = NOT_GIVEN,
         metadata: Dict[str, object] | NotGiven = NOT_GIVEN,
         payment_destination: payment_send_payment_params.PaymentDestination | NotGiven = NOT_GIVEN,
@@ -891,21 +808,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
         Args:
           amount_decimal: The amount to generate a checkout link for. For example, '10.00' for USD is
               $10.00 or '1.000000' USDCBASE is 1 USDC.
-
-          customer_email: An email address to associate with this customer.
-
-          customer_id: The ID of the customer on whose behalf you're transferring funds. This can be
-              any unique ID as held within your system. Providing this will limit the
-              spendableamounts to what the customer has already deposited (unless
-              ignoreCustomerSpendLimits is set to true).Note that if the Account API is
-              enabled for your account, this field becomes mandatory to preventaccidental
-              unauthorized transfers.
-
-          customer_name: A name to associate with this customer.
-
-          ignore_customer_spend_limits: By default Payman will limit spending on behalf of a customer to the amount they
-              have deposited. If you wish to ignore this limit, set this to true. Note, if the
-              Account API is enabled for your account, this field may not be used.
 
           memo: A note or memo to associate with this payment.
 
@@ -933,10 +835,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "amount_decimal": amount_decimal,
-                    "customer_email": customer_email,
-                    "customer_id": customer_id,
-                    "customer_name": customer_name,
-                    "ignore_customer_spend_limits": ignore_customer_spend_limits,
                     "memo": memo,
                     "metadata": metadata,
                     "payment_destination": payment_destination,
@@ -959,8 +857,8 @@ class PaymentsResourceWithRawResponse:
         self.create_payee = to_raw_response_wrapper(
             payments.create_payee,
         )
-        self.initiate_customer_deposit = to_raw_response_wrapper(
-            payments.initiate_customer_deposit,
+        self.get_deposit_link = to_raw_response_wrapper(
+            payments.get_deposit_link,
         )
         self.search_payees = to_raw_response_wrapper(
             payments.search_payees,
@@ -977,8 +875,8 @@ class AsyncPaymentsResourceWithRawResponse:
         self.create_payee = async_to_raw_response_wrapper(
             payments.create_payee,
         )
-        self.initiate_customer_deposit = async_to_raw_response_wrapper(
-            payments.initiate_customer_deposit,
+        self.get_deposit_link = async_to_raw_response_wrapper(
+            payments.get_deposit_link,
         )
         self.search_payees = async_to_raw_response_wrapper(
             payments.search_payees,
@@ -995,8 +893,8 @@ class PaymentsResourceWithStreamingResponse:
         self.create_payee = to_streamed_response_wrapper(
             payments.create_payee,
         )
-        self.initiate_customer_deposit = to_streamed_response_wrapper(
-            payments.initiate_customer_deposit,
+        self.get_deposit_link = to_streamed_response_wrapper(
+            payments.get_deposit_link,
         )
         self.search_payees = to_streamed_response_wrapper(
             payments.search_payees,
@@ -1013,8 +911,8 @@ class AsyncPaymentsResourceWithStreamingResponse:
         self.create_payee = async_to_streamed_response_wrapper(
             payments.create_payee,
         )
-        self.initiate_customer_deposit = async_to_streamed_response_wrapper(
-            payments.initiate_customer_deposit,
+        self.get_deposit_link = async_to_streamed_response_wrapper(
+            payments.get_deposit_link,
         )
         self.search_payees = async_to_streamed_response_wrapper(
             payments.search_payees,

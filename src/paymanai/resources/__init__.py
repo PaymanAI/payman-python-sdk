@@ -8,14 +8,6 @@ from .version import (
     VersionResourceWithStreamingResponse,
     AsyncVersionResourceWithStreamingResponse,
 )
-from .wallets import (
-    WalletsResource,
-    AsyncWalletsResource,
-    WalletsResourceWithRawResponse,
-    AsyncWalletsResourceWithRawResponse,
-    WalletsResourceWithStreamingResponse,
-    AsyncWalletsResourceWithStreamingResponse,
-)
 from .balances import (
     BalancesResource,
     AsyncBalancesResource,
@@ -34,12 +26,6 @@ from .payments import (
 )
 
 __all__ = [
-    "WalletsResource",
-    "AsyncWalletsResource",
-    "WalletsResourceWithRawResponse",
-    "AsyncWalletsResourceWithRawResponse",
-    "WalletsResourceWithStreamingResponse",
-    "AsyncWalletsResourceWithStreamingResponse",
     "VersionResource",
     "AsyncVersionResource",
     "VersionResourceWithRawResponse",
