@@ -22,13 +22,6 @@ class PaymentSearchPayeesParams(TypedDict, total=False):
     contact_tax_id: Annotated[str, PropertyInfo(alias="contactTaxId")]
     """The contact tax id to search for."""
 
-    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
-    """The ID of the customer who owns the payment destination.
-
-    If the Account API is enabled, this is required to prevent unauthorized access
-    to payment destinations.
-    """
-
     name: str
     """The name of the payment destination to search for.
 

@@ -26,29 +26,6 @@ class PaymentSendPaymentParams(TypedDict, total=False):
     For example, '10.00' for USD is $10.00 or '1.000000' USDCBASE is 1 USDC.
     """
 
-    customer_email: Annotated[str, PropertyInfo(alias="customerEmail")]
-    """An email address to associate with this customer."""
-
-    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
-    """The ID of the customer on whose behalf you're transferring funds.
-
-    This can be any unique ID as held within your system. Providing this will limit
-    the spendableamounts to what the customer has already deposited (unless
-    ignoreCustomerSpendLimits is set to true).Note that if the Account API is
-    enabled for your account, this field becomes mandatory to preventaccidental
-    unauthorized transfers.
-    """
-
-    customer_name: Annotated[str, PropertyInfo(alias="customerName")]
-    """A name to associate with this customer."""
-
-    ignore_customer_spend_limits: Annotated[bool, PropertyInfo(alias="ignoreCustomerSpendLimits")]
-    """
-    By default Payman will limit spending on behalf of a customer to the amount they
-    have deposited. If you wish to ignore this limit, set this to true. Note, if the
-    Account API is enabled for your account, this field may not be used.
-    """
-
     memo: str
     """A note or memo to associate with this payment."""
 
@@ -101,13 +78,6 @@ class PaymentDestinationCryptoAddressPaymentDestinationDescriptor(TypedDict, tot
 
     currency: str
     """The the blockchain to use for the transaction"""
-
-    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
-    """The ID of your customer who owns this payment destination.
-
-    This is optional unless you are using the Account API, in which case it is
-    required.
-    """
 
     name: str
     """
@@ -187,13 +157,6 @@ class PaymentDestinationUsachPaymentDestinationDescriptor(TypedDict, total=False
         PaymentDestinationUsachPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")
     ]
     """Contact details for this payment destination"""
-
-    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
-    """The ID of your customer who owns this payment destination.
-
-    This is optional unless you are using the Account API, in which case it is
-    required.
-    """
 
     name: str
     """
