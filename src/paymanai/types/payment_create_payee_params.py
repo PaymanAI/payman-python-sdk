@@ -33,13 +33,6 @@ class CryptoAddressPaymentDestinationDescriptor(TypedDict, total=False):
     currency: str
     """The the blockchain to use for the transaction"""
 
-    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
-    """The ID of your customer who owns this payment destination.
-
-    This is optional unless you are using the Account API, in which case it is
-    required.
-    """
-
     name: str
     """
     The name you wish to associate with this payment destination for future lookups.
@@ -116,13 +109,6 @@ class UsachPaymentDestinationDescriptor(TypedDict, total=False):
 
     contact_details: Annotated[UsachPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")]
     """Contact details for this payment destination"""
-
-    customer_id: Annotated[str, PropertyInfo(alias="customerId")]
-    """The ID of your customer who owns this payment destination.
-
-    This is optional unless you are using the Account API, in which case it is
-    required.
-    """
 
     name: str
     """
