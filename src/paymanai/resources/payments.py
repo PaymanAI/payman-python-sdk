@@ -11,7 +11,6 @@ from ..types import (
     payment_create_payee_params,
     payment_send_payment_params,
     payment_search_payees_params,
-    payment_initiate_customer_deposit_params,
 )
 from .._types import NOT_GIVEN, Body, Query, Headers, NotGiven
 from .._utils import (
@@ -31,7 +30,6 @@ from .._base_client import make_request_options
 from ..types.payment_create_payee_response import PaymentCreatePayeeResponse
 from ..types.payment_send_payment_response import PaymentSendPaymentResponse
 from ..types.payment_search_payees_response import PaymentSearchPayeesResponse
-from ..types.payment_initiate_customer_deposit_response import PaymentInitiateCustomerDepositResponse
 
 __all__ = ["PaymentsResource", "AsyncPaymentsResource"]
 
@@ -252,83 +250,6 @@ class PaymentsResource(SyncAPIResource):
                 extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
             ),
             cast_to=PaymentCreatePayeeResponse,
-        )
-
-    def initiate_customer_deposit(
-        self,
-        *,
-        amount_decimal: float,
-        customer_id: str,
-        customer_email: str | NotGiven = NOT_GIVEN,
-        customer_name: str | NotGiven = NOT_GIVEN,
-        fee_mode: Literal["INCLUDED_IN_AMOUNT", "ADD_TO_AMOUNT"] | NotGiven = NOT_GIVEN,
-        memo: str | NotGiven = NOT_GIVEN,
-        metadata: Dict[str, object] | NotGiven = NOT_GIVEN,
-        wallet_id: str | NotGiven = NOT_GIVEN,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> PaymentInitiateCustomerDepositResponse:
-        """
-        Initiates the creation of a checkout link, through which the customer can add
-        funds to the agent's wallet. For example this could be used to have your
-        customer pay for some activity the agent is going to undertake on their behalf.
-        The returned JSON checkoutUrl property will contain a URL that the customer can
-        visit to complete the payment.
-
-        Args:
-          amount_decimal: The amount to generate a checkout link for. For example, '10.00' for USD is
-              $10.00 or '1.000000' USDCBASE is 1 USDC.
-
-          customer_id: The ID of the customer to deposit funds for. This can be any unique ID as held
-              within your system.
-
-          customer_email: An email address to associate with this customer.
-
-          customer_name: A name to associate with this customer.
-
-          fee_mode: Determines whether to add any processing fees to the requested amount. If set to
-              INCLUDED_IN_AMOUNT, the customer will be charged the exact amount specified, and
-              fees will be deducted from that before the remainder is deposited in the wallet.
-              If set to ADD_TO_AMOUNT, the customer will be charged the amount specified plus
-              any fees required. Defaults to 'INCLUDED_IN_AMOUNT'.
-
-          memo: A memo to associate with any transactions created in the Payman ledger.
-
-          wallet_id: The ID of the wallet you would like the customer to add funds to. Only required
-              if the agent has access to more than one wallet.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
-        return self._post(
-            "/payments/customer-deposit-link",
-            body=maybe_transform(
-                {
-                    "amount_decimal": amount_decimal,
-                    "customer_id": customer_id,
-                    "customer_email": customer_email,
-                    "customer_name": customer_name,
-                    "fee_mode": fee_mode,
-                    "memo": memo,
-                    "metadata": metadata,
-                    "wallet_id": wallet_id,
-                },
-                payment_initiate_customer_deposit_params.PaymentInitiateCustomerDepositParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=PaymentInitiateCustomerDepositResponse,
         )
 
     def search_payees(
@@ -712,83 +633,6 @@ class AsyncPaymentsResource(AsyncAPIResource):
             cast_to=PaymentCreatePayeeResponse,
         )
 
-    async def initiate_customer_deposit(
-        self,
-        *,
-        amount_decimal: float,
-        customer_id: str,
-        customer_email: str | NotGiven = NOT_GIVEN,
-        customer_name: str | NotGiven = NOT_GIVEN,
-        fee_mode: Literal["INCLUDED_IN_AMOUNT", "ADD_TO_AMOUNT"] | NotGiven = NOT_GIVEN,
-        memo: str | NotGiven = NOT_GIVEN,
-        metadata: Dict[str, object] | NotGiven = NOT_GIVEN,
-        wallet_id: str | NotGiven = NOT_GIVEN,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> PaymentInitiateCustomerDepositResponse:
-        """
-        Initiates the creation of a checkout link, through which the customer can add
-        funds to the agent's wallet. For example this could be used to have your
-        customer pay for some activity the agent is going to undertake on their behalf.
-        The returned JSON checkoutUrl property will contain a URL that the customer can
-        visit to complete the payment.
-
-        Args:
-          amount_decimal: The amount to generate a checkout link for. For example, '10.00' for USD is
-              $10.00 or '1.000000' USDCBASE is 1 USDC.
-
-          customer_id: The ID of the customer to deposit funds for. This can be any unique ID as held
-              within your system.
-
-          customer_email: An email address to associate with this customer.
-
-          customer_name: A name to associate with this customer.
-
-          fee_mode: Determines whether to add any processing fees to the requested amount. If set to
-              INCLUDED_IN_AMOUNT, the customer will be charged the exact amount specified, and
-              fees will be deducted from that before the remainder is deposited in the wallet.
-              If set to ADD_TO_AMOUNT, the customer will be charged the amount specified plus
-              any fees required. Defaults to 'INCLUDED_IN_AMOUNT'.
-
-          memo: A memo to associate with any transactions created in the Payman ledger.
-
-          wallet_id: The ID of the wallet you would like the customer to add funds to. Only required
-              if the agent has access to more than one wallet.
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
-        return await self._post(
-            "/payments/customer-deposit-link",
-            body=await async_maybe_transform(
-                {
-                    "amount_decimal": amount_decimal,
-                    "customer_id": customer_id,
-                    "customer_email": customer_email,
-                    "customer_name": customer_name,
-                    "fee_mode": fee_mode,
-                    "memo": memo,
-                    "metadata": metadata,
-                    "wallet_id": wallet_id,
-                },
-                payment_initiate_customer_deposit_params.PaymentInitiateCustomerDepositParams,
-            ),
-            options=make_request_options(
-                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
-            ),
-            cast_to=PaymentInitiateCustomerDepositResponse,
-        )
-
     async def search_payees(
         self,
         *,
@@ -959,9 +803,6 @@ class PaymentsResourceWithRawResponse:
         self.create_payee = to_raw_response_wrapper(
             payments.create_payee,
         )
-        self.initiate_customer_deposit = to_raw_response_wrapper(
-            payments.initiate_customer_deposit,
-        )
         self.search_payees = to_raw_response_wrapper(
             payments.search_payees,
         )
@@ -976,9 +817,6 @@ class AsyncPaymentsResourceWithRawResponse:
 
         self.create_payee = async_to_raw_response_wrapper(
             payments.create_payee,
-        )
-        self.initiate_customer_deposit = async_to_raw_response_wrapper(
-            payments.initiate_customer_deposit,
         )
         self.search_payees = async_to_raw_response_wrapper(
             payments.search_payees,
@@ -995,9 +833,6 @@ class PaymentsResourceWithStreamingResponse:
         self.create_payee = to_streamed_response_wrapper(
             payments.create_payee,
         )
-        self.initiate_customer_deposit = to_streamed_response_wrapper(
-            payments.initiate_customer_deposit,
-        )
         self.search_payees = to_streamed_response_wrapper(
             payments.search_payees,
         )
@@ -1012,9 +847,6 @@ class AsyncPaymentsResourceWithStreamingResponse:
 
         self.create_payee = async_to_streamed_response_wrapper(
             payments.create_payee,
-        )
-        self.initiate_customer_deposit = async_to_streamed_response_wrapper(
-            payments.initiate_customer_deposit,
         )
         self.search_payees = async_to_streamed_response_wrapper(
             payments.search_payees,
