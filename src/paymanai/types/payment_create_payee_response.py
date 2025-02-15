@@ -31,7 +31,7 @@ class PaymentCreatePayeeResponse(BaseModel):
 
     organization_id: str = FieldInfo(alias="organizationId")
 
-    type: Literal["US_ACH", "CRYPTO_ADDRESS", "PAYMAN_AGENT"]
+    type: Literal["US_ACH", "PAYMAN_AGENT"]
     """The type of payment destination"""
 
     id: Optional[str] = None
