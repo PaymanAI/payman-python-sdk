@@ -103,7 +103,7 @@ from paymanai import Paymanai
 client = Paymanai()
 
 try:
-    client.version.get_server_version()
+    client.payments.search_payees()
 except paymanai.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -146,7 +146,7 @@ client = Paymanai(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).version.get_server_version()
+client.with_options(max_retries=5).payments.search_payees()
 ```
 
 ### Timeouts
@@ -169,7 +169,7 @@ client = Paymanai(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).version.get_server_version()
+client.with_options(timeout=5.0).payments.search_payees()
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -224,11 +224,11 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from paymanai import Paymanai
 
 client = Paymanai()
-response = client.version.with_raw_response.get_server_version()
+response = client.payments.with_raw_response.search_payees()
 print(response.headers.get('X-My-Header'))
 
-version = response.parse()  # get the object that `version.get_server_version()` would have returned
-print(version)
+payment = response.parse()  # get the object that `payments.search_payees()` would have returned
+print(payment)
 ```
 
 These methods return an [`APIResponse`](https://github.com/PaymanAI/payman-python-sdk/tree/main/src/paymanai/_response.py) object.
@@ -242,7 +242,7 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.version.with_streaming_response.get_server_version() as response:
+with client.payments.with_streaming_response.search_payees() as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():

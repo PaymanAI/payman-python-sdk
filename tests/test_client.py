@@ -774,20 +774,28 @@ class TestPaymanai:
     @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/version").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.get("/payments/search-destinations").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
-            self.client.get("/version", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
+            self.client.get(
+                "/payments/search-destinations",
+                cast_to=httpx.Response,
+                options={"headers": {RAW_RESPONSE_HEADER: "stream"}},
+            )
 
         assert _get_open_connections(self.client) == 0
 
     @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/version").mock(return_value=httpx.Response(500))
+        respx_mock.get("/payments/search-destinations").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
-            self.client.get("/version", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}})
+            self.client.get(
+                "/payments/search-destinations",
+                cast_to=httpx.Response,
+                options={"headers": {RAW_RESPONSE_HEADER: "stream"}},
+            )
 
         assert _get_open_connections(self.client) == 0
 
@@ -815,9 +823,9 @@ class TestPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/version").mock(side_effect=retry_handler)
+        respx_mock.get("/payments/search-destinations").mock(side_effect=retry_handler)
 
-        response = client.version.with_raw_response.get_server_version()
+        response = client.payments.with_raw_response.search_payees()
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -839,11 +847,9 @@ class TestPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/version").mock(side_effect=retry_handler)
+        respx_mock.get("/payments/search-destinations").mock(side_effect=retry_handler)
 
-        response = client.version.with_raw_response.get_server_version(
-            extra_headers={"x-stainless-retry-count": Omit()}
-        )
+        response = client.payments.with_raw_response.search_payees(extra_headers={"x-stainless-retry-count": Omit()})
 
         assert len(response.http_request.headers.get_list("x-stainless-retry-count")) == 0
 
@@ -864,9 +870,9 @@ class TestPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/version").mock(side_effect=retry_handler)
+        respx_mock.get("/payments/search-destinations").mock(side_effect=retry_handler)
 
-        response = client.version.with_raw_response.get_server_version(extra_headers={"x-stainless-retry-count": "42"})
+        response = client.payments.with_raw_response.search_payees(extra_headers={"x-stainless-retry-count": "42"})
 
         assert response.http_request.headers.get("x-stainless-retry-count") == "42"
 
@@ -1604,11 +1610,13 @@ class TestAsyncPaymanai:
     @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_timeout_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/version").mock(side_effect=httpx.TimeoutException("Test timeout error"))
+        respx_mock.get("/payments/search-destinations").mock(side_effect=httpx.TimeoutException("Test timeout error"))
 
         with pytest.raises(APITimeoutError):
             await self.client.get(
-                "/version", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}}
+                "/payments/search-destinations",
+                cast_to=httpx.Response,
+                options={"headers": {RAW_RESPONSE_HEADER: "stream"}},
             )
 
         assert _get_open_connections(self.client) == 0
@@ -1616,11 +1624,13 @@ class TestAsyncPaymanai:
     @mock.patch("paymanai._base_client.BaseClient._calculate_retry_timeout", _low_retry_timeout)
     @pytest.mark.respx(base_url=base_url)
     async def test_retrying_status_errors_doesnt_leak(self, respx_mock: MockRouter) -> None:
-        respx_mock.get("/version").mock(return_value=httpx.Response(500))
+        respx_mock.get("/payments/search-destinations").mock(return_value=httpx.Response(500))
 
         with pytest.raises(APIStatusError):
             await self.client.get(
-                "/version", cast_to=httpx.Response, options={"headers": {RAW_RESPONSE_HEADER: "stream"}}
+                "/payments/search-destinations",
+                cast_to=httpx.Response,
+                options={"headers": {RAW_RESPONSE_HEADER: "stream"}},
             )
 
         assert _get_open_connections(self.client) == 0
@@ -1650,9 +1660,9 @@ class TestAsyncPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/version").mock(side_effect=retry_handler)
+        respx_mock.get("/payments/search-destinations").mock(side_effect=retry_handler)
 
-        response = await client.version.with_raw_response.get_server_version()
+        response = await client.payments.with_raw_response.search_payees()
 
         assert response.retries_taken == failures_before_success
         assert int(response.http_request.headers.get("x-stainless-retry-count")) == failures_before_success
@@ -1675,9 +1685,9 @@ class TestAsyncPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/version").mock(side_effect=retry_handler)
+        respx_mock.get("/payments/search-destinations").mock(side_effect=retry_handler)
 
-        response = await client.version.with_raw_response.get_server_version(
+        response = await client.payments.with_raw_response.search_payees(
             extra_headers={"x-stainless-retry-count": Omit()}
         )
 
@@ -1701,9 +1711,9 @@ class TestAsyncPaymanai:
                 return httpx.Response(500)
             return httpx.Response(200)
 
-        respx_mock.get("/version").mock(side_effect=retry_handler)
+        respx_mock.get("/payments/search-destinations").mock(side_effect=retry_handler)
 
-        response = await client.version.with_raw_response.get_server_version(
+        response = await client.payments.with_raw_response.search_payees(
             extra_headers={"x-stainless-retry-count": "42"}
         )
 
