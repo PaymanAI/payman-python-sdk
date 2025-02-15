@@ -10,8 +10,6 @@ from .._utils import PropertyInfo
 __all__ = [
     "PaymentSendPaymentParams",
     "PaymentDestination",
-    "PaymentDestinationCryptoAddressPaymentDestinationDescriptor",
-    "PaymentDestinationCryptoAddressPaymentDestinationDescriptorContactDetails",
     "PaymentDestinationPaymanAgentPaymentDestinationDescriptor",
     "PaymentDestinationPaymanAgentPaymentDestinationDescriptorContactDetails",
     "PaymentDestinationUsachPaymentDestinationDescriptor",
@@ -32,7 +30,7 @@ class PaymentSendPaymentParams(TypedDict, total=False):
     metadata: Dict[str, object]
 
     payment_destination: Annotated[PaymentDestination, PropertyInfo(alias="paymentDestination")]
-    """A cryptocurrency address-based payment destination"""
+    """A Payman Agent payment destination"""
 
     payment_destination_id: Annotated[str, PropertyInfo(alias="paymentDestinationId")]
     """The id of the payment destination you want to send the funds to.
@@ -48,44 +46,6 @@ class PaymentSendPaymentParams(TypedDict, total=False):
     This is only required if the agent has access to multiple wallets (not the case
     by default).
     """
-
-
-class PaymentDestinationCryptoAddressPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
-    address: str
-    """The address string of the payment destination contact"""
-
-    email: str
-    """The email address of the payment destination contact"""
-
-    phone_number: Annotated[str, PropertyInfo(alias="phoneNumber")]
-    """The phone number of the payment destination contact"""
-
-    tax_id: Annotated[str, PropertyInfo(alias="taxId")]
-    """The tax identification of the payment destination contact"""
-
-
-class PaymentDestinationCryptoAddressPaymentDestinationDescriptor(TypedDict, total=False):
-    type: Required[Literal["CRYPTO_ADDRESS"]]
-    """The type of payment destination"""
-
-    address: str
-    """The cryptocurrency address to send funds to"""
-
-    contact_details: Annotated[
-        PaymentDestinationCryptoAddressPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")
-    ]
-    """Contact details for this payment destination"""
-
-    currency: str
-    """The the blockchain to use for the transaction"""
-
-    name: str
-    """
-    The name you wish to associate with this payment destination for future lookups.
-    """
-
-    tags: List[str]
-    """Any additional labels you wish to assign to this payment destination"""
 
 
 class PaymentDestinationPaymanAgentPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
@@ -116,8 +76,8 @@ class PaymentDestinationPaymanAgentPaymentDestinationDescriptor(TypedDict, total
     The name you wish to associate with this payment destination for future lookups.
     """
 
-    payman_agent_id: Annotated[str, PropertyInfo(alias="paymanAgentId")]
-    """The Payman unique id assigned to the receiver agent"""
+    payman_agent: Annotated[str, PropertyInfo(alias="paymanAgent")]
+    """The Payman handle or the id of the receiver agent"""
 
     tags: List[str]
     """Any additional labels you wish to assign to this payment destination"""
@@ -171,7 +131,5 @@ class PaymentDestinationUsachPaymentDestinationDescriptor(TypedDict, total=False
 
 
 PaymentDestination: TypeAlias = Union[
-    PaymentDestinationCryptoAddressPaymentDestinationDescriptor,
-    PaymentDestinationPaymanAgentPaymentDestinationDescriptor,
-    PaymentDestinationUsachPaymentDestinationDescriptor,
+    PaymentDestinationPaymanAgentPaymentDestinationDescriptor, PaymentDestinationUsachPaymentDestinationDescriptor
 ]

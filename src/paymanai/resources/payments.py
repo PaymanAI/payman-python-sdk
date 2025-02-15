@@ -60,55 +60,11 @@ class PaymentsResource(SyncAPIResource):
     def create_payee(
         self,
         *,
-        type: Literal["CRYPTO_ADDRESS"],
-        address: str | NotGiven = NOT_GIVEN,
-        contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
-        | NotGiven = NOT_GIVEN,
-        currency: str | NotGiven = NOT_GIVEN,
-        name: str | NotGiven = NOT_GIVEN,
-        tags: List[str] | NotGiven = NOT_GIVEN,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> PaymentCreatePayeeResponse:
-        """
-        Create a new payee (aka payment destination) for future payments to be sent to
-
-        Args:
-          type: The type of payment destination
-
-          address: The cryptocurrency address to send funds to
-
-          contact_details: Contact details for this payment destination
-
-          currency: The the blockchain to use for the transaction
-
-          name: The name you wish to associate with this payment destination for future lookups.
-
-          tags: Any additional labels you wish to assign to this payment destination
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        ...
-
-    @overload
-    def create_payee(
-        self,
-        *,
         type: Literal["PAYMAN_AGENT"],
         contact_details: payment_create_payee_params.PaymanAgentPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
-        payman_agent_id: str | NotGiven = NOT_GIVEN,
+        payman_agent: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -127,7 +83,7 @@ class PaymentsResource(SyncAPIResource):
 
           name: The name you wish to associate with this payment destination for future lookups.
 
-          payman_agent_id: The Payman unique id assigned to the receiver agent
+          payman_agent: The Payman handle or the id of the receiver agent
 
           tags: Any additional labels you wish to assign to this payment destination
 
@@ -198,14 +154,12 @@ class PaymentsResource(SyncAPIResource):
     def create_payee(
         self,
         *,
-        type: Literal["CRYPTO_ADDRESS"] | Literal["PAYMAN_AGENT"] | Literal["US_ACH"],
-        address: str | NotGiven = NOT_GIVEN,
-        contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
+        type: Literal["PAYMAN_AGENT"] | Literal["US_ACH"],
+        contact_details: payment_create_payee_params.PaymanAgentPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
-        currency: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
+        payman_agent: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
-        payman_agent_id: str | NotGiven = NOT_GIVEN,
         account_holder_name: str | NotGiven = NOT_GIVEN,
         account_holder_type: Literal["individual", "business"] | NotGiven = NOT_GIVEN,
         account_number: str | NotGiven = NOT_GIVEN,
@@ -224,12 +178,10 @@ class PaymentsResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "type": type,
-                    "address": address,
                     "contact_details": contact_details,
-                    "currency": currency,
                     "name": name,
+                    "payman_agent": payman_agent,
                     "tags": tags,
-                    "payman_agent_id": payman_agent_id,
                     "account_holder_name": account_holder_name,
                     "account_holder_type": account_holder_type,
                     "account_number": account_number,
@@ -313,6 +265,7 @@ class PaymentsResource(SyncAPIResource):
         self,
         *,
         account_number: str | NotGiven = NOT_GIVEN,
+        agent_reference: str | NotGiven = NOT_GIVEN,
         contact_email: str | NotGiven = NOT_GIVEN,
         contact_phone_number: str | NotGiven = NOT_GIVEN,
         contact_tax_id: str | NotGiven = NOT_GIVEN,
@@ -333,6 +286,8 @@ class PaymentsResource(SyncAPIResource):
 
         Args:
           account_number: The US Bank account number to search for.
+
+          agent_reference: The Payman agent reference (id or handle) to search for.
 
           contact_email: The contact email to search for.
 
@@ -366,6 +321,7 @@ class PaymentsResource(SyncAPIResource):
                 query=maybe_transform(
                     {
                         "account_number": account_number,
+                        "agent_reference": agent_reference,
                         "contact_email": contact_email,
                         "contact_phone_number": contact_phone_number,
                         "contact_tax_id": contact_tax_id,
@@ -404,7 +360,7 @@ class PaymentsResource(SyncAPIResource):
 
           memo: A note or memo to associate with this payment.
 
-          payment_destination: A cryptocurrency address-based payment destination
+          payment_destination: A Payman Agent payment destination
 
           payment_destination_id: The id of the payment destination you want to send the funds to. This must have
               been created using the /payments/destinations endpoint or via the Payman
@@ -467,55 +423,11 @@ class AsyncPaymentsResource(AsyncAPIResource):
     async def create_payee(
         self,
         *,
-        type: Literal["CRYPTO_ADDRESS"],
-        address: str | NotGiven = NOT_GIVEN,
-        contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
-        | NotGiven = NOT_GIVEN,
-        currency: str | NotGiven = NOT_GIVEN,
-        name: str | NotGiven = NOT_GIVEN,
-        tags: List[str] | NotGiven = NOT_GIVEN,
-        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
-        # The extra values given here take precedence over values defined on the client or passed to this method.
-        extra_headers: Headers | None = None,
-        extra_query: Query | None = None,
-        extra_body: Body | None = None,
-        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
-    ) -> PaymentCreatePayeeResponse:
-        """
-        Create a new payee (aka payment destination) for future payments to be sent to
-
-        Args:
-          type: The type of payment destination
-
-          address: The cryptocurrency address to send funds to
-
-          contact_details: Contact details for this payment destination
-
-          currency: The the blockchain to use for the transaction
-
-          name: The name you wish to associate with this payment destination for future lookups.
-
-          tags: Any additional labels you wish to assign to this payment destination
-
-          extra_headers: Send extra headers
-
-          extra_query: Add additional query parameters to the request
-
-          extra_body: Add additional JSON properties to the request
-
-          timeout: Override the client-level default timeout for this request, in seconds
-        """
-        ...
-
-    @overload
-    async def create_payee(
-        self,
-        *,
         type: Literal["PAYMAN_AGENT"],
         contact_details: payment_create_payee_params.PaymanAgentPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
-        payman_agent_id: str | NotGiven = NOT_GIVEN,
+        payman_agent: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -534,7 +446,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
 
           name: The name you wish to associate with this payment destination for future lookups.
 
-          payman_agent_id: The Payman unique id assigned to the receiver agent
+          payman_agent: The Payman handle or the id of the receiver agent
 
           tags: Any additional labels you wish to assign to this payment destination
 
@@ -605,14 +517,12 @@ class AsyncPaymentsResource(AsyncAPIResource):
     async def create_payee(
         self,
         *,
-        type: Literal["CRYPTO_ADDRESS"] | Literal["PAYMAN_AGENT"] | Literal["US_ACH"],
-        address: str | NotGiven = NOT_GIVEN,
-        contact_details: payment_create_payee_params.CryptoAddressPaymentDestinationDescriptorContactDetails
+        type: Literal["PAYMAN_AGENT"] | Literal["US_ACH"],
+        contact_details: payment_create_payee_params.PaymanAgentPaymentDestinationDescriptorContactDetails
         | NotGiven = NOT_GIVEN,
-        currency: str | NotGiven = NOT_GIVEN,
         name: str | NotGiven = NOT_GIVEN,
+        payman_agent: str | NotGiven = NOT_GIVEN,
         tags: List[str] | NotGiven = NOT_GIVEN,
-        payman_agent_id: str | NotGiven = NOT_GIVEN,
         account_holder_name: str | NotGiven = NOT_GIVEN,
         account_holder_type: Literal["individual", "business"] | NotGiven = NOT_GIVEN,
         account_number: str | NotGiven = NOT_GIVEN,
@@ -631,12 +541,10 @@ class AsyncPaymentsResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "type": type,
-                    "address": address,
                     "contact_details": contact_details,
-                    "currency": currency,
                     "name": name,
+                    "payman_agent": payman_agent,
                     "tags": tags,
-                    "payman_agent_id": payman_agent_id,
                     "account_holder_name": account_holder_name,
                     "account_holder_type": account_holder_type,
                     "account_number": account_number,
@@ -720,6 +628,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
         self,
         *,
         account_number: str | NotGiven = NOT_GIVEN,
+        agent_reference: str | NotGiven = NOT_GIVEN,
         contact_email: str | NotGiven = NOT_GIVEN,
         contact_phone_number: str | NotGiven = NOT_GIVEN,
         contact_tax_id: str | NotGiven = NOT_GIVEN,
@@ -740,6 +649,8 @@ class AsyncPaymentsResource(AsyncAPIResource):
 
         Args:
           account_number: The US Bank account number to search for.
+
+          agent_reference: The Payman agent reference (id or handle) to search for.
 
           contact_email: The contact email to search for.
 
@@ -773,6 +684,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
                 query=await async_maybe_transform(
                     {
                         "account_number": account_number,
+                        "agent_reference": agent_reference,
                         "contact_email": contact_email,
                         "contact_phone_number": contact_phone_number,
                         "contact_tax_id": contact_tax_id,
@@ -811,7 +723,7 @@ class AsyncPaymentsResource(AsyncAPIResource):
 
           memo: A note or memo to associate with this payment.
 
-          payment_destination: A cryptocurrency address-based payment destination
+          payment_destination: A Payman Agent payment destination
 
           payment_destination_id: The id of the payment destination you want to send the funds to. This must have
               been created using the /payments/destinations endpoint or via the Payman

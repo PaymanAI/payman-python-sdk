@@ -13,6 +13,9 @@ class PaymentSearchPayeesParams(TypedDict, total=False):
     account_number: Annotated[str, PropertyInfo(alias="accountNumber")]
     """The US Bank account number to search for."""
 
+    agent_reference: Annotated[str, PropertyInfo(alias="agentReference")]
+    """The Payman agent reference (id or handle) to search for."""
+
     contact_email: Annotated[str, PropertyInfo(alias="contactEmail")]
     """The contact email to search for."""
 

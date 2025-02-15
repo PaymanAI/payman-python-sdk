@@ -9,51 +9,11 @@ from .._utils import PropertyInfo
 
 __all__ = [
     "PaymentCreatePayeeParams",
-    "CryptoAddressPaymentDestinationDescriptor",
-    "CryptoAddressPaymentDestinationDescriptorContactDetails",
     "PaymanAgentPaymentDestinationDescriptor",
     "PaymanAgentPaymentDestinationDescriptorContactDetails",
     "UsachPaymentDestinationDescriptor",
     "UsachPaymentDestinationDescriptorContactDetails",
 ]
-
-
-class CryptoAddressPaymentDestinationDescriptor(TypedDict, total=False):
-    type: Required[Literal["CRYPTO_ADDRESS"]]
-    """The type of payment destination"""
-
-    address: str
-    """The cryptocurrency address to send funds to"""
-
-    contact_details: Annotated[
-        CryptoAddressPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")
-    ]
-    """Contact details for this payment destination"""
-
-    currency: str
-    """The the blockchain to use for the transaction"""
-
-    name: str
-    """
-    The name you wish to associate with this payment destination for future lookups.
-    """
-
-    tags: List[str]
-    """Any additional labels you wish to assign to this payment destination"""
-
-
-class CryptoAddressPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
-    address: str
-    """The address string of the payment destination contact"""
-
-    email: str
-    """The email address of the payment destination contact"""
-
-    phone_number: Annotated[str, PropertyInfo(alias="phoneNumber")]
-    """The phone number of the payment destination contact"""
-
-    tax_id: Annotated[str, PropertyInfo(alias="taxId")]
-    """The tax identification of the payment destination contact"""
 
 
 class PaymanAgentPaymentDestinationDescriptor(TypedDict, total=False):
@@ -70,8 +30,8 @@ class PaymanAgentPaymentDestinationDescriptor(TypedDict, total=False):
     The name you wish to associate with this payment destination for future lookups.
     """
 
-    payman_agent_id: Annotated[str, PropertyInfo(alias="paymanAgentId")]
-    """The Payman unique id assigned to the receiver agent"""
+    payman_agent: Annotated[str, PropertyInfo(alias="paymanAgent")]
+    """The Payman handle or the id of the receiver agent"""
 
     tags: List[str]
     """Any additional labels you wish to assign to this payment destination"""
@@ -136,8 +96,4 @@ class UsachPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
     """The tax identification of the payment destination contact"""
 
 
-PaymentCreatePayeeParams: TypeAlias = Union[
-    CryptoAddressPaymentDestinationDescriptor,
-    PaymanAgentPaymentDestinationDescriptor,
-    UsachPaymentDestinationDescriptor,
-]
+PaymentCreatePayeeParams: TypeAlias = Union[PaymanAgentPaymentDestinationDescriptor, UsachPaymentDestinationDescriptor]
