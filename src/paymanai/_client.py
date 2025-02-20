@@ -24,7 +24,7 @@ from ._utils import (
     get_async_library,
 )
 from ._version import __version__
-from .resources import version, balances, payments
+from .resources import me, agents, version, balances, payments, description
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import PaymanaiError, APIStatusError
 from ._base_client import (
@@ -53,6 +53,9 @@ ENVIRONMENTS: Dict[str, str] = {
 
 class Paymanai(SyncAPIClient):
     version: version.VersionResource
+    description: description.DescriptionResource
+    agents: agents.AgentsResource
+    me: me.MeResource
     balances: balances.BalancesResource
     payments: payments.PaymentsResource
     with_raw_response: PaymanaiWithRawResponse
@@ -137,6 +140,9 @@ class Paymanai(SyncAPIClient):
         )
 
         self.version = version.VersionResource(self)
+        self.description = description.DescriptionResource(self)
+        self.agents = agents.AgentsResource(self)
+        self.me = me.MeResource(self)
         self.balances = balances.BalancesResource(self)
         self.payments = payments.PaymentsResource(self)
         self.with_raw_response = PaymanaiWithRawResponse(self)
@@ -252,6 +258,9 @@ class Paymanai(SyncAPIClient):
 
 class AsyncPaymanai(AsyncAPIClient):
     version: version.AsyncVersionResource
+    description: description.AsyncDescriptionResource
+    agents: agents.AsyncAgentsResource
+    me: me.AsyncMeResource
     balances: balances.AsyncBalancesResource
     payments: payments.AsyncPaymentsResource
     with_raw_response: AsyncPaymanaiWithRawResponse
@@ -336,6 +345,9 @@ class AsyncPaymanai(AsyncAPIClient):
         )
 
         self.version = version.AsyncVersionResource(self)
+        self.description = description.AsyncDescriptionResource(self)
+        self.agents = agents.AsyncAgentsResource(self)
+        self.me = me.AsyncMeResource(self)
         self.balances = balances.AsyncBalancesResource(self)
         self.payments = payments.AsyncPaymentsResource(self)
         self.with_raw_response = AsyncPaymanaiWithRawResponse(self)
@@ -452,6 +464,9 @@ class AsyncPaymanai(AsyncAPIClient):
 class PaymanaiWithRawResponse:
     def __init__(self, client: Paymanai) -> None:
         self.version = version.VersionResourceWithRawResponse(client.version)
+        self.description = description.DescriptionResourceWithRawResponse(client.description)
+        self.agents = agents.AgentsResourceWithRawResponse(client.agents)
+        self.me = me.MeResourceWithRawResponse(client.me)
         self.balances = balances.BalancesResourceWithRawResponse(client.balances)
         self.payments = payments.PaymentsResourceWithRawResponse(client.payments)
 
@@ -459,6 +474,9 @@ class PaymanaiWithRawResponse:
 class AsyncPaymanaiWithRawResponse:
     def __init__(self, client: AsyncPaymanai) -> None:
         self.version = version.AsyncVersionResourceWithRawResponse(client.version)
+        self.description = description.AsyncDescriptionResourceWithRawResponse(client.description)
+        self.agents = agents.AsyncAgentsResourceWithRawResponse(client.agents)
+        self.me = me.AsyncMeResourceWithRawResponse(client.me)
         self.balances = balances.AsyncBalancesResourceWithRawResponse(client.balances)
         self.payments = payments.AsyncPaymentsResourceWithRawResponse(client.payments)
 
@@ -466,6 +484,9 @@ class AsyncPaymanaiWithRawResponse:
 class PaymanaiWithStreamedResponse:
     def __init__(self, client: Paymanai) -> None:
         self.version = version.VersionResourceWithStreamingResponse(client.version)
+        self.description = description.DescriptionResourceWithStreamingResponse(client.description)
+        self.agents = agents.AgentsResourceWithStreamingResponse(client.agents)
+        self.me = me.MeResourceWithStreamingResponse(client.me)
         self.balances = balances.BalancesResourceWithStreamingResponse(client.balances)
         self.payments = payments.PaymentsResourceWithStreamingResponse(client.payments)
 
@@ -473,6 +494,9 @@ class PaymanaiWithStreamedResponse:
 class AsyncPaymanaiWithStreamedResponse:
     def __init__(self, client: AsyncPaymanai) -> None:
         self.version = version.AsyncVersionResourceWithStreamingResponse(client.version)
+        self.description = description.AsyncDescriptionResourceWithStreamingResponse(client.description)
+        self.agents = agents.AsyncAgentsResourceWithStreamingResponse(client.agents)
+        self.me = me.AsyncMeResourceWithStreamingResponse(client.me)
         self.balances = balances.AsyncBalancesResourceWithStreamingResponse(client.balances)
         self.payments = payments.AsyncPaymentsResourceWithStreamingResponse(client.payments)
 
