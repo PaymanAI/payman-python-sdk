@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.6.0 (2025-02-20)
+
+Full Changelog: [v2.5.0...v2.6.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.5.0...v2.6.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#46](https://github.com/PaymanAI/payman-python-sdk/issues/46)) ([35c606c](https://github.com/PaymanAI/payman-python-sdk/commit/35c606c4286735f3b659d50047dbe64009959402))
+* **api:** update via SDK Studio ([#48](https://github.com/PaymanAI/payman-python-sdk/issues/48)) ([8a52de3](https://github.com/PaymanAI/payman-python-sdk/commit/8a52de3d76a88214e521f74c01c2e97cb3a49807))
+* **api:** update via SDK Studio ([#49](https://github.com/PaymanAI/payman-python-sdk/issues/49)) ([e299e8d](https://github.com/PaymanAI/payman-python-sdk/commit/e299e8d9b8b3dc1e08799ff9e7831b80f3fff53b))
+
 ## 2.5.0 (2025-02-15)
 
 Full Changelog: [v2.4.0...v2.5.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.4.0...v2.5.0)
