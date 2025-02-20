@@ -23,6 +23,7 @@ Types:
 ```python
 from paymanai.types import (
     PaymentCreatePayeeResponse,
+    PaymentDeletePayeeResponse,
     PaymentGetDepositLinkResponse,
     PaymentSearchPayeesResponse,
     PaymentSendPaymentResponse,
@@ -32,6 +33,7 @@ from paymanai.types import (
 Methods:
 
 - <code title="post /payments/destinations">client.payments.<a href="./src/paymanai/resources/payments.py">create_payee</a>(\*\*<a href="src/paymanai/types/payment_create_payee_params.py">params</a>) -> <a href="./src/paymanai/types/payment_create_payee_response.py">PaymentCreatePayeeResponse</a></code>
+- <code title="delete /payments/destinations/{id}">client.payments.<a href="./src/paymanai/resources/payments.py">delete_payee</a>(id) -> <a href="./src/paymanai/types/payment_delete_payee_response.py">PaymentDeletePayeeResponse</a></code>
 - <code title="post /payments/deposit-link">client.payments.<a href="./src/paymanai/resources/payments.py">get_deposit_link</a>(\*\*<a href="src/paymanai/types/payment_get_deposit_link_params.py">params</a>) -> <a href="./src/paymanai/types/payment_get_deposit_link_response.py">PaymentGetDepositLinkResponse</a></code>
 - <code title="get /payments/search-destinations">client.payments.<a href="./src/paymanai/resources/payments.py">search_payees</a>(\*\*<a href="src/paymanai/types/payment_search_payees_params.py">params</a>) -> <a href="./src/paymanai/types/payment_search_payees_response.py">PaymentSearchPayeesResponse</a></code>
 - <code title="post /payments/send-payment">client.payments.<a href="./src/paymanai/resources/payments.py">send_payment</a>(\*\*<a href="src/paymanai/types/payment_send_payment_params.py">params</a>) -> <a href="./src/paymanai/types/payment_send_payment_response.py">PaymentSendPaymentResponse</a></code>
