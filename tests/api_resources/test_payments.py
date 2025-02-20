@@ -11,6 +11,7 @@ from paymanai import Paymanai, AsyncPaymanai
 from tests.utils import assert_matches_type
 from paymanai.types import (
     PaymentCreatePayeeResponse,
+    PaymentDeletePayeeResponse,
     PaymentSendPaymentResponse,
     PaymentSearchPayeesResponse,
     PaymentGetDepositLinkResponse,
@@ -121,6 +122,44 @@ class TestPayments:
         assert cast(Any, response.is_closed) is True
 
     @parametrize
+    def test_method_delete_payee(self, client: Paymanai) -> None:
+        payment = client.payments.delete_payee(
+            "id",
+        )
+        assert_matches_type(PaymentDeletePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    def test_raw_response_delete_payee(self, client: Paymanai) -> None:
+        response = client.payments.with_raw_response.delete_payee(
+            "id",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        payment = response.parse()
+        assert_matches_type(PaymentDeletePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    def test_streaming_response_delete_payee(self, client: Paymanai) -> None:
+        with client.payments.with_streaming_response.delete_payee(
+            "id",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            payment = response.parse()
+            assert_matches_type(PaymentDeletePayeeResponse, payment, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    def test_path_params_delete_payee(self, client: Paymanai) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
+            client.payments.with_raw_response.delete_payee(
+                "",
+            )
+
+    @parametrize
     def test_method_get_deposit_link(self, client: Paymanai) -> None:
         payment = client.payments.get_deposit_link(
             amount_decimal=0,
@@ -205,6 +244,7 @@ class TestPayments:
     def test_method_send_payment(self, client: Paymanai) -> None:
         payment = client.payments.send_payment(
             amount_decimal=0,
+            payment_destination_id="paymentDestinationId",
         )
         assert_matches_type(PaymentSendPaymentResponse, payment, path=["response"])
 
@@ -212,21 +252,9 @@ class TestPayments:
     def test_method_send_payment_with_all_params(self, client: Paymanai) -> None:
         payment = client.payments.send_payment(
             amount_decimal=0,
+            payment_destination_id="paymentDestinationId",
             memo="memo",
             metadata={"foo": "bar"},
-            payment_destination={
-                "type": "PAYMAN_AGENT",
-                "contact_details": {
-                    "address": "address",
-                    "email": "email",
-                    "phone_number": "phoneNumber",
-                    "tax_id": "taxId",
-                },
-                "name": "name",
-                "payman_agent": "paymanAgent",
-                "tags": ["string"],
-            },
-            payment_destination_id="paymentDestinationId",
             wallet_id="walletId",
         )
         assert_matches_type(PaymentSendPaymentResponse, payment, path=["response"])
@@ -235,6 +263,7 @@ class TestPayments:
     def test_raw_response_send_payment(self, client: Paymanai) -> None:
         response = client.payments.with_raw_response.send_payment(
             amount_decimal=0,
+            payment_destination_id="paymentDestinationId",
         )
 
         assert response.is_closed is True
@@ -246,6 +275,7 @@ class TestPayments:
     def test_streaming_response_send_payment(self, client: Paymanai) -> None:
         with client.payments.with_streaming_response.send_payment(
             amount_decimal=0,
+            payment_destination_id="paymentDestinationId",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
@@ -358,6 +388,44 @@ class TestAsyncPayments:
         assert cast(Any, response.is_closed) is True
 
     @parametrize
+    async def test_method_delete_payee(self, async_client: AsyncPaymanai) -> None:
+        payment = await async_client.payments.delete_payee(
+            "id",
+        )
+        assert_matches_type(PaymentDeletePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    async def test_raw_response_delete_payee(self, async_client: AsyncPaymanai) -> None:
+        response = await async_client.payments.with_raw_response.delete_payee(
+            "id",
+        )
+
+        assert response.is_closed is True
+        assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+        payment = await response.parse()
+        assert_matches_type(PaymentDeletePayeeResponse, payment, path=["response"])
+
+    @parametrize
+    async def test_streaming_response_delete_payee(self, async_client: AsyncPaymanai) -> None:
+        async with async_client.payments.with_streaming_response.delete_payee(
+            "id",
+        ) as response:
+            assert not response.is_closed
+            assert response.http_request.headers.get("X-Stainless-Lang") == "python"
+
+            payment = await response.parse()
+            assert_matches_type(PaymentDeletePayeeResponse, payment, path=["response"])
+
+        assert cast(Any, response.is_closed) is True
+
+    @parametrize
+    async def test_path_params_delete_payee(self, async_client: AsyncPaymanai) -> None:
+        with pytest.raises(ValueError, match=r"Expected a non-empty value for `id` but received ''"):
+            await async_client.payments.with_raw_response.delete_payee(
+                "",
+            )
+
+    @parametrize
     async def test_method_get_deposit_link(self, async_client: AsyncPaymanai) -> None:
         payment = await async_client.payments.get_deposit_link(
             amount_decimal=0,
@@ -442,6 +510,7 @@ class TestAsyncPayments:
     async def test_method_send_payment(self, async_client: AsyncPaymanai) -> None:
         payment = await async_client.payments.send_payment(
             amount_decimal=0,
+            payment_destination_id="paymentDestinationId",
         )
         assert_matches_type(PaymentSendPaymentResponse, payment, path=["response"])
 
@@ -449,21 +518,9 @@ class TestAsyncPayments:
     async def test_method_send_payment_with_all_params(self, async_client: AsyncPaymanai) -> None:
         payment = await async_client.payments.send_payment(
             amount_decimal=0,
+            payment_destination_id="paymentDestinationId",
             memo="memo",
             metadata={"foo": "bar"},
-            payment_destination={
-                "type": "PAYMAN_AGENT",
-                "contact_details": {
-                    "address": "address",
-                    "email": "email",
-                    "phone_number": "phoneNumber",
-                    "tax_id": "taxId",
-                },
-                "name": "name",
-                "payman_agent": "paymanAgent",
-                "tags": ["string"],
-            },
-            payment_destination_id="paymentDestinationId",
             wallet_id="walletId",
         )
         assert_matches_type(PaymentSendPaymentResponse, payment, path=["response"])
@@ -472,6 +529,7 @@ class TestAsyncPayments:
     async def test_raw_response_send_payment(self, async_client: AsyncPaymanai) -> None:
         response = await async_client.payments.with_raw_response.send_payment(
             amount_decimal=0,
+            payment_destination_id="paymentDestinationId",
         )
 
         assert response.is_closed is True
@@ -483,6 +541,7 @@ class TestAsyncPayments:
     async def test_streaming_response_send_payment(self, async_client: AsyncPaymanai) -> None:
         async with async_client.payments.with_streaming_response.send_payment(
             amount_decimal=0,
+            payment_destination_id="paymentDestinationId",
         ) as response:
             assert not response.is_closed
             assert response.http_request.headers.get("X-Stainless-Lang") == "python"
