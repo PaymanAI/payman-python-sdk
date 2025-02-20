@@ -29,6 +29,7 @@ from .._response import (
 )
 from .._base_client import make_request_options
 from ..types.payment_create_payee_response import PaymentCreatePayeeResponse
+from ..types.payment_delete_payee_response import PaymentDeletePayeeResponse
 from ..types.payment_send_payment_response import PaymentSendPaymentResponse
 from ..types.payment_search_payees_response import PaymentSearchPayeesResponse
 from ..types.payment_get_deposit_link_response import PaymentGetDepositLinkResponse
@@ -196,6 +197,40 @@ class PaymentsResource(SyncAPIResource):
             cast_to=PaymentCreatePayeeResponse,
         )
 
+    def delete_payee(
+        self,
+        id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> PaymentDeletePayeeResponse:
+        """
+        Delete a payee (aka payment destination)
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not id:
+            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return self._delete(
+            f"/payments/destinations/{id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=PaymentDeletePayeeResponse,
+        )
+
     def get_deposit_link(
         self,
         *,
@@ -339,10 +374,9 @@ class PaymentsResource(SyncAPIResource):
         self,
         *,
         amount_decimal: float,
+        payment_destination_id: str,
         memo: str | NotGiven = NOT_GIVEN,
         metadata: Dict[str, object] | NotGiven = NOT_GIVEN,
-        payment_destination: payment_send_payment_params.PaymentDestination | NotGiven = NOT_GIVEN,
-        payment_destination_id: str | NotGiven = NOT_GIVEN,
         wallet_id: str | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -358,14 +392,11 @@ class PaymentsResource(SyncAPIResource):
           amount_decimal: The amount to generate a checkout link for. For example, '10.00' for USD is
               $10.00 or '1.000000' USDCBASE is 1 USDC.
 
-          memo: A note or memo to associate with this payment.
-
-          payment_destination: A Payman Agent payment destination
-
           payment_destination_id: The id of the payment destination you want to send the funds to. This must have
               been created using the /payments/destinations endpoint or via the Payman
-              dashboard before sending. Exactly one of paymentDestination and
-              paymentDestinationId must be provided.
+              dashboard before sending.
+
+          memo: A note or memo to associate with this payment.
 
           wallet_id: The ID of the specific wallet from which to send the funds. This is only
               required if the agent has access to multiple wallets (not the case by default).
@@ -384,10 +415,9 @@ class PaymentsResource(SyncAPIResource):
             body=maybe_transform(
                 {
                     "amount_decimal": amount_decimal,
+                    "payment_destination_id": payment_destination_id,
                     "memo": memo,
                     "metadata": metadata,
-                    "payment_destination": payment_destination,
-                    "payment_destination_id": payment_destination_id,
                     "wallet_id": wallet_id,
                 },
                 payment_send_payment_params.PaymentSendPaymentParams,
@@ -559,6 +589,40 @@ class AsyncPaymentsResource(AsyncAPIResource):
             cast_to=PaymentCreatePayeeResponse,
         )
 
+    async def delete_payee(
+        self,
+        id: str,
+        *,
+        # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
+        # The extra values given here take precedence over values defined on the client or passed to this method.
+        extra_headers: Headers | None = None,
+        extra_query: Query | None = None,
+        extra_body: Body | None = None,
+        timeout: float | httpx.Timeout | None | NotGiven = NOT_GIVEN,
+    ) -> PaymentDeletePayeeResponse:
+        """
+        Delete a payee (aka payment destination)
+
+        Args:
+          extra_headers: Send extra headers
+
+          extra_query: Add additional query parameters to the request
+
+          extra_body: Add additional JSON properties to the request
+
+          timeout: Override the client-level default timeout for this request, in seconds
+        """
+        if not id:
+            raise ValueError(f"Expected a non-empty value for `id` but received {id!r}")
+        extra_headers = {"Accept": "application/vnd.payman.v1+json", **(extra_headers or {})}
+        return await self._delete(
+            f"/payments/destinations/{id}",
+            options=make_request_options(
+                extra_headers=extra_headers, extra_query=extra_query, extra_body=extra_body, timeout=timeout
+            ),
+            cast_to=PaymentDeletePayeeResponse,
+        )
+
     async def get_deposit_link(
         self,
         *,
@@ -702,10 +766,9 @@ class AsyncPaymentsResource(AsyncAPIResource):
         self,
         *,
         amount_decimal: float,
+        payment_destination_id: str,
         memo: str | NotGiven = NOT_GIVEN,
         metadata: Dict[str, object] | NotGiven = NOT_GIVEN,
-        payment_destination: payment_send_payment_params.PaymentDestination | NotGiven = NOT_GIVEN,
-        payment_destination_id: str | NotGiven = NOT_GIVEN,
         wallet_id: str | NotGiven = NOT_GIVEN,
         # Use the following arguments if you need to pass additional parameters to the API that aren't available via kwargs.
         # The extra values given here take precedence over values defined on the client or passed to this method.
@@ -721,14 +784,11 @@ class AsyncPaymentsResource(AsyncAPIResource):
           amount_decimal: The amount to generate a checkout link for. For example, '10.00' for USD is
               $10.00 or '1.000000' USDCBASE is 1 USDC.
 
-          memo: A note or memo to associate with this payment.
-
-          payment_destination: A Payman Agent payment destination
-
           payment_destination_id: The id of the payment destination you want to send the funds to. This must have
               been created using the /payments/destinations endpoint or via the Payman
-              dashboard before sending. Exactly one of paymentDestination and
-              paymentDestinationId must be provided.
+              dashboard before sending.
+
+          memo: A note or memo to associate with this payment.
 
           wallet_id: The ID of the specific wallet from which to send the funds. This is only
               required if the agent has access to multiple wallets (not the case by default).
@@ -747,10 +807,9 @@ class AsyncPaymentsResource(AsyncAPIResource):
             body=await async_maybe_transform(
                 {
                     "amount_decimal": amount_decimal,
+                    "payment_destination_id": payment_destination_id,
                     "memo": memo,
                     "metadata": metadata,
-                    "payment_destination": payment_destination,
-                    "payment_destination_id": payment_destination_id,
                     "wallet_id": wallet_id,
                 },
                 payment_send_payment_params.PaymentSendPaymentParams,
@@ -768,6 +827,9 @@ class PaymentsResourceWithRawResponse:
 
         self.create_payee = to_raw_response_wrapper(
             payments.create_payee,
+        )
+        self.delete_payee = to_raw_response_wrapper(
+            payments.delete_payee,
         )
         self.get_deposit_link = to_raw_response_wrapper(
             payments.get_deposit_link,
@@ -787,6 +849,9 @@ class AsyncPaymentsResourceWithRawResponse:
         self.create_payee = async_to_raw_response_wrapper(
             payments.create_payee,
         )
+        self.delete_payee = async_to_raw_response_wrapper(
+            payments.delete_payee,
+        )
         self.get_deposit_link = async_to_raw_response_wrapper(
             payments.get_deposit_link,
         )
@@ -805,6 +870,9 @@ class PaymentsResourceWithStreamingResponse:
         self.create_payee = to_streamed_response_wrapper(
             payments.create_payee,
         )
+        self.delete_payee = to_streamed_response_wrapper(
+            payments.delete_payee,
+        )
         self.get_deposit_link = to_streamed_response_wrapper(
             payments.get_deposit_link,
         )
@@ -822,6 +890,9 @@ class AsyncPaymentsResourceWithStreamingResponse:
 
         self.create_payee = async_to_streamed_response_wrapper(
             payments.create_payee,
+        )
+        self.delete_payee = async_to_streamed_response_wrapper(
+            payments.delete_payee,
         )
         self.get_deposit_link = async_to_streamed_response_wrapper(
             payments.get_deposit_link,
