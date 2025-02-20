@@ -40,14 +40,6 @@ from .payments import (
     PaymentsResourceWithStreamingResponse,
     AsyncPaymentsResourceWithStreamingResponse,
 )
-from .description import (
-    DescriptionResource,
-    AsyncDescriptionResource,
-    DescriptionResourceWithRawResponse,
-    AsyncDescriptionResourceWithRawResponse,
-    DescriptionResourceWithStreamingResponse,
-    AsyncDescriptionResourceWithStreamingResponse,
-)
 
 __all__ = [
     "VersionResource",
@@ -56,12 +48,6 @@ __all__ = [
     "AsyncVersionResourceWithRawResponse",
     "VersionResourceWithStreamingResponse",
     "AsyncVersionResourceWithStreamingResponse",
-    "DescriptionResource",
-    "AsyncDescriptionResource",
-    "DescriptionResourceWithRawResponse",
-    "AsyncDescriptionResourceWithRawResponse",
-    "DescriptionResourceWithStreamingResponse",
-    "AsyncDescriptionResourceWithStreamingResponse",
     "AgentsResource",
     "AsyncAgentsResource",
     "AgentsResourceWithRawResponse",
