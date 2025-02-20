@@ -14,3 +14,6 @@ from .payment_get_deposit_link_response import PaymentGetDepositLinkResponse as 
 from .balance_get_spendable_balance_response import (
     BalanceGetSpendableBalanceResponse as BalanceGetSpendableBalanceResponse,
 )
+from .description_get_api_description_response import (
+    DescriptionGetAPIDescriptionResponse as DescriptionGetAPIDescriptionResponse,
+)

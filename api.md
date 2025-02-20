@@ -4,6 +4,30 @@ Methods:
 
 - <code title="get /version">client.version.<a href="./src/paymanai/resources/version.py">get_server_version</a>() -> BinaryAPIResponse</code>
 
+# Description
+
+Types:
+
+```python
+from paymanai.types import DescriptionGetAPIDescriptionResponse
+```
+
+Methods:
+
+- <code title="get /description">client.description.<a href="./src/paymanai/resources/description.py">get_api_description</a>() -> <a href="./src/paymanai/types/description_get_api_description_response.py">DescriptionGetAPIDescriptionResponse</a></code>
+
+# Agents
+
+Methods:
+
+- <code title="get /agents/{ref}">client.agents.<a href="./src/paymanai/resources/agents.py">get_agent_by_reference</a>(ref) -> BinaryAPIResponse</code>
+
+# Me
+
+Methods:
+
+- <code title="get /me">client.me.<a href="./src/paymanai/resources/me.py">me</a>() -> BinaryAPIResponse</code>
+
 # Balances
 
 Types:
