@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.7.0 (2025-02-21)
+
+Full Changelog: [v2.6.0...v2.7.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.6.0...v2.7.0)
+
+### Features
+
+* **client:** allow passing `NotGiven` for body ([#51](https://github.com/PaymanAI/payman-python-sdk/issues/51)) ([8482294](https://github.com/PaymanAI/payman-python-sdk/commit/84822941e3f8f0a59f96adece3100480014bda3f))
+
+
+### Bug Fixes
+
+* **client:** mark some request bodies as optional ([8482294](https://github.com/PaymanAI/payman-python-sdk/commit/84822941e3f8f0a59f96adece3100480014bda3f))
+
 ## 2.6.0 (2025-02-20)
 
 Full Changelog: [v2.5.0...v2.6.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.5.0...v2.6.0)
