@@ -89,7 +89,7 @@ class Paymanai(SyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new synchronous paymanai client instance.
+        """Construct a new synchronous Paymanai client instance.
 
         This automatically infers the `x_payman_api_secret` argument from the `PAYMAN_API_SECRET` environment variable if it is not provided.
         """
@@ -292,7 +292,7 @@ class AsyncPaymanai(AsyncAPIClient):
         # part of our public interface in the future.
         _strict_response_validation: bool = False,
     ) -> None:
-        """Construct a new async paymanai client instance.
+        """Construct a new async AsyncPaymanai client instance.
 
         This automatically infers the `x_payman_api_secret` argument from the `PAYMAN_API_SECRET` environment variable if it is not provided.
         """
