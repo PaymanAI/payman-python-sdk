@@ -31,13 +31,11 @@ client = Paymanai(
     x_payman_api_secret=os.environ.get(
         "PAYMAN_API_SECRET"
     ),  # This is the default and can be omitted
-    # defaults to "sandbox".
-    environment="production",
 )
 
 response = client.payments.send_payment(
     amount_decimal=10,
-    payment_destination_id="pd-1234",
+    payee_id="payeeId",
 )
 print(response.reference)
 ```
@@ -60,15 +58,13 @@ client = AsyncPaymanai(
     x_payman_api_secret=os.environ.get(
         "PAYMAN_API_SECRET"
     ),  # This is the default and can be omitted
-    # defaults to "sandbox".
-    environment="production",
 )
 
 
 async def main() -> None:
     response = await client.payments.send_payment(
         amount_decimal=10,
-        payment_destination_id="pd-1234",
+        payee_id="payeeId",
     )
     print(response.reference)
 
@@ -87,27 +83,6 @@ Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typ
 
 Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
 
-## Nested params
-
-Nested parameters are dictionaries, typed using `TypedDict`, for example:
-
-```python
-from paymanai import Paymanai
-
-client = Paymanai()
-
-response = client.payments.create_payee(
-    type="PAYMAN_AGENT",
-    contact_details={
-        "address": "address",
-        "email": "email",
-        "phone_number": "phoneNumber",
-        "tax_id": "taxId",
-    },
-)
-print(response.contact_details)
-```
-
 ## Handling errors
 
 When the library is unable to connect to the API (for example, due to network connection problems or a timeout), a subclass of `paymanai.APIConnectionError` is raised.
@@ -124,7 +99,7 @@ from paymanai import Paymanai
 client = Paymanai()
 
 try:
-    client.payments.search_payees()
+    client.version.get_server_version()
 except paymanai.APIConnectionError as e:
     print("The server could not be reached")
     print(e.__cause__)  # an underlying Exception, likely raised within httpx.
@@ -167,7 +142,7 @@ client = Paymanai(
 )
 
 # Or, configure per-request:
-client.with_options(max_retries=5).payments.search_payees()
+client.with_options(max_retries=5).version.get_server_version()
 ```
 
 ### Timeouts
@@ -190,7 +165,7 @@ client = Paymanai(
 )
 
 # Override per-request:
-client.with_options(timeout=5.0).payments.search_payees()
+client.with_options(timeout=5.0).version.get_server_version()
 ```
 
 On timeout, an `APITimeoutError` is thrown.
@@ -245,11 +220,11 @@ The "raw" Response object can be accessed by prefixing `.with_raw_response.` to 
 from paymanai import Paymanai
 
 client = Paymanai()
-response = client.payments.with_raw_response.search_payees()
+response = client.version.with_raw_response.get_server_version()
 print(response.headers.get('X-My-Header'))
 
-payment = response.parse()  # get the object that `payments.search_payees()` would have returned
-print(payment)
+version = response.parse()  # get the object that `version.get_server_version()` would have returned
+print(version)
 ```
 
 These methods return an [`APIResponse`](https://github.com/PaymanAI/payman-python-sdk/tree/main/src/paymanai/_response.py) object.
@@ -263,7 +238,7 @@ The above interface eagerly reads the full response body when you make the reque
 To stream the response body, use `.with_streaming_response` instead, which requires a context manager and only reads the response body once you call `.read()`, `.text()`, `.json()`, `.iter_bytes()`, `.iter_text()`, `.iter_lines()` or `.parse()`. In the async client, these are async methods.
 
 ```python
-with client.payments.with_streaming_response.search_payees() as response:
+with client.version.with_streaming_response.get_server_version() as response:
     print(response.headers.get("X-My-Header"))
 
     for line in response.iter_lines():

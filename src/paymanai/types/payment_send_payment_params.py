@@ -17,10 +17,10 @@ class PaymentSendPaymentParams(TypedDict, total=False):
     For example, '10.00' for USD is $10.00 or '1.000000' USDCBASE is 1 USDC.
     """
 
-    payment_destination_id: Required[Annotated[str, PropertyInfo(alias="paymentDestinationId")]]
-    """The id of the payment destination you want to send the funds to.
+    payee_id: Required[Annotated[str, PropertyInfo(alias="payeeId")]]
+    """The id of the payee you want to send the funds to.
 
-    This must have been created using the /payments/destinations endpoint or via the
+    This must have been created using the /payments/payees endpoint or via the
     Payman dashboard before sending.
     """
 
