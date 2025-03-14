@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, Union, Mapping, cast
-from typing_extensions import Self, Literal, override
+from typing import Any, Union, Mapping
+from typing_extensions import Self, override
 
 import httpx
 
@@ -24,7 +24,7 @@ from ._utils import (
     get_async_library,
 )
 from ._version import __version__
-from .resources import me, agents, version, balances, payments
+from .resources import me, version, balances, payments, spend_limits
 from ._streaming import Stream as Stream, AsyncStream as AsyncStream
 from ._exceptions import PaymanaiError, APIStatusError
 from ._base_client import (
@@ -34,7 +34,6 @@ from ._base_client import (
 )
 
 __all__ = [
-    "ENVIRONMENTS",
     "Timeout",
     "Transport",
     "ProxiesTypes",
@@ -45,32 +44,24 @@ __all__ = [
     "AsyncClient",
 ]
 
-ENVIRONMENTS: Dict[str, str] = {
-    "sandbox": "https://agent-sandbox.payman.ai/api",
-    "production": "https://agent.payman.ai/api",
-}
-
 
 class Paymanai(SyncAPIClient):
     version: version.VersionResource
-    agents: agents.AgentsResource
     me: me.MeResource
     balances: balances.BalancesResource
     payments: payments.PaymentsResource
+    spend_limits: spend_limits.SpendLimitsResource
     with_raw_response: PaymanaiWithRawResponse
     with_streaming_response: PaymanaiWithStreamedResponse
 
     # client options
     x_payman_api_secret: str
 
-    _environment: Literal["sandbox", "production"] | NotGiven
-
     def __init__(
         self,
         *,
         x_payman_api_secret: str | None = None,
-        environment: Literal["sandbox", "production"] | NotGiven = NOT_GIVEN,
-        base_url: str | httpx.URL | None | NotGiven = NOT_GIVEN,
+        base_url: str | httpx.URL | None = None,
         timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
         max_retries: int = DEFAULT_MAX_RETRIES,
         default_headers: Mapping[str, str] | None = None,
@@ -101,31 +92,10 @@ class Paymanai(SyncAPIClient):
             )
         self.x_payman_api_secret = x_payman_api_secret
 
-        self._environment = environment
-
-        base_url_env = os.environ.get("PAYMANAI_BASE_URL")
-        if is_given(base_url) and base_url is not None:
-            # cast required because mypy doesn't understand the type narrowing
-            base_url = cast("str | httpx.URL", base_url)  # pyright: ignore[reportUnnecessaryCast]
-        elif is_given(environment):
-            if base_url_env and base_url is not None:
-                raise ValueError(
-                    "Ambiguous URL; The `PAYMANAI_BASE_URL` env var and the `environment` argument are given. If you want to use the environment, you must pass base_url=None",
-                )
-
-            try:
-                base_url = ENVIRONMENTS[environment]
-            except KeyError as exc:
-                raise ValueError(f"Unknown environment: {environment}") from exc
-        elif base_url_env is not None:
-            base_url = base_url_env
-        else:
-            self._environment = environment = "sandbox"
-
-            try:
-                base_url = ENVIRONMENTS[environment]
-            except KeyError as exc:
-                raise ValueError(f"Unknown environment: {environment}") from exc
+        if base_url is None:
+            base_url = os.environ.get("PAYMANAI_BASE_URL")
+        if base_url is None:
+            base_url = f"https://agent.payman.ai/api"
 
         super().__init__(
             version=__version__,
@@ -139,10 +109,10 @@ class Paymanai(SyncAPIClient):
         )
 
         self.version = version.VersionResource(self)
-        self.agents = agents.AgentsResource(self)
         self.me = me.MeResource(self)
         self.balances = balances.BalancesResource(self)
         self.payments = payments.PaymentsResource(self)
+        self.spend_limits = spend_limits.SpendLimitsResource(self)
         self.with_raw_response = PaymanaiWithRawResponse(self)
         self.with_streaming_response = PaymanaiWithStreamedResponse(self)
 
@@ -171,7 +141,6 @@ class Paymanai(SyncAPIClient):
         self,
         *,
         x_payman_api_secret: str | None = None,
-        environment: Literal["sandbox", "production"] | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
         http_client: httpx.Client | None = None,
@@ -207,7 +176,6 @@ class Paymanai(SyncAPIClient):
         return self.__class__(
             x_payman_api_secret=x_payman_api_secret or self.x_payman_api_secret,
             base_url=base_url or self.base_url,
-            environment=environment or self._environment,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
             http_client=http_client,
             max_retries=max_retries if is_given(max_retries) else self.max_retries,
@@ -256,24 +224,21 @@ class Paymanai(SyncAPIClient):
 
 class AsyncPaymanai(AsyncAPIClient):
     version: version.AsyncVersionResource
-    agents: agents.AsyncAgentsResource
     me: me.AsyncMeResource
     balances: balances.AsyncBalancesResource
     payments: payments.AsyncPaymentsResource
+    spend_limits: spend_limits.AsyncSpendLimitsResource
     with_raw_response: AsyncPaymanaiWithRawResponse
     with_streaming_response: AsyncPaymanaiWithStreamedResponse
 
     # client options
     x_payman_api_secret: str
 
-    _environment: Literal["sandbox", "production"] | NotGiven
-
     def __init__(
         self,
         *,
         x_payman_api_secret: str | None = None,
-        environment: Literal["sandbox", "production"] | NotGiven = NOT_GIVEN,
-        base_url: str | httpx.URL | None | NotGiven = NOT_GIVEN,
+        base_url: str | httpx.URL | None = None,
         timeout: Union[float, Timeout, None, NotGiven] = NOT_GIVEN,
         max_retries: int = DEFAULT_MAX_RETRIES,
         default_headers: Mapping[str, str] | None = None,
@@ -304,31 +269,10 @@ class AsyncPaymanai(AsyncAPIClient):
             )
         self.x_payman_api_secret = x_payman_api_secret
 
-        self._environment = environment
-
-        base_url_env = os.environ.get("PAYMANAI_BASE_URL")
-        if is_given(base_url) and base_url is not None:
-            # cast required because mypy doesn't understand the type narrowing
-            base_url = cast("str | httpx.URL", base_url)  # pyright: ignore[reportUnnecessaryCast]
-        elif is_given(environment):
-            if base_url_env and base_url is not None:
-                raise ValueError(
-                    "Ambiguous URL; The `PAYMANAI_BASE_URL` env var and the `environment` argument are given. If you want to use the environment, you must pass base_url=None",
-                )
-
-            try:
-                base_url = ENVIRONMENTS[environment]
-            except KeyError as exc:
-                raise ValueError(f"Unknown environment: {environment}") from exc
-        elif base_url_env is not None:
-            base_url = base_url_env
-        else:
-            self._environment = environment = "sandbox"
-
-            try:
-                base_url = ENVIRONMENTS[environment]
-            except KeyError as exc:
-                raise ValueError(f"Unknown environment: {environment}") from exc
+        if base_url is None:
+            base_url = os.environ.get("PAYMANAI_BASE_URL")
+        if base_url is None:
+            base_url = f"https://agent.payman.ai/api"
 
         super().__init__(
             version=__version__,
@@ -342,10 +286,10 @@ class AsyncPaymanai(AsyncAPIClient):
         )
 
         self.version = version.AsyncVersionResource(self)
-        self.agents = agents.AsyncAgentsResource(self)
         self.me = me.AsyncMeResource(self)
         self.balances = balances.AsyncBalancesResource(self)
         self.payments = payments.AsyncPaymentsResource(self)
+        self.spend_limits = spend_limits.AsyncSpendLimitsResource(self)
         self.with_raw_response = AsyncPaymanaiWithRawResponse(self)
         self.with_streaming_response = AsyncPaymanaiWithStreamedResponse(self)
 
@@ -374,7 +318,6 @@ class AsyncPaymanai(AsyncAPIClient):
         self,
         *,
         x_payman_api_secret: str | None = None,
-        environment: Literal["sandbox", "production"] | None = None,
         base_url: str | httpx.URL | None = None,
         timeout: float | Timeout | None | NotGiven = NOT_GIVEN,
         http_client: httpx.AsyncClient | None = None,
@@ -410,7 +353,6 @@ class AsyncPaymanai(AsyncAPIClient):
         return self.__class__(
             x_payman_api_secret=x_payman_api_secret or self.x_payman_api_secret,
             base_url=base_url or self.base_url,
-            environment=environment or self._environment,
             timeout=self.timeout if isinstance(timeout, NotGiven) else timeout,
             http_client=http_client,
             max_retries=max_retries if is_given(max_retries) else self.max_retries,
@@ -460,37 +402,37 @@ class AsyncPaymanai(AsyncAPIClient):
 class PaymanaiWithRawResponse:
     def __init__(self, client: Paymanai) -> None:
         self.version = version.VersionResourceWithRawResponse(client.version)
-        self.agents = agents.AgentsResourceWithRawResponse(client.agents)
         self.me = me.MeResourceWithRawResponse(client.me)
         self.balances = balances.BalancesResourceWithRawResponse(client.balances)
         self.payments = payments.PaymentsResourceWithRawResponse(client.payments)
+        self.spend_limits = spend_limits.SpendLimitsResourceWithRawResponse(client.spend_limits)
 
 
 class AsyncPaymanaiWithRawResponse:
     def __init__(self, client: AsyncPaymanai) -> None:
         self.version = version.AsyncVersionResourceWithRawResponse(client.version)
-        self.agents = agents.AsyncAgentsResourceWithRawResponse(client.agents)
         self.me = me.AsyncMeResourceWithRawResponse(client.me)
         self.balances = balances.AsyncBalancesResourceWithRawResponse(client.balances)
         self.payments = payments.AsyncPaymentsResourceWithRawResponse(client.payments)
+        self.spend_limits = spend_limits.AsyncSpendLimitsResourceWithRawResponse(client.spend_limits)
 
 
 class PaymanaiWithStreamedResponse:
     def __init__(self, client: Paymanai) -> None:
         self.version = version.VersionResourceWithStreamingResponse(client.version)
-        self.agents = agents.AgentsResourceWithStreamingResponse(client.agents)
         self.me = me.MeResourceWithStreamingResponse(client.me)
         self.balances = balances.BalancesResourceWithStreamingResponse(client.balances)
         self.payments = payments.PaymentsResourceWithStreamingResponse(client.payments)
+        self.spend_limits = spend_limits.SpendLimitsResourceWithStreamingResponse(client.spend_limits)
 
 
 class AsyncPaymanaiWithStreamedResponse:
     def __init__(self, client: AsyncPaymanai) -> None:
         self.version = version.AsyncVersionResourceWithStreamingResponse(client.version)
-        self.agents = agents.AsyncAgentsResourceWithStreamingResponse(client.agents)
         self.me = me.AsyncMeResourceWithStreamingResponse(client.me)
         self.balances = balances.AsyncBalancesResourceWithStreamingResponse(client.balances)
         self.payments = payments.AsyncPaymentsResourceWithStreamingResponse(client.payments)
+        self.spend_limits = spend_limits.AsyncSpendLimitsResourceWithStreamingResponse(client.spend_limits)
 
 
 Client = Paymanai
