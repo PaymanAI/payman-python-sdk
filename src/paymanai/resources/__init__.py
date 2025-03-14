@@ -8,14 +8,6 @@ from .me import (
     MeResourceWithStreamingResponse,
     AsyncMeResourceWithStreamingResponse,
 )
-from .agents import (
-    AgentsResource,
-    AsyncAgentsResource,
-    AgentsResourceWithRawResponse,
-    AsyncAgentsResourceWithRawResponse,
-    AgentsResourceWithStreamingResponse,
-    AsyncAgentsResourceWithStreamingResponse,
-)
 from .version import (
     VersionResource,
     AsyncVersionResource,
@@ -40,6 +32,14 @@ from .payments import (
     PaymentsResourceWithStreamingResponse,
     AsyncPaymentsResourceWithStreamingResponse,
 )
+from .spend_limits import (
+    SpendLimitsResource,
+    AsyncSpendLimitsResource,
+    SpendLimitsResourceWithRawResponse,
+    AsyncSpendLimitsResourceWithRawResponse,
+    SpendLimitsResourceWithStreamingResponse,
+    AsyncSpendLimitsResourceWithStreamingResponse,
+)
 
 __all__ = [
     "VersionResource",
@@ -48,12 +48,6 @@ __all__ = [
     "AsyncVersionResourceWithRawResponse",
     "VersionResourceWithStreamingResponse",
     "AsyncVersionResourceWithStreamingResponse",
-    "AgentsResource",
-    "AsyncAgentsResource",
-    "AgentsResourceWithRawResponse",
-    "AsyncAgentsResourceWithRawResponse",
-    "AgentsResourceWithStreamingResponse",
-    "AsyncAgentsResourceWithStreamingResponse",
     "MeResource",
     "AsyncMeResource",
     "MeResourceWithRawResponse",
@@ -72,4 +66,10 @@ __all__ = [
     "AsyncPaymentsResourceWithRawResponse",
     "PaymentsResourceWithStreamingResponse",
     "AsyncPaymentsResourceWithStreamingResponse",
+    "SpendLimitsResource",
+    "AsyncSpendLimitsResource",
+    "SpendLimitsResourceWithRawResponse",
+    "AsyncSpendLimitsResourceWithRawResponse",
+    "SpendLimitsResourceWithStreamingResponse",
+    "AsyncSpendLimitsResourceWithStreamingResponse",
 ]

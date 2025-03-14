@@ -6,7 +6,7 @@ The Paymanai Python library provides convenient access to the Paymanai REST API 
 application. The library includes type definitions for all request params and response fields,
 and offers both synchronous and asynchronous clients powered by [httpx](https://github.com/encode/httpx).
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
 ## Documentation
 
@@ -31,13 +31,11 @@ client = Paymanai(
     x_payman_api_secret=os.environ.get(
         "PAYMAN_API_SECRET"
     ),  # This is the default and can be omitted
-    # defaults to "sandbox".
-    environment="production",
 )
 
 response = client.payments.send_payment(
     amount_decimal=10,
-    payment_destination_id="pd-1234",
+    payee_id="payeeId",
 )
 print(response.reference)
 ```
@@ -60,15 +58,13 @@ client = AsyncPaymanai(
     x_payman_api_secret=os.environ.get(
         "PAYMAN_API_SECRET"
     ),  # This is the default and can be omitted
-    # defaults to "sandbox".
-    environment="production",
 )
 
 
 async def main() -> None:
     response = await client.payments.send_payment(
         amount_decimal=10,
-        payment_destination_id="pd-1234",
+        payee_id="payeeId",
     )
     print(response.reference)
 
@@ -86,6 +82,36 @@ Nested request parameters are [TypedDicts](https://docs.python.org/3/library/typ
 - Converting to a dictionary, `model.to_dict()`
 
 Typed requests and responses provide autocomplete and documentation within your editor. If you would like to see type errors in VS Code to help catch bugs earlier, set `python.analysis.typeCheckingMode` to `basic`.
+
+## Nested params
+
+Nested parameters are dictionaries, typed using `TypedDict`, for example:
+
+```python
+from paymanai import Paymanai
+
+client = Paymanai()
+
+response = client.payments.create_payee(
+    type="CRYPTO_ADDRESS",
+    contact_details={
+        "address": {
+            "address_line1": "addressLine1",
+            "address_line2": "addressLine2",
+            "address_line3": "addressLine3",
+            "address_line4": "addressLine4",
+            "country": "country",
+            "locality": "locality",
+            "postcode": "postcode",
+            "region": "region",
+        },
+        "email": "email",
+        "phone_number": "phoneNumber",
+        "tax_id": "taxId",
+    },
+)
+print(response.contact_details)
+```
 
 ## Handling errors
 

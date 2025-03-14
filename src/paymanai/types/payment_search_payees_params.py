@@ -25,14 +25,20 @@ class PaymentSearchPayeesParams(TypedDict, total=False):
     contact_tax_id: Annotated[str, PropertyInfo(alias="contactTaxId")]
     """The contact tax id to search for."""
 
+    crypto_address: Annotated[str, PropertyInfo(alias="cryptoAddress")]
+    """The crypto address to search for."""
+
+    crypto_chain: Annotated[str, PropertyInfo(alias="cryptoChain")]
+    """The crypto chain to search for."""
+
+    crypto_currency: Annotated[str, PropertyInfo(alias="cryptoCurrency")]
+    """The crypto currency to search for."""
+
     name: str
-    """The name of the payment destination to search for.
+    """The name of the payee to search for.
 
     This can be a partial, case-insensitive match.
     """
 
     routing_number: Annotated[str, PropertyInfo(alias="routingNumber")]
     """The US Bank routing number to search for."""
-
-    type: str
-    """The type of destination to search for."""

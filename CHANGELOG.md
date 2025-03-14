@@ -1,5 +1,35 @@
 # Changelog
 
+## 2.7.0 (2025-03-14)
+
+Full Changelog: [v2.6.0...v2.7.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.6.0...v2.7.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#61](https://github.com/PaymanAI/payman-python-sdk/issues/61)) ([73e2339](https://github.com/PaymanAI/payman-python-sdk/commit/73e2339e172aca993a61e7e057f98b1ea68b1b48))
+* **api:** update via SDK Studio ([#62](https://github.com/PaymanAI/payman-python-sdk/issues/62)) ([ba52278](https://github.com/PaymanAI/payman-python-sdk/commit/ba5227814bb35ea750b4966785a1581f45afc066))
+* **client:** allow passing `NotGiven` for body ([#51](https://github.com/PaymanAI/payman-python-sdk/issues/51)) ([8482294](https://github.com/PaymanAI/payman-python-sdk/commit/84822941e3f8f0a59f96adece3100480014bda3f))
+
+
+### Bug Fixes
+
+* **client:** mark some request bodies as optional ([8482294](https://github.com/PaymanAI/payman-python-sdk/commit/84822941e3f8f0a59f96adece3100480014bda3f))
+
+
+### Chores
+
+* **docs:** update client docstring ([#56](https://github.com/PaymanAI/payman-python-sdk/issues/56)) ([e5039cb](https://github.com/PaymanAI/payman-python-sdk/commit/e5039cb5068fb0f4819e4de4e2f7da46a04e1911))
+* **internal:** fix devcontainers setup ([#53](https://github.com/PaymanAI/payman-python-sdk/issues/53)) ([efac340](https://github.com/PaymanAI/payman-python-sdk/commit/efac340090f459e70e54ed6e65db92adc4712b56))
+* **internal:** properly set __pydantic_private__ ([#54](https://github.com/PaymanAI/payman-python-sdk/issues/54)) ([a4c96ed](https://github.com/PaymanAI/payman-python-sdk/commit/a4c96ed62f088dfc90ac7e2113adb1800733eb43))
+* **internal:** remove extra empty newlines ([#60](https://github.com/PaymanAI/payman-python-sdk/issues/60)) ([d03a915](https://github.com/PaymanAI/payman-python-sdk/commit/d03a91578fe57971a15f56ca864154d0e61ff550))
+* **internal:** remove unused http client options forwarding ([#57](https://github.com/PaymanAI/payman-python-sdk/issues/57)) ([edd6fed](https://github.com/PaymanAI/payman-python-sdk/commit/edd6fed49dfd2d6a2e91c5b34cceb8465456f42e))
+
+
+### Documentation
+
+* revise readme docs about nested params ([#58](https://github.com/PaymanAI/payman-python-sdk/issues/58)) ([e11dfa7](https://github.com/PaymanAI/payman-python-sdk/commit/e11dfa7f98318b9037503bbf0a73e5dfa499c004))
+* update URLs from stainlessapi.com to stainless.com ([#55](https://github.com/PaymanAI/payman-python-sdk/issues/55)) ([f59640e](https://github.com/PaymanAI/payman-python-sdk/commit/f59640e1217dc72de6301a92858b42b8bde103f2))
+
 ## 2.6.0 (2025-02-20)
 
 Full Changelog: [v2.5.0...v2.6.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.5.0...v2.6.0)

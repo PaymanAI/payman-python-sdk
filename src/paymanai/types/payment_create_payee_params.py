@@ -9,51 +9,145 @@ from .._utils import PropertyInfo
 
 __all__ = [
     "PaymentCreatePayeeParams",
-    "PaymanAgentPaymentDestinationDescriptor",
-    "PaymanAgentPaymentDestinationDescriptorContactDetails",
-    "UsachPaymentDestinationDescriptor",
-    "UsachPaymentDestinationDescriptorContactDetails",
+    "CryptoAddressPayeeDescriptor",
+    "CryptoAddressPayeeDescriptorContactDetails",
+    "CryptoAddressPayeeDescriptorContactDetailsAddress",
+    "PaymanWalletPayeeDescriptor",
+    "PaymanWalletPayeeDescriptorContactDetails",
+    "PaymanWalletPayeeDescriptorContactDetailsAddress",
+    "TsdPayeeDescriptor",
+    "UsachPayeeDescriptor",
+    "UsachPayeeDescriptorContactDetails",
+    "UsachPayeeDescriptorContactDetailsAddress",
 ]
 
 
-class PaymanAgentPaymentDestinationDescriptor(TypedDict, total=False):
-    type: Required[Literal["PAYMAN_AGENT"]]
-    """The type of payment destination"""
+class CryptoAddressPayeeDescriptor(TypedDict, total=False):
+    type: Required[Literal["CRYPTO_ADDRESS"]]
+    """The type of payee"""
 
-    contact_details: Annotated[
-        PaymanAgentPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")
-    ]
-    """Contact details for this payment destination"""
+    address: str
+    """The cryptocurrency address to send funds to"""
+
+    chain: str
+    """The the blockchain to use for the transaction"""
+
+    contact_details: Annotated[CryptoAddressPayeeDescriptorContactDetails, PropertyInfo(alias="contactDetails")]
+    """Contact details for this payee"""
+
+    currency: str
+    """The the currency/token to use for the transaction"""
 
     name: str
-    """
-    The name you wish to associate with this payment destination for future lookups.
-    """
-
-    payman_agent: Annotated[str, PropertyInfo(alias="paymanAgent")]
-    """The Payman handle or the id of the receiver agent"""
+    """The name you wish to associate with this payee for future lookups."""
 
     tags: List[str]
-    """Any additional labels you wish to assign to this payment destination"""
+    """Any additional labels you wish to assign to this payee"""
 
 
-class PaymanAgentPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
-    address: str
-    """The address string of the payment destination contact"""
+class CryptoAddressPayeeDescriptorContactDetailsAddress(TypedDict, total=False):
+    address_line1: Annotated[str, PropertyInfo(alias="addressLine1")]
+
+    address_line2: Annotated[str, PropertyInfo(alias="addressLine2")]
+
+    address_line3: Annotated[str, PropertyInfo(alias="addressLine3")]
+
+    address_line4: Annotated[str, PropertyInfo(alias="addressLine4")]
+
+    country: str
+
+    locality: str
+
+    postcode: str
+
+    region: str
+
+
+class CryptoAddressPayeeDescriptorContactDetails(TypedDict, total=False):
+    address: CryptoAddressPayeeDescriptorContactDetailsAddress
+    """The address string of the payee contact.
+
+    IMPORTANTIf you are paying someone from a USDC wallet by ACH (US_ACH payee
+    type), you are required to provide an address
+    """
 
     email: str
-    """The email address of the payment destination contact"""
+    """The email address of the payee contact"""
 
     phone_number: Annotated[str, PropertyInfo(alias="phoneNumber")]
-    """The phone number of the payment destination contact"""
+    """The phone number of the payee contact"""
 
     tax_id: Annotated[str, PropertyInfo(alias="taxId")]
-    """The tax identification of the payment destination contact"""
+    """The tax identification of the payee contact"""
 
 
-class UsachPaymentDestinationDescriptor(TypedDict, total=False):
+class PaymanWalletPayeeDescriptor(TypedDict, total=False):
+    type: Required[Literal["PAYMAN_WALLET"]]
+    """The type of payee"""
+
+    contact_details: Annotated[PaymanWalletPayeeDescriptorContactDetails, PropertyInfo(alias="contactDetails")]
+    """Contact details for this payee"""
+
+    name: str
+    """The name you wish to associate with this payee for future lookups."""
+
+    payman_wallet: Annotated[str, PropertyInfo(alias="paymanWallet")]
+    """The Payman handle or the id of the receiver wallet"""
+
+    tags: List[str]
+    """Any additional labels you wish to assign to this payee"""
+
+
+class PaymanWalletPayeeDescriptorContactDetailsAddress(TypedDict, total=False):
+    address_line1: Annotated[str, PropertyInfo(alias="addressLine1")]
+
+    address_line2: Annotated[str, PropertyInfo(alias="addressLine2")]
+
+    address_line3: Annotated[str, PropertyInfo(alias="addressLine3")]
+
+    address_line4: Annotated[str, PropertyInfo(alias="addressLine4")]
+
+    country: str
+
+    locality: str
+
+    postcode: str
+
+    region: str
+
+
+class PaymanWalletPayeeDescriptorContactDetails(TypedDict, total=False):
+    address: PaymanWalletPayeeDescriptorContactDetailsAddress
+    """The address string of the payee contact.
+
+    IMPORTANTIf you are paying someone from a USDC wallet by ACH (US_ACH payee
+    type), you are required to provide an address
+    """
+
+    email: str
+    """The email address of the payee contact"""
+
+    phone_number: Annotated[str, PropertyInfo(alias="phoneNumber")]
+    """The phone number of the payee contact"""
+
+    tax_id: Annotated[str, PropertyInfo(alias="taxId")]
+    """The tax identification of the payee contact"""
+
+
+class TsdPayeeDescriptor(TypedDict, total=False):
+    type: Required[Literal["TEST_RAILS"]]
+    """The type of payee"""
+
+    name: str
+    """The name you wish to associate with this payee for future lookups."""
+
+    tags: List[str]
+    """Any additional labels you wish to assign to this payee"""
+
+
+class UsachPayeeDescriptor(TypedDict, total=False):
     type: Required[Literal["US_ACH"]]
-    """The type of payment destination"""
+    """The type of payee"""
 
     account_holder_name: Annotated[str, PropertyInfo(alias="accountHolderName")]
     """The name of the account holder"""
@@ -67,33 +161,55 @@ class UsachPaymentDestinationDescriptor(TypedDict, total=False):
     account_type: Annotated[str, PropertyInfo(alias="accountType")]
     """The type of account it is (checking or savings)"""
 
-    contact_details: Annotated[UsachPaymentDestinationDescriptorContactDetails, PropertyInfo(alias="contactDetails")]
-    """Contact details for this payment destination"""
+    contact_details: Annotated[UsachPayeeDescriptorContactDetails, PropertyInfo(alias="contactDetails")]
+    """Contact details for this payee"""
 
     name: str
-    """
-    The name you wish to associate with this payment destination for future lookups.
-    """
+    """The name you wish to associate with this payee for future lookups."""
 
     routing_number: Annotated[str, PropertyInfo(alias="routingNumber")]
     """The routing number of the bank"""
 
     tags: List[str]
-    """Any additional labels you wish to assign to this payment destination"""
+    """Any additional labels you wish to assign to this payee"""
 
 
-class UsachPaymentDestinationDescriptorContactDetails(TypedDict, total=False):
-    address: str
-    """The address string of the payment destination contact"""
+class UsachPayeeDescriptorContactDetailsAddress(TypedDict, total=False):
+    address_line1: Annotated[str, PropertyInfo(alias="addressLine1")]
+
+    address_line2: Annotated[str, PropertyInfo(alias="addressLine2")]
+
+    address_line3: Annotated[str, PropertyInfo(alias="addressLine3")]
+
+    address_line4: Annotated[str, PropertyInfo(alias="addressLine4")]
+
+    country: str
+
+    locality: str
+
+    postcode: str
+
+    region: str
+
+
+class UsachPayeeDescriptorContactDetails(TypedDict, total=False):
+    address: UsachPayeeDescriptorContactDetailsAddress
+    """The address string of the payee contact.
+
+    IMPORTANTIf you are paying someone from a USDC wallet by ACH (US_ACH payee
+    type), you are required to provide an address
+    """
 
     email: str
-    """The email address of the payment destination contact"""
+    """The email address of the payee contact"""
 
     phone_number: Annotated[str, PropertyInfo(alias="phoneNumber")]
-    """The phone number of the payment destination contact"""
+    """The phone number of the payee contact"""
 
     tax_id: Annotated[str, PropertyInfo(alias="taxId")]
-    """The tax identification of the payment destination contact"""
+    """The tax identification of the payee contact"""
 
 
-PaymentCreatePayeeParams: TypeAlias = Union[PaymanAgentPaymentDestinationDescriptor, UsachPaymentDestinationDescriptor]
+PaymentCreatePayeeParams: TypeAlias = Union[
+    CryptoAddressPayeeDescriptor, PaymanWalletPayeeDescriptor, TsdPayeeDescriptor, UsachPayeeDescriptor
+]

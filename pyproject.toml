@@ -1,6 +1,6 @@
 [project]
 name = "paymanai"
-version = "2.6.0"
+version = "2.7.0"
 description = "The official Python library for the paymanai API"
 dynamic = ["readme"]
 license = "Apache-2.0"
@@ -36,7 +36,6 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/PaymanAI/payman-python-sdk"
 Repository = "https://github.com/PaymanAI/payman-python-sdk"
-
 
 
 [tool.rye]
@@ -151,7 +150,6 @@ reportImplicitOverride = true
 
 reportImportCycles = false
 reportPrivateUsage = false
-
 
 [tool.ruff]
 line-length = 120

@@ -9,8 +9,6 @@ from .payment_create_payee_response import PaymentCreatePayeeResponse as Payment
 from .payment_delete_payee_response import PaymentDeletePayeeResponse as PaymentDeletePayeeResponse
 from .payment_send_payment_response import PaymentSendPaymentResponse as PaymentSendPaymentResponse
 from .payment_search_payees_response import PaymentSearchPayeesResponse as PaymentSearchPayeesResponse
-from .payment_get_deposit_link_params import PaymentGetDepositLinkParams as PaymentGetDepositLinkParams
-from .payment_get_deposit_link_response import PaymentGetDepositLinkResponse as PaymentGetDepositLinkResponse
 from .balance_get_spendable_balance_response import (
     BalanceGetSpendableBalanceResponse as BalanceGetSpendableBalanceResponse,
 )
