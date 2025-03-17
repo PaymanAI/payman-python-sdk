@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.7.1 (2025-03-17)
+
+Full Changelog: [v2.7.0...v2.7.1](https://github.com/PaymanAI/payman-python-sdk/compare/v2.7.0...v2.7.1)
+
+### Bug Fixes
+
+* **ci:** ensure pip is always available ([#68](https://github.com/PaymanAI/payman-python-sdk/issues/68)) ([e992a9c](https://github.com/PaymanAI/payman-python-sdk/commit/e992a9c95b7a4f938ba8562cc27c28c56e7d3414))
+* **types:** handle more discriminated union shapes ([#67](https://github.com/PaymanAI/payman-python-sdk/issues/67)) ([8f7f938](https://github.com/PaymanAI/payman-python-sdk/commit/8f7f938f2522014e7ff631b73f6b87439b04ba76))
+
+
+### Chores
+
+* **internal:** bump rye to 0.44.0 ([#66](https://github.com/PaymanAI/payman-python-sdk/issues/66)) ([5b24fac](https://github.com/PaymanAI/payman-python-sdk/commit/5b24fac8407f5c9df112796f25f066f27b85c32b))
+* **internal:** codegen related update ([#64](https://github.com/PaymanAI/payman-python-sdk/issues/64)) ([ecf0559](https://github.com/PaymanAI/payman-python-sdk/commit/ecf055912ae1ac61b9c3f1e98d9e4f20ad2c3d4a))
+
 ## 2.7.0 (2025-03-14)
 
 Full Changelog: [v2.6.0...v2.7.0](https://github.com/PaymanAI/payman-python-sdk/compare/v2.6.0...v2.7.0)
